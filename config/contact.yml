@@ -3,7 +3,9 @@ HEADER:
 
 LOCATION:
   # Contact Configuration
-  embed: "https://googleusercontent.com/maps.google.com/1"
+  # Contact Configuration
+# Mapa centrado en Tres Valles, Veracruz (18.242769, -96.145037)
+embed: "https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3780.2644265432!2d-96.14761192379568!3d18.242768982803277!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTjCsDE0JzM0LjAiTiA5NsKwMDgnNDIuMSJX!5e0!3m2!1ses-419!2smx!4v1703366000000!5m2!1ses-419!2smx"
   # Security Fix: Force HTTPS
 
 FORM:
