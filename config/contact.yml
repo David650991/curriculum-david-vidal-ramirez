@@ -2,7 +2,7 @@ HEADER:
   label: "Contacto"
 
 LOCATION:
-  embed: "https://maps.google.com/maps?q=18.242740,-96.145029&hl=es&z=14&output=embed"
+  embed: "https://googleusercontent.com/maps.google.com/2"
 
 FORM:
   label: "Formulario de Contacto"
