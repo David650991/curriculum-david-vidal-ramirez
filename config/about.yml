@@ -1,0 +1,63 @@
+HEADER:
+  label: "Sobre mí"
+
+PRESENTATION:
+  description: |
+    Soy estudiante de Ingeniería en Sistemas Computacionales en el TecNM y me encuentro en una etapa de transición profesional hacia el sector tecnológico. Tras más de 10 años de experiencia en logística y gestión comercial, he redirigido mi disciplina y capacidad de resolución de problemas hacia el código.
+
+    Mi enfoque actual es construir soluciones digitales funcionales. No solo programo; busco resolver problemas reales. Combino el Desarrollo Web (HTML5/CSS3/JS) con la automatización en Python y el uso estratégico de Inteligencia Artificial para crear proyectos con impacto social, como mi plataforma "La Luz y La Esperanza".
+
+DOING:
+  enabled: true
+  label: "Lo que hago"
+  items:
+    - title: "Desarrollo Web"
+      icon: "config/assets/icons/laptop-code.svg"
+      description: "Creación de sitios web responsivos y accesibles utilizando HTML5, CSS3 y JavaScript moderno."
+    - title: "Scripting & Python"
+      icon: "config/assets/icons/python.svg"
+      description: "Desarrollo de scripts para automatización de tareas y análisis de datos básico."
+    - title: "IA & Productividad"
+      icon: "config/assets/icons/ia.svg"
+      description: "Implementación de IA Generativa (Prompt Engineering/Copilot) para acelerar flujos de trabajo."
+    - title: "Transformación Digital"
+      icon: "config/assets/icons/compass.svg"
+      description: "Aplicación de conceptos de IoT y digitalización para modernizar procesos."
+
+SKILLS:
+  enabled: true
+  label: "Habilidades Blandas"
+  items:
+    - title: "Disciplina Autodidacta"
+      icon: "config/assets/icons/bolt.svg"
+      description: "Capacidad probada para dominar nuevas tecnologías de forma intensiva y continua."
+    - title: "Resolución de Problemas"
+      icon: "config/assets/icons/gear.svg"
+      description: "Enfoque pragmático adquirido en operaciones logísticas: diagnosticar el fallo y ejecutar la solución."
+    - title: "Adaptabilidad"
+      icon: "config/assets/icons/compass.svg"
+      description: "Facilidad para transicionar entre entornos operativos y técnicos, ajustándome a nuevos desafíos."
+    - title: "Comunicación Efectiva"
+      icon: "config/assets/icons/comment.svg"
+      description: "Habilidad para traducir conceptos técnicos complejos a un lenguaje claro."
+
+TECHNOLOGIES:
+  enabled: true
+  label: "Stack Tecnológico"
+  items:
+    - title: "Python"
+      icon: "config/assets/icons/python.svg"
+    - title: "JavaScript"
+      icon: "config/assets/icons/javascript.svg"
+    - title: "HTML5"
+      icon: "config/assets/icons/html.svg"
+    - title: "CSS3"
+      icon: "config/assets/icons/css3.svg"
+    - title: "Git"
+      icon: "config/assets/icons/git.svg"
+    - title: "VS Code"
+      icon: "config/assets/icons/visual-studio-code.svg"
+    - title: "Linux/Bash"
+      icon: "config/assets/icons/linux.svg"
+    - title: "AI Tools"
+      icon: "config/assets/icons/ia.svg"

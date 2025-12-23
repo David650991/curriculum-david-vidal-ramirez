@@ -1,0 +1,59 @@
+HEADER:
+  label: "Currículum"
+
+EDUCATION:
+  enabled: true
+  label: "Formación Académica y Certificaciones"
+  items:
+    - period: "En Curso"
+      institution: "Instituto Tecnológico de Tuxtepec (TecNM)"
+      description: "Ingeniería en Sistemas Computacionales."
+    - period: "2025"
+      institution: "MIT Professional Education / Santander"
+      description: "Diplomados en Internet de las Cosas (IoT), Transformación Digital e IA Generativa."
+    - period: "2025"
+      institution: "Santander Open Academy"
+      description: "Python: Desarrollo Inteligente, Ciencia de Datos, Prompt Engineering y Microsoft Copilot."
+
+EXPERIENCE:
+  enabled: true
+  label: "Trayectoria Profesional"
+  items:
+    - period: "2024 — Presente"
+      position: "Desarrollador de Software (Freelance)"
+      description: "Desarrollo Full Stack del proyecto 'La Luz y La Esperanza'. Automatización de procesos con Python e integración de APIs de IA."
+    - period: "07/2021 — 08/2021"
+      position: "Asesor Comercial B2B"
+      description: "MEXICANA DE LUBRICANTES. Gestión de cartera de clientes, negociación y cierre de ventas en campo."
+    - period: "12/2020 — 06/2021"
+      position: "Logística y Operaciones"
+      description: "MERCADO LIBRE (Portos). Gestión eficiente de rutas de última milla y cumplimiento de KPIs de entrega bajo presión."
+    - period: "2009 — 2020"
+      position: "Experiencia Operativa y Comercial"
+      description: "Diversos roles en ventas, banca y servicios (Banco Azteca, Walmart, etc.). Desarrollo de resiliencia laboral y atención al cliente."
+
+LANGUAGES:
+  enabled: true
+  display_progress_bars: true
+  display_percentage_values: true
+  label: "Idiomas"
+  items:
+    - language: "Español"
+      proficiency: "100%"
+    - language: "Inglés Técnico"
+      proficiency: "25%"
+
+SKILLS:
+  enabled: true
+  display_progress_bars: true
+  display_percentage_values: true
+  label: "Habilidades Técnicas"
+  items:
+    - skill: "Python & Scripting"
+      proficiency: "75%"
+    - skill: "IA Generativa & Prompting"
+      proficiency: "85%"
+    - skill: "HTML5 / CSS3 / JS"
+      proficiency: "70%"
+    - skill: "Git / GitHub"
+      proficiency: "60%"

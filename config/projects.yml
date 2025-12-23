@@ -1,0 +1,18 @@
+HEADER:
+  label: "Portafolio"
+
+PROJECTS:
+  - title: "La Luz y La Esperanza"
+    category: "Desarrollo Web Full Stack"
+    image: "config/assets/projects/project-1.jpg" # Asegúrate de poner una captura de tu web aquí
+    url: "https://www.laluzylaesperanzaquenecesito.me/"
+
+  - title: "Automatización con Python"
+    category: "Scripting & Backend"
+    image: "config/assets/projects/project-2.png"
+    url: "https://github.com/David650991"
+
+  - title: "Análisis IoT & Datos"
+    category: "Ciencia de Datos"
+    image: "config/assets/projects/project-3.jpg"
+    url: "https://github.com/David650991"

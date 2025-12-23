@@ -1,0 +1,4439 @@
+REPORTE DE AUDITORÍA DE CÓDIGO
+Fecha: 12/23/2025 13:42:41
+Directorio Raíz: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez
+==============================================================================
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\.gitignore
+TAMAÑO: 3267 bytes
+################################################################################
+# Custom
+*.ipynb
+*.html
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+.pybuilder/
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+#   For a library or package, you might want to ignore these files since the code is
+#   intended to run in multiple environments; otherwise, check them in:
+# .python-version
+
+# pipenv
+#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
+#   However, in case of collaboration, if having platform-specific dependencies or dependencies
+#   having no cross-platform support, pipenv may install dependencies that don't work, or not
+#   install all needed dependencies.
+#Pipfile.lock
+
+# poetry
+#   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
+#   This is especially recommended for binary packages to ensure reproducibility, and is more
+#   commonly ignored for libraries.
+#   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
+#poetry.lock
+
+# pdm
+#   Similar to Pipfile.lock, it is generally recommended to include pdm.lock in version control.
+#pdm.lock
+#   pdm stores project-wide configurations in .pdm.toml, but it is recommended to not include it
+#   in version control.
+#   https://pdm.fming.dev/#use-with-ide
+.pdm.toml
+
+# PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# PyCharm
+#  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
+#  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
+#  and can be added to the global gitignore or merged into this file.  For a more nuclear
+#  option (not recommended) you can uncomment the following to ignore the entire idea folder.
+#.idea/
+
+
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\auditoria_completa_proyecto.txt
+TAMAÑO: 239 bytes
+################################################################################
+REPORTE DE AUDITORÍA DE CÓDIGO
+Fecha: 12/23/2025 13:42:41
+Directorio Raíz: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez
+==============================================================================
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\.gitignore
+TAMAÑO: 3267 bytes
+################################################################################
+# Custom
+*.ipynb
+*.html
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+.pybuilder/
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+#   For a library or package, you might want to ignore these files since the code is
+#   intended to run in multiple environments; otherwise, check them in:
+# .python-version
+
+# pipenv
+#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
+#   However, in case of collaboration, if having platform-specific dependencies or dependencies
+#   having no cross-platform support, pipenv may install dependencies that don't work, or not
+#   install all needed dependencies.
+#Pipfile.lock
+
+# poetry
+#   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
+#   This is especially recommended for binary packages to ensure reproducibility, and is more
+#   commonly ignored for libraries.
+#   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
+#poetry.lock
+
+# pdm
+#   Similar to Pipfile.lock, it is generally recommended to include pdm.lock in version control.
+#pdm.lock
+#   pdm stores project-wide configurations in .pdm.toml, but it is recommended to not include it
+#   in version control.
+#   https://pdm.fming.dev/#use-with-ide
+.pdm.toml
+
+# PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# PyCharm
+#  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
+#  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
+#  and can be added to the global gitignore or merged into this file.  For a more nuclear
+#  option (not recommended) you can uncomment the following to ignore the entire idea folder.
+#.idea/
+
+
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\auditoria_completa_proyecto.txt
+TAMAÑO: 239 bytes
+################################################################################
+
+
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\index.html
+TAMAÑO: 29569 bytes
+################################################################################
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!--- META --->
+  <!-- meta.j2 -->
+<title>Currículum | David Vidal Ramírez</title>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Soy estudiante de Ingeniería en Sistemas Computacionales en el TecNM y me encuentro en una etapa de transición profesional hacia el sector tecnológico. Tras más de 10 años de experiencia en logística y gestión comercial, he redirigido mi disciplina y capacidad de resolución de problemas hacia el código.
+
+Mi enfoque actual es construir soluciones digitales funcionales. No solo programo; busco resolver problemas reales. Combino el Desarrollo Web (HTML5/CSS3/JS) con la automatización en Python y el uso estratégico de Inteligencia Artificial para crear proyectos con impacto social, como mi plataforma "La Luz y La Esperanza".
+">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="product">
+<meta property="og:url" content="https://David650991.github.io">
+<meta property="og:title" content="David Vidal Ramírez | Desarrollador Python & Web | IA Entusiasta | Portfolio">
+<meta property="og:description" content="Soy estudiante de Ingeniería en Sistemas Computacionales en el TecNM y me encuentro en una etapa de transición profesional hacia el sector tecnológico. Tras más de 10 años de experiencia en logística y gestión comercial, he redirigido mi disciplina y capacidad de resolución de problemas hacia el código.
+
+Mi enfoque actual es construir soluciones digitales funcionales. No solo programo; busco resolver problemas reales. Combino el Desarrollo Web (HTML5/CSS3/JS) con la automatización en Python y el uso estratégico de Inteligencia Artificial para crear proyectos con impacto social, como mi plataforma "La Luz y La Esperanza".
+">
+<meta property="og:image" content="config/assets/avatars/Foto_Infantil_David_Vidal_Ramirez.png">
+<meta property="og:image:secure_url" content="config/assets/avatars/Foto_Infantil_David_Vidal_Ramirez.png">
+<meta property="og:site_name" content="David Vidal Ramírez | Desarrollador Python & Web | IA Entusiasta | Portfolio">
+<meta name="twitter:card" content="photo">
+<meta name="twitter:creator" content="@David650991">
+<meta name="twitter:title" content="David Vidal Ramírez | Desarrollador Python & Web | IA Entusiasta | Portfolio">
+<meta name="twitter:description" content="Soy estudiante de Ingeniería en Sistemas Computacionales en el TecNM y me encuentro en una etapa de transición profesional hacia el sector tecnológico. Tras más de 10 años de experiencia en logística y gestión comercial, he redirigido mi disciplina y capacidad de resolución de problemas hacia el código.
+
+Mi enfoque actual es construir soluciones digitales funcionales. No solo programo; busco resolver problemas reales. Combino el Desarrollo Web (HTML5/CSS3/JS) con la automatización en Python y el uso estratégico de Inteligencia Artificial para crear proyectos con impacto social, como mi plataforma "La Luz y La Esperanza".
+">
+<meta name="twitter:image" content="config/assets/avatars/Foto_Infantil_David_Vidal_Ramirez.png">
+<meta name="twitter:image:width" content="200">
+<meta name="twitter:image:height" content="200">
+<meta name="keywords" content="David Vidal Ramírez, Python, JavaScript, HTML5, CSS3, Git, VS Code, Linux/Bash, AI Tools" />
+<link href="https://David650991.github.io" rel="canonical">
+  <!--- FAVICON -->
+  <link rel="shortcut icon" href="./src/images/logo.png" type="image/png">
+  <!--- CSS --->
+  <link rel="stylesheet" href="./src/css/style.css">
+  <!--- GOOGLE FONT --->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <main>
+    <!--- SIDEBAR-->
+    <!-- sidebar.j2 -->
+<aside class="sidebar" data-sidebar>
+  <div class="sidebar-info">
+    <figure class="avatar-box">
+      <img src="config/assets/avatars/Foto_Infantil_David_Vidal_Ramirez.png" alt="David Vidal Ramírez" width="80">
+    </figure>
+    <div class="info-content">
+      <h1 class="name" title="David Vidal Ramírez">David Vidal Ramírez</h1>
+      <p class="title">Desarrollador Python & Web | IA Entusiasta</p>
+    </div>
+    <button class="info_more-btn" data-sidebar-btn>
+      <span>Contacto</span>
+      <ion-icon name="chevron-down"></ion-icon>
+    </button>
+  </div>
+  <div class="sidebar-info_more">
+    <div class="separator"></div>
+    <ul class="contacts-list">
+      
+      <li class="contact-item">
+        <div class="icon-box">
+          <ion-icon name="mail-outline"></ion-icon>
+        </div>
+        <div class="contact-info">
+          <p class="contact-title">Email</p>
+          <a href="#" class="contact-link">David650991@gmail.com</a>
+        </div>
+      </li>
+      
+      <li class="contact-item">
+        <div class="icon-box">
+          <ion-icon name="phone-portrait-outline"></ion-icon>
+        </div>
+        <div class="contact-info">
+          <p class="contact-title">Teléfono</p>
+          <a href="#" class="contact-link">+52 287 124 61 28</a>
+        </div>
+      </li>
+      
+      <li class="contact-item">
+        <div class="icon-box">
+          <ion-icon name="calendar-outline"></ion-icon>
+        </div>
+        <div class="contact-info">
+          <p class="contact-title">Nacimiento</p>
+          <a href="#" class="contact-link">15 de Junio, 1991</a>
+        </div>
+      </li>
+      
+      <li class="contact-item">
+        <div class="icon-box">
+          <ion-icon name="location-outline"></ion-icon>
+        </div>
+        <div class="contact-info">
+          <p class="contact-title">Ubicación</p>
+          <a href="#" class="contact-link">Tres Valles, Veracruz, MX</a>
+        </div>
+      </li>
+      
+    </ul>
+    <div class="separator"></div>
+    <ul class="social-list">
+      
+      <li class="social-item">
+        <a href="https://www.linkedin.com/in/david-vidal-ramirez-3ba01b147/" class="social-link" , target="_blank">
+          <ion-icon name="logo-linkedin"></ion-icon>
+        </a>
+      </li>
+      
+      <li class="social-item">
+        <a href="https://github.com/David650991" class="social-link" , target="_blank">
+          <ion-icon name="logo-github"></ion-icon>
+        </a>
+      </li>
+      
+      <li class="social-item">
+        <a href="https://gitlab.com/david650991" class="social-link" , target="_blank">
+          <ion-icon name="logo-gitlab"></ion-icon>
+        </a>
+      </li>
+      
+    </ul>
+  </div>
+</aside>
+    <div class="main-content">
+      <!-- NAVBAR -->
+      <!-- navbar.j2 -->
+<nav class="navbar">
+  <ul class="navbar-list">
+    <li class="navbar-item">
+      <button class="navbar-link  active" data-nav-link>About</button>
+    </li>
+    
+    <li class="navbar-item">
+      <button class="navbar-link" data-nav-link>Resume</button>
+    </li>
+    
+    <li class="navbar-item">
+      <button class="navbar-link" data-nav-link>Portfolio</button>
+    </li>
+    
+    <li class="navbar-item">
+      <button class="navbar-link" data-nav-link>Blog</button>
+    </li>
+    
+    <li class="navbar-item">
+      <button class="navbar-link" data-nav-link>Contact</button>
+    </li>
+    
+  </ul>
+</nav>
+      <!--- ABOUT -->
+      <!-- about.j2 -->
+<article class="about  active" data-page="about">
+  <header>
+    <h2 class="h2 article-title">Sobre mí</h2>
+  </header>
+
+  <!--- PRESENTATION --->
+  <section class="about-text">
+    
+      
+      <p>Soy estudiante de Ingeniería en Sistemas Computacionales en el TecNM y me encuentro en una etapa de transición profesional hacia el sector tecnológico. Tras más de 10 años de experiencia en logística y gestión comercial, he redirigido mi disciplina y capacidad de resolución de problemas hacia el código.</p>
+      
+    
+      
+    
+      
+      <p>Mi enfoque actual es construir soluciones digitales funcionales. No solo programo; busco resolver problemas reales. Combino el Desarrollo Web (HTML5/CSS3/JS) con la automatización en Python y el uso estratégico de Inteligencia Artificial para crear proyectos con impacto social, como mi plataforma "La Luz y La Esperanza".</p>
+      
+    
+      
+    
+  </section>
+
+  <!--- DOING -->
+  
+  <section class="service">
+    <h3 class="h3 service-title">What i'm doing</h3>
+    <ul class="service-list">
+      
+      <li class="service-item">
+        <div class="service-icon-box">
+          <img src="config/assets/icons/laptop-code.svg" alt="design icon" width="30" height="30">
+        </div>
+        <div class="service-content-box">
+          <h4 class="h4 service-item-title">Desarrollo Web</h4>
+          <p class="service-item-text">
+            Creación de sitios web responsivos y accesibles utilizando HTML5, CSS3 y JavaScript moderno.
+          </p>
+        </div>
+      </li>
+      
+      <li class="service-item">
+        <div class="service-icon-box">
+          <img src="config/assets/icons/python.svg" alt="design icon" width="30" height="30">
+        </div>
+        <div class="service-content-box">
+          <h4 class="h4 service-item-title">Scripting & Python</h4>
+          <p class="service-item-text">
+            Desarrollo de scripts para automatización de tareas y análisis de datos básico.
+          </p>
+        </div>
+      </li>
+      
+      <li class="service-item">
+        <div class="service-icon-box">
+          <img src="config/assets/icons/ia.svg" alt="design icon" width="30" height="30">
+        </div>
+        <div class="service-content-box">
+          <h4 class="h4 service-item-title">IA & Productividad</h4>
+          <p class="service-item-text">
+            Implementación de IA Generativa (Prompt Engineering/Copilot) para acelerar flujos de trabajo.
+          </p>
+        </div>
+      </li>
+      
+      <li class="service-item">
+        <div class="service-icon-box">
+          <img src="config/assets/icons/compass.svg" alt="design icon" width="30" height="30">
+        </div>
+        <div class="service-content-box">
+          <h4 class="h4 service-item-title">Transformación Digital</h4>
+          <p class="service-item-text">
+            Aplicación de conceptos de IoT y digitalización para modernizar procesos.
+          </p>
+        </div>
+      </li>
+      
+    </ul>
+  </section>
+  
+
+  <!--- SKILLS -->
+  
+  <section class="testimonials">
+    <h3 class="h3 testimonials-title">Habilidades Blandas</h3>
+    <ul class="testimonials-list has-scrollbar">
+      
+      <li class="testimonials-item">
+        <div class="content-card" data-testimonials-item>
+          <figure class="testimonials-avatar-box">
+            <img src="config/assets/icons/bolt.svg" alt="Disciplina Autodidacta" width="60" data-testimonials-avatar>
+          </figure>
+          <h4 class="h4 testimonials-item-title" data-testimonials-title>Disciplina Autodidacta</h4>
+          <div class="testimonials-text" data-testimonials-text>
+            <p>
+              Capacidad probada para dominar nuevas tecnologías de forma intensiva y continua.
+            </p>
+          </div>
+        </div>
+      </li>
+      
+      <li class="testimonials-item">
+        <div class="content-card" data-testimonials-item>
+          <figure class="testimonials-avatar-box">
+            <img src="config/assets/icons/gear.svg" alt="Resolución de Problemas" width="60" data-testimonials-avatar>
+          </figure>
+          <h4 class="h4 testimonials-item-title" data-testimonials-title>Resolución de Problemas</h4>
+          <div class="testimonials-text" data-testimonials-text>
+            <p>
+              Enfoque pragmático adquirido en operaciones logísticas: diagnosticar el fallo y ejecutar la solución.
+            </p>
+          </div>
+        </div>
+      </li>
+      
+      <li class="testimonials-item">
+        <div class="content-card" data-testimonials-item>
+          <figure class="testimonials-avatar-box">
+            <img src="config/assets/icons/compass.svg" alt="Adaptabilidad" width="60" data-testimonials-avatar>
+          </figure>
+          <h4 class="h4 testimonials-item-title" data-testimonials-title>Adaptabilidad</h4>
+          <div class="testimonials-text" data-testimonials-text>
+            <p>
+              Facilidad para transicionar entre entornos operativos y técnicos, ajustándome a nuevos desafíos.
+            </p>
+          </div>
+        </div>
+      </li>
+      
+      <li class="testimonials-item">
+        <div class="content-card" data-testimonials-item>
+          <figure class="testimonials-avatar-box">
+            <img src="config/assets/icons/comment.svg" alt="Comunicación Efectiva" width="60" data-testimonials-avatar>
+          </figure>
+          <h4 class="h4 testimonials-item-title" data-testimonials-title>Comunicación Efectiva</h4>
+          <div class="testimonials-text" data-testimonials-text>
+            <p>
+              Habilidad para traducir conceptos técnicos complejos a un lenguaje claro.
+            </p>
+          </div>
+        </div>
+      </li>
+      
+      < </ul>
+  </section>
+
+  <!--- popup modal -->
+  <div class="modal-container" data-modal-container>
+    <div class="overlay" data-overlay></div>
+    <section class="testimonials-modal">
+      <button class="modal-close-btn" data-modal-close-btn>
+        <ion-icon name="close-outline"></ion-icon>
+      </button>
+      <div class="modal-img-wrapper">
+        <figure class="modal-avatar-box">
+          <img src="config/assets/avatars/Foto_Infantil_David_Vidal_Ramirez.png" alt="David Vidal Ramírez" width="80" data-modal-img>
+        </figure>
+        <img src="./src/images/icon-quote.svg" alt="quote icon">
+      </div>
+      <div class="modal-content">
+        <h4 class="h3 modal-title" data-modal-title>David Vidal Ramírez</h4>
+        
+        <div data-modal-text>
+          <p>
+            
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+  <!--- TECHNOLOGIES-->
+  
+  <section class="clients">
+    <h3 class="h3 clients-title">Stack Tecnológico</h3>
+    <ul class="clients-list has-scrollbar">
+      
+      <li class="clients-item">
+        <a href="#">
+          <img src="config/assets/icons/python.svg" alt="Python" width="50" height="50">
+        </a>
+      </li>
+      
+      <li class="clients-item">
+        <a href="#">
+          <img src="config/assets/icons/javascript.svg" alt="JavaScript" width="50" height="50">
+        </a>
+      </li>
+      
+      <li class="clients-item">
+        <a href="#">
+          <img src="config/assets/icons/html.svg" alt="HTML5" width="50" height="50">
+        </a>
+      </li>
+      
+      <li class="clients-item">
+        <a href="#">
+          <img src="config/assets/icons/css3.svg" alt="CSS3" width="50" height="50">
+        </a>
+      </li>
+      
+      <li class="clients-item">
+        <a href="#">
+          <img src="config/assets/icons/git.svg" alt="Git" width="50" height="50">
+        </a>
+      </li>
+      
+      <li class="clients-item">
+        <a href="#">
+          <img src="config/assets/icons/visual-studio-code.svg" alt="VS Code" width="50" height="50">
+        </a>
+      </li>
+      
+      <li class="clients-item">
+        <a href="#">
+          <img src="config/assets/icons/linux.svg" alt="Linux/Bash" width="50" height="50">
+        </a>
+      </li>
+      
+      <li class="clients-item">
+        <a href="#">
+          <img src="config/assets/icons/ia.svg" alt="AI Tools" width="50" height="50">
+        </a>
+      </li>
+      
+    </ul>
+  </section>
+  
+</article>
+      <!-- RESUME --> 
+      <!-- resume.j2 -->
+<article class="resume" data-page="resume">
+  <header>
+    <h2 class="h2 article-title">Currículum</h2>
+  </header>
+
+  <!-- EDUCATION -->
+  
+  <section class="timeline">
+    <div class="title-wrapper">
+      <div class="icon-box">
+        <ion-icon name="book-outline"></ion-icon>
+      </div>
+      <h3 class="h3">Formación Académica y Certificaciones</h3>
+    </div>
+    <ol class="timeline-list">
+      
+      <li class="timeline-item">
+        <h4 class="h4 timeline-item-title">Santander Open Academy</h4>
+        <span>2025</span>
+        <p class="timeline-text">
+          Python: Desarrollo Inteligente, Ciencia de Datos, Prompt Engineering y Microsoft Copilot.
+        </p>
+      </li>
+      
+      <li class="timeline-item">
+        <h4 class="h4 timeline-item-title">MIT Professional Education / Santander</h4>
+        <span>2025</span>
+        <p class="timeline-text">
+          Diplomados en Internet de las Cosas (IoT), Transformación Digital e IA Generativa.
+        </p>
+      </li>
+      
+      <li class="timeline-item">
+        <h4 class="h4 timeline-item-title">Instituto Tecnológico de Tuxtepec (TecNM)</h4>
+        <span>En Curso</span>
+        <p class="timeline-text">
+          Ingeniería en Sistemas Computacionales.
+        </p>
+      </li>
+      
+    </ol>
+  </section>
+  
+
+  <!-- EXPERIENCE -->
+  
+  <section class="timeline">
+    <div class="title-wrapper">
+      <div class="icon-box">
+        <ion-icon name="book-outline"></ion-icon>
+      </div>
+      <h3 class="h3">Trayectoria Profesional</h3>
+    </div>
+    <ol class="timeline-list">
+      
+      <li class="timeline-item">
+        <h4 class="h4 timeline-item-title">Experiencia Operativa y Comercial</h4>
+        <span>2009 — 2020</span>
+        <p class="timeline-text">
+          Diversos roles en ventas, banca y servicios (Banco Azteca, Walmart, etc.). Desarrollo de resiliencia laboral y atención al cliente.
+        </p>
+      </li>
+      
+      <li class="timeline-item">
+        <h4 class="h4 timeline-item-title">Logística y Operaciones</h4>
+        <span>12/2020 — 06/2021</span>
+        <p class="timeline-text">
+          MERCADO LIBRE (Portos). Gestión eficiente de rutas de última milla y cumplimiento de KPIs de entrega bajo presión.
+        </p>
+      </li>
+      
+      <li class="timeline-item">
+        <h4 class="h4 timeline-item-title">Asesor Comercial B2B</h4>
+        <span>07/2021 — 08/2021</span>
+        <p class="timeline-text">
+          MEXICANA DE LUBRICANTES. Gestión de cartera de clientes, negociación y cierre de ventas en campo.
+        </p>
+      </li>
+      
+      <li class="timeline-item">
+        <h4 class="h4 timeline-item-title">Desarrollador de Software (Freelance)</h4>
+        <span>2024 — Presente</span>
+        <p class="timeline-text">
+          Desarrollo Full Stack del proyecto 'La Luz y La Esperanza'. Automatización de procesos con Python e integración de APIs de IA.
+        </p>
+      </li>
+      
+    </ol>
+  </section>
+  
+
+  <!-- LANGUAGES -->
+  
+  <section class="skill">
+    <h3 class="h3 skills-title">Idiomas</h3>
+    <ul class="skills-list content-card">
+      
+      <li class="skills-item">
+        <div class="title-wrapper">
+          <h5 class="h5">Español</h5>
+          
+          <data value="100">100%</data>
+          
+        </div>
+        
+        <div class="skill-progress-bg">
+          <div class="skill-progress-fill" style="width: 100%;"></div>
+        </div>
+        
+      </li>
+      
+      <li class="skills-item">
+        <div class="title-wrapper">
+          <h5 class="h5">Inglés Técnico</h5>
+          
+          <data value="25">25%</data>
+          
+        </div>
+        
+        <div class="skill-progress-bg">
+          <div class="skill-progress-fill" style="width: 25%;"></div>
+        </div>
+        
+      </li>
+      
+    </ul>
+  </section>
+  <br>
+  
+
+  <!-- SKILLS -->
+  
+  <section class="skill">
+    <h3 class="h3 skills-title">Habilidades Técnicas</h3>
+    <ul class="skills-list content-card">
+      
+      <li class="skills-item">
+        <div class="title-wrapper">
+          <h5 class="h5">Python & Scripting</h5>
+          
+          <data value="75">75%</data>
+          
+        </div>
+        
+        <div class="skill-progress-bg">
+          <div class="skill-progress-fill" style="width: 75%;"></div>
+        </div>
+        
+      </li>
+      
+      <li class="skills-item">
+        <div class="title-wrapper">
+          <h5 class="h5">IA Generativa & Prompting</h5>
+          
+          <data value="85">85%</data>
+          
+        </div>
+        
+        <div class="skill-progress-bg">
+          <div class="skill-progress-fill" style="width: 85%;"></div>
+        </div>
+        
+      </li>
+      
+      <li class="skills-item">
+        <div class="title-wrapper">
+          <h5 class="h5">HTML5 / CSS3 / JS</h5>
+          
+          <data value="70">70%</data>
+          
+        </div>
+        
+        <div class="skill-progress-bg">
+          <div class="skill-progress-fill" style="width: 70%;"></div>
+        </div>
+        
+      </li>
+      
+      <li class="skills-item">
+        <div class="title-wrapper">
+          <h5 class="h5">Git / GitHub</h5>
+          
+          <data value="60">60%</data>
+          
+        </div>
+        
+        <div class="skill-progress-bg">
+          <div class="skill-progress-fill" style="width: 60%;"></div>
+        </div>
+        
+      </li>
+      
+    </ul>
+  </section>
+  
+</article>
+      <!-- PROJECTS -->
+      <!-- portfolio.j2 -->
+<article class="portfolio" data-page="portfolio">
+  <header>
+    <h2 class="h2 article-title">Portafolio</h2>
+  </header>
+  <section class="projects">
+    <ul class="filter-list">
+      <li class="filter-item">
+        <button class="active" data-filter-btn>All</button>
+      </li>
+      
+      
+      <li class="filter-item">
+        <button data-filter-btn>Desarrollo Web Full Stack</button>
+      </li>
+      
+      <li class="filter-item">
+        <button data-filter-btn>Scripting & Backend</button>
+      </li>
+      
+      <li class="filter-item">
+        <button data-filter-btn>Ciencia de Datos</button>
+      </li>
+      
+    </ul>
+    <div class="filter-select-box">
+      <button class="filter-select" data-select>
+        <div class="select-value" data-selecct-value>Select category</div>
+        <div class="select-icon">
+          <ion-icon name="chevron-down"></ion-icon>
+        </div>
+      </button>
+      <ul class="select-list">
+        <li class="select-item">
+          <button data-select-item>All</button>
+        </li>
+        
+        <li class="select-item">
+          <button data-select-item>Desarrollo Web Full Stack</button>
+        </li>
+        
+        <li class="select-item">
+          <button data-select-item>Scripting & Backend</button>
+        </li>
+        
+        <li class="select-item">
+          <button data-select-item>Ciencia de Datos</button>
+        </li>
+        
+      </ul>
+    </div>
+    <ul class="project-list">
+      
+      <li class="project-item  active" data-filter-item data-category="desarrollo web full stack">
+        <a href="https://www.laluzylaesperanzaquenecesito.me/" target="_blank">
+          <figure class="project-img">
+            <div class="project-item-icon-box">
+              <ion-icon name="eye-outline"></ion-icon>
+            </div>
+            <img src="config/assets/projects/project-1.jpg" alt="La Luz y La Esperanza" loading="lazy">
+          </figure>
+          <h3 class="project-title">La Luz y La Esperanza</h3>
+          <p class="project-category">Desarrollo Web Full Stack</p>
+        </a>
+      </li>
+      
+      <li class="project-item  active" data-filter-item data-category="scripting & backend">
+        <a href="https://github.com/David650991" target="_blank">
+          <figure class="project-img">
+            <div class="project-item-icon-box">
+              <ion-icon name="eye-outline"></ion-icon>
+            </div>
+            <img src="config/assets/projects/project-2.png" alt="Automatización con Python" loading="lazy">
+          </figure>
+          <h3 class="project-title">Automatización con Python</h3>
+          <p class="project-category">Scripting & Backend</p>
+        </a>
+      </li>
+      
+      <li class="project-item  active" data-filter-item data-category="ciencia de datos">
+        <a href="https://github.com/David650991" target="_blank">
+          <figure class="project-img">
+            <div class="project-item-icon-box">
+              <ion-icon name="eye-outline"></ion-icon>
+            </div>
+            <img src="config/assets/projects/project-3.jpg" alt="Análisis IoT & Datos" loading="lazy">
+          </figure>
+          <h3 class="project-title">Análisis IoT & Datos</h3>
+          <p class="project-category">Ciencia de Datos</p>
+        </a>
+      </li>
+      
+    </ul>
+  </section>
+</article>
+      <!-- BLOG -->
+      <!-- blog.j2 -->
+<article class="blog" data-page="blog">
+  <header>
+    <h2 class="h2 article-title">Blog</h2>
+  </header>
+  <section class="blog-posts">
+    <ul class="blog-posts-list">
+      
+      <li class="blog-post-item">
+        <a href="https://www.linkedin.com/in/david-vidal-ramirez-3ba01b147/" target="_blank">
+          <figure class="blog-banner-box">
+            <img src="config/assets/posts/blog-1.jpg" alt="Mi transición de la Logística al Código" loading="lazy">
+          </figure>
+          <div class="blog-content">
+            <div class="blog-meta">
+              <p class="blog-category">Carrera</p>
+              <span class="dot"></span>
+              <time datetime="2025-01-15">Jan 15, 2025</time>
+            </div>
+            <h3 class="h3 blog-item-title">Mi transición de la Logística al Código</h3>
+            <p class="blog-text">
+              Cómo aprovecho mis 10 años de experiencia operativa para resolver problemas de software.
+            </p>
+          </div>
+        </a>
+      </li>
+      
+      <li class="blog-post-item">
+        <a href="https://github.com/David650991" target="_blank">
+          <figure class="blog-banner-box">
+            <img src="config/assets/posts/blog-2.jpg" alt="Python para automatizar tareas aburridas" loading="lazy">
+          </figure>
+          <div class="blog-content">
+            <div class="blog-meta">
+              <p class="blog-category">Python</p>
+              <span class="dot"></span>
+              <time datetime="2025-02-10">Feb 10, 2025</time>
+            </div>
+            <h3 class="h3 blog-item-title">Python para automatizar tareas aburridas</h3>
+            <p class="blog-text">
+              Scripts básicos que me ahorran horas de trabajo manual.
+            </p>
+          </div>
+        </a>
+      </li>
+      
+      <li class="blog-post-item">
+        <a href="https://github.com/David650991" target="_blank">
+          <figure class="blog-banner-box">
+            <img src="config/assets/posts/blog-3.jpg" alt="Entendiendo la IA Generativa" loading="lazy">
+          </figure>
+          <div class="blog-content">
+            <div class="blog-meta">
+              <p class="blog-category">Inteligencia Artificial</p>
+              <span class="dot"></span>
+              <time datetime="2025-03-01">Mar 01, 2025</time>
+            </div>
+            <h3 class="h3 blog-item-title">Entendiendo la IA Generativa</h3>
+            <p class="blog-text">
+              Mis aprendizajes sobre Prompt Engineering tras la certificación del MIT.
+            </p>
+          </div>
+        </a>
+      </li>
+      
+    </ul>
+  </section>
+</article>
+      <!-- CONTACT -->
+      <!-- contact.j2 -->
+<article class="contact" data-page="contact">
+  <header>
+    <h2 class="h2 article-title">Contacto</h2>
+  </header>
+  <section class="mapbox" data-mapbox>
+    <figure>
+      <iframe
+        src="https://maps.google.com/maps?q=18.242740,-96.145029&hl=es&z=14&output=embed"
+        width="400" height="300" loading="lazy"></iframe>
+    </figure>
+  </section>
+  <section class="contact-form">
+    <h3 class="h3 form-title">Formulario de Contacto</h3>
+    <form action="mailto:David650991@gmail.com" method="POST" class="form" data-form>
+      <div class="input-wrapper">
+        <input type="text" name="fullname" class="form-input" placeholder="Nombre completo" required data-form-input>
+        <input type="email" name="email" class="form-input" placeholder="Correo electrónico" required data-form-input>
+      </div>
+      <textarea name="message" class="form-input" placeholder="Tu mensaje" required data-form-input></textarea>
+      <button class="form-btn" type="submit" disabled data-form-btn>
+        <ion-icon name="paper-plane"></ion-icon>
+        <span>Enviar mensaje</span>
+      </button>
+    </form>
+  </section>
+</article>
+    </div>
+  </main>
+  <!--- JS --->
+  <script src="./src/js/script.js"></script>
+  <!--- IONICONS --->
+  <script type="module" src="https://cdn.jsdelivr.net/npm/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+</html>
+
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\LICENSE
+TAMAÑO: 1098 bytes
+################################################################################
+MIT License
+
+Copyright (c) 2025 David Vidal Ramírez
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\main.py
+TAMAÑO: 1854 bytes
+################################################################################
+from datetime import datetime
+from typing import Any
+
+import yaml  # type: ignore
+from jinja2 import Environment, FileSystemLoader
+
+
+class Portfolio:
+    def __init__(self):
+        self.config_files = {
+            "profile": "config/profile.yml",
+            "about": "config/about.yml",
+            "resume": "config/resume.yml",
+            "projects": "config/projects.yml",
+            "blog": "config/blog.yml",
+            "contact": "config/contact.yml",
+            "navbar": "config/navbar.yml",
+        }
+        self.env = Environment(loader=FileSystemLoader("src/jinja"))
+        self.env.filters["format_date"] = self.format_date
+
+    def read_file(self, file_path: str) -> str:
+        with open(file_path, "r", encoding="utf-8") as file:
+            return file.read()
+
+    def write_file(self, file_path: str, content: str) -> None:
+        with open(file_path, "w", encoding="utf-8") as file:
+            file.write(content)
+
+    def load_config_file(self, file_key: str) -> dict[str, Any]:
+        file_path = self.config_files.get(file_key)
+        content = self.read_file(file_path)
+        return yaml.load(content, Loader=yaml.FullLoader)
+
+    def format_date(self, date_str: str) -> str:
+        date_object = datetime.strptime(date_str, "%Y-%m-%d")
+        return date_object.strftime("%b %d, %Y")
+
+    def render_template(
+        self, template_name: str, output_path: str, context: dict[str, Any]
+    ) -> None:
+        template = self.env.get_template(template_name)
+        html_render = template.render(context)
+        self.write_file(output_path, html_render)
+
+
+if __name__ == "__main__":
+    portfolio = Portfolio()
+    context = {key: portfolio.load_config_file(key) for key in portfolio.config_files}
+    portfolio.render_template("index.j2", "index.html", context)
+
+
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\poetry.lock
+TAMAÑO: 127654 bytes
+################################################################################
+[CONTENIDO BINARIO U MEDIA - OMITIDO PARA LECTURA CLARA]
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\poetry.toml
+TAMAÑO: 32 bytes
+################################################################################
+[virtualenvs]
+in-project = true
+
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\pyproject.toml
+TAMAÑO: 699 bytes
+################################################################################
+[tool.poetry]
+name = "portafolio-david-vidal"
+version = "1.0.0"
+description = "Portafolio profesional y Currículum Vitae de David Vidal Ramírez - Desarrollador Python & Web."
+authors = ["David Vidal Ramírez <David650991@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.10"
+jinja2 = "^3.1.4"
+pyyaml = "^6.0.2"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.6.9"
+python-semantic-release = "^9.10.1"
+pytest = "^8.3.3"
+ipykernel = "^6.29.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff.lint]
+preview = true
+select = ['E', 'F', 'W', 'I']
+ignore = ["E501"]
+
+
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\README.md
+TAMAÑO: 1321 bytes
+################################################################################
+# Portafolio Profesional & CV - David Vidal Ramírez
+
+![Python](https://img.shields.io/badge/Python-3.10-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
+
+Este repositorio aloja mi portafolio profesional y currículum interactivo. Es una aplicación web estática generada con **Python** y **Jinja2**, diseñada para ser rápida, responsiva y accesible.
+
+## 🚀 Acerca del Proyecto
+El sitio refleja mi transición profesional desde la logística operativa hacia la **Ingeniería de Software**, destacando mis habilidades en:
+* **Desarrollo Web Full Stack**
+* **Automatización con Python**
+* **Inteligencia Artificial Generativa**
+
+## 🛠️ Tecnologías Utilizadas
+* **Core:** Python 3.10
+* **Templating:** Jinja2
+* **Estilos:** CSS3 (Variables nativas, Diseño Responsivo)
+* **CI/CD:** GitHub Actions (Despliegue automático)
+
+## 🔗 Contacto
+* **Web:** [Laluzylaesperanzaquenecesito.me](https://www.laluzylaesperanzaquenecesito.me/)
+* **Email:** David650991@gmail.com
+* **LinkedIn:** [David Vidal Ramírez](https://www.linkedin.com/in/david-vidal-ramirez-3ba01b147/)
+
+---
+© 2025 David Vidal Ramírez.
+
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\.github\workflows\deploy.yml
+TAMAÑO: 1541 bytes
+################################################################################
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Deploy
+
+on:
+  push:
+    branches: [ master ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Poetry
+        shell: bash
+        run: pipx install poetry
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'poetry'
+      
+      - name: Install dependencies
+        run: poetry install --with=dev
+      
+      - name: Lint with Ruff
+        run: poetry run ruff check --output-format=github .
+      
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v4
+      
+      - name: Build with Python Jinja
+        run: poetry run python main.py
+      
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+  
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\about.yml
+TAMAÑO: 3026 bytes
+################################################################################
+HEADER:
+  label: "Sobre mí"
+
+PRESENTATION:
+  description: |
+    Soy estudiante de Ingeniería en Sistemas Computacionales en el TecNM y me encuentro en una etapa de transición profesional hacia el sector tecnológico. Tras más de 10 años de experiencia en logística y gestión comercial, he redirigido mi disciplina y capacidad de resolución de problemas hacia el código.
+
+    Mi enfoque actual es construir soluciones digitales funcionales. No solo programo; busco resolver problemas reales. Combino el Desarrollo Web (HTML5/CSS3/JS) con la automatización en Python y el uso estratégico de Inteligencia Artificial para crear proyectos con impacto social, como mi plataforma "La Luz y La Esperanza".
+
+DOING:
+  enabled: true
+  label: "Lo que hago"
+  items:
+    - title: "Desarrollo Web"
+      icon: "config/assets/icons/laptop-code.svg"
+      description: "Creación de sitios web responsivos y accesibles utilizando HTML5, CSS3 y JavaScript moderno."
+    - title: "Scripting & Python"
+      icon: "config/assets/icons/python.svg"
+      description: "Desarrollo de scripts para automatización de tareas y análisis de datos básico."
+    - title: "IA & Productividad"
+      icon: "config/assets/icons/ia.svg"
+      description: "Implementación de IA Generativa (Prompt Engineering/Copilot) para acelerar flujos de trabajo."
+    - title: "Transformación Digital"
+      icon: "config/assets/icons/compass.svg"
+      description: "Aplicación de conceptos de IoT y digitalización para modernizar procesos."
+
+SKILLS:
+  enabled: true
+  label: "Habilidades Blandas"
+  items:
+    - title: "Disciplina Autodidacta"
+      icon: "config/assets/icons/bolt.svg"
+      description: "Capacidad probada para dominar nuevas tecnologías de forma intensiva y continua."
+    - title: "Resolución de Problemas"
+      icon: "config/assets/icons/gear.svg"
+      description: "Enfoque pragmático adquirido en operaciones logísticas: diagnosticar el fallo y ejecutar la solución."
+    - title: "Adaptabilidad"
+      icon: "config/assets/icons/compass.svg"
+      description: "Facilidad para transicionar entre entornos operativos y técnicos, ajustándome a nuevos desafíos."
+    - title: "Comunicación Efectiva"
+      icon: "config/assets/icons/comment.svg"
+      description: "Habilidad para traducir conceptos técnicos complejos a un lenguaje claro."
+
+TECHNOLOGIES:
+  enabled: true
+  label: "Stack Tecnológico"
+  items:
+    - title: "Python"
+      icon: "config/assets/icons/python.svg"
+    - title: "JavaScript"
+      icon: "config/assets/icons/javascript.svg"
+    - title: "HTML5"
+      icon: "config/assets/icons/html.svg"
+    - title: "CSS3"
+      icon: "config/assets/icons/css3.svg"
+    - title: "Git"
+      icon: "config/assets/icons/git.svg"
+    - title: "VS Code"
+      icon: "config/assets/icons/visual-studio-code.svg"
+    - title: "Linux/Bash"
+      icon: "config/assets/icons/linux.svg"
+    - title: "AI Tools"
+      icon: "config/assets/icons/ia.svg"
+
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\blog.yml
+TAMAÑO: 935 bytes
+################################################################################
+HEADER:
+  label: "Blog"
+
+POSTS:
+  - title: "Mi transición de la Logística al Código"
+    category: "Carrera"
+    subtitle: "Cómo aprovecho mis 10 años de experiencia operativa para resolver problemas de software."
+    published: "2025-01-15"
+    image: "config/assets/posts/blog-1.jpg"
+    url: "https://www.linkedin.com/in/david-vidal-ramirez-3ba01b147/"
+
+  - title: "Python para automatizar tareas aburridas"
+    category: "Python"
+    subtitle: "Scripts básicos que me ahorran horas de trabajo manual."
+    published: "2025-02-10"
+    image: "config/assets/posts/blog-2.jpg"
+    url: "https://github.com/David650991"
+
+  - title: "Entendiendo la IA Generativa"
+    category: "Inteligencia Artificial"
+    subtitle: "Mis aprendizajes sobre Prompt Engineering tras la certificación del MIT."
+    published: "2025-03-01"
+    image: "config/assets/posts/blog-3.jpg"
+    url: "https://github.com/David650991"
+
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\contact.yml
+TAMAÑO: 312 bytes
+################################################################################
+HEADER:
+  label: "Contacto"
+
+LOCATION:
+  embed: "https://maps.google.com/maps?q=18.242740,-96.145029&hl=es&z=14&output=embed"
+
+FORM:
+  label: "Formulario de Contacto"
+  fields:
+    - name: "Nombre completo"
+    - email: "Correo electrónico"
+    - message: "Tu mensaje"
+    - submit: "Enviar mensaje"
+
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\navbar.yml
+TAMAÑO: 113 bytes
+################################################################################
+NAVBAR:
+  - label: "About"
+  - label: "Resume"
+  - label: "Portfolio"
+  - label: "Blog"
+  - label: "Contact"
+
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\profile.yml
+TAMAÑO: 992 bytes
+################################################################################
+HEADER:
+  label: "Contacto"
+
+USER:
+  role: "Desarrollador Python & Web | IA Entusiasta"
+  name: "David Vidal Ramírez"
+  username: "David650991" # [cite: 1]
+  email: "David650991@gmail.com"
+  avatar: "config/assets/avatars/Foto_Infantil_David_Vidal_Ramirez.png"
+
+INFO:
+  - label: "Email"
+    value: "David650991@gmail.com" # [cite: 1]
+    icon: "mail-outline"
+  - label: "Teléfono"
+    value: "+52 287 124 61 28" # [cite: 1]
+    icon: "phone-portrait-outline"
+  - label: "Nacimiento"
+    value: "15 de Junio, 1991" # Derivado de RFC: VIRD910615 [cite: 12]
+    icon: "calendar-outline"
+  - label: "Ubicación"
+    value: "Tres Valles, Veracruz, MX" # [cite: 1]
+    icon: "location-outline"
+
+SOCIAL:
+  - icon: "logo-linkedin"
+    url: "https://www.linkedin.com/in/david-vidal-ramirez-3ba01b147/" # [cite: 1]
+  - icon: "logo-github"
+    url: "https://github.com/David650991" # [cite: 1]
+  - icon: "logo-gitlab"
+    url: "https://gitlab.com/david650991" # [cite: 1]
+
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\projects.yml
+TAMAÑO: 620 bytes
+################################################################################
+HEADER:
+  label: "Portafolio"
+
+PROJECTS:
+  - title: "La Luz y La Esperanza"
+    category: "Desarrollo Web Full Stack"
+    image: "config/assets/projects/project-1.jpg" # Asegúrate de poner una captura de tu web aquí
+    url: "https://www.laluzylaesperanzaquenecesito.me/"
+
+  - title: "Automatización con Python"
+    category: "Scripting & Backend"
+    image: "config/assets/projects/project-2.png"
+    url: "https://github.com/David650991"
+
+  - title: "Análisis IoT & Datos"
+    category: "Ciencia de Datos"
+    image: "config/assets/projects/project-3.jpg"
+    url: "https://github.com/David650991"
+
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\resume.yml
+TAMAÑO: 2252 bytes
+################################################################################
+HEADER:
+  label: "Currículum"
+
+EDUCATION:
+  enabled: true
+  label: "Formación Académica y Certificaciones"
+  items:
+    - period: "En Curso"
+      institution: "Instituto Tecnológico de Tuxtepec (TecNM)"
+      description: "Ingeniería en Sistemas Computacionales."
+    - period: "2025"
+      institution: "MIT Professional Education / Santander"
+      description: "Diplomados en Internet de las Cosas (IoT), Transformación Digital e IA Generativa."
+    - period: "2025"
+      institution: "Santander Open Academy"
+      description: "Python: Desarrollo Inteligente, Ciencia de Datos, Prompt Engineering y Microsoft Copilot."
+
+EXPERIENCE:
+  enabled: true
+  label: "Trayectoria Profesional"
+  items:
+    - period: "2024 — Presente"
+      position: "Desarrollador de Software (Freelance)"
+      description: "Desarrollo Full Stack del proyecto 'La Luz y La Esperanza'. Automatización de procesos con Python e integración de APIs de IA."
+    - period: "07/2021 — 08/2021"
+      position: "Asesor Comercial B2B"
+      description: "MEXICANA DE LUBRICANTES. Gestión de cartera de clientes, negociación y cierre de ventas en campo."
+    - period: "12/2020 — 06/2021"
+      position: "Logística y Operaciones"
+      description: "MERCADO LIBRE (Portos). Gestión eficiente de rutas de última milla y cumplimiento de KPIs de entrega bajo presión."
+    - period: "2009 — 2020"
+      position: "Experiencia Operativa y Comercial"
+      description: "Diversos roles en ventas, banca y servicios (Banco Azteca, Walmart, etc.). Desarrollo de resiliencia laboral y atención al cliente."
+
+LANGUAGES:
+  enabled: true
+  display_progress_bars: true
+  display_percentage_values: true
+  label: "Idiomas"
+  items:
+    - language: "Español"
+      proficiency: "100%"
+    - language: "Inglés Técnico"
+      proficiency: "25%"
+
+SKILLS:
+  enabled: true
+  display_progress_bars: true
+  display_percentage_values: true
+  label: "Habilidades Técnicas"
+  items:
+    - skill: "Python & Scripting"
+      proficiency: "75%"
+    - skill: "IA Generativa & Prompting"
+      proficiency: "85%"
+    - skill: "HTML5 / CSS3 / JS"
+      proficiency: "70%"
+    - skill: "Git / GitHub"
+      proficiency: "60%"
+
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\assets\avatars\Foto_Infantil_David_Vidal_Ramirez.png
+TAMAÑO: 240288 bytes
+################################################################################
+[CONTENIDO BINARIO U MEDIA - OMITIDO PARA LECTURA CLARA]
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\assets\icons\bolt.svg
+TAMAÑO: 611 bytes
+################################################################################
+[CONTENIDO BINARIO U MEDIA - OMITIDO PARA LECTURA CLARA]
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\assets\icons\code.svg
+TAMAÑO: 1030 bytes
+################################################################################
+[CONTENIDO BINARIO U MEDIA - OMITIDO PARA LECTURA CLARA]
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\assets\icons\comment.svg
+TAMAÑO: 756 bytes
+################################################################################
+[CONTENIDO BINARIO U MEDIA - OMITIDO PARA LECTURA CLARA]
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\assets\icons\compass.svg
+TAMAÑO: 1857 bytes
+################################################################################
+[CONTENIDO BINARIO U MEDIA - OMITIDO PARA LECTURA CLARA]
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\assets\icons\css3.svg
+TAMAÑO: 405 bytes
+################################################################################
+[CONTENIDO BINARIO U MEDIA - OMITIDO PARA LECTURA CLARA]
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\assets\icons\gear.svg
+TAMAÑO: 2303 bytes
+################################################################################
+[CONTENIDO BINARIO U MEDIA - OMITIDO PARA LECTURA CLARA]
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\assets\icons\git.svg
+TAMAÑO: 705 bytes
+################################################################################
+[CONTENIDO BINARIO U MEDIA - OMITIDO PARA LECTURA CLARA]
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\assets\icons\html.svg
+TAMAÑO: 415 bytes
+################################################################################
+[CONTENIDO BINARIO U MEDIA - OMITIDO PARA LECTURA CLARA]
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\assets\icons\ia.svg
+TAMAÑO: 884946 bytes
+################################################################################
+[CONTENIDO BINARIO U MEDIA - OMITIDO PARA LECTURA CLARA]
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\assets\icons\javascript.svg
+TAMAÑO: 696 bytes
+################################################################################
+[CONTENIDO BINARIO U MEDIA - OMITIDO PARA LECTURA CLARA]
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\assets\icons\jupyter.svg
+TAMAÑO: 1308 bytes
+################################################################################
+[CONTENIDO BINARIO U MEDIA - OMITIDO PARA LECTURA CLARA]
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\assets\icons\laptop-code.svg
+TAMAÑO: 1127 bytes
+################################################################################
+[CONTENIDO BINARIO U MEDIA - OMITIDO PARA LECTURA CLARA]
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\assets\icons\linux.svg
+TAMAÑO: 18576 bytes
+################################################################################
+[CONTENIDO BINARIO U MEDIA - OMITIDO PARA LECTURA CLARA]
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\assets\icons\python.svg
+TAMAÑO: 2922 bytes
+################################################################################
+[CONTENIDO BINARIO U MEDIA - OMITIDO PARA LECTURA CLARA]
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\assets\icons\team.svg
+TAMAÑO: 2641 bytes
+################################################################################
+[CONTENIDO BINARIO U MEDIA - OMITIDO PARA LECTURA CLARA]
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\assets\icons\user.svg
+TAMAÑO: 673 bytes
+################################################################################
+[CONTENIDO BINARIO U MEDIA - OMITIDO PARA LECTURA CLARA]
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\assets\icons\visual-studio-code.svg
+TAMAÑO: 458 bytes
+################################################################################
+[CONTENIDO BINARIO U MEDIA - OMITIDO PARA LECTURA CLARA]
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\assets\posts\blog-1.jpg
+TAMAÑO: 65613 bytes
+################################################################################
+[CONTENIDO BINARIO U MEDIA - OMITIDO PARA LECTURA CLARA]
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\assets\posts\blog-2.jpg
+TAMAÑO: 7225 bytes
+################################################################################
+[CONTENIDO BINARIO U MEDIA - OMITIDO PARA LECTURA CLARA]
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\assets\posts\blog-3.jpg
+TAMAÑO: 26952 bytes
+################################################################################
+[CONTENIDO BINARIO U MEDIA - OMITIDO PARA LECTURA CLARA]
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\assets\projects\project-1.jpg
+TAMAÑO: 266510 bytes
+################################################################################
+[CONTENIDO BINARIO U MEDIA - OMITIDO PARA LECTURA CLARA]
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\assets\projects\project-2.png
+TAMAÑO: 546674 bytes
+################################################################################
+[CONTENIDO BINARIO U MEDIA - OMITIDO PARA LECTURA CLARA]
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\config\assets\projects\project-3.jpg
+TAMAÑO: 348182 bytes
+################################################################################
+[CONTENIDO BINARIO U MEDIA - OMITIDO PARA LECTURA CLARA]
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\src\css\style.css
+TAMAÑO: 32774 bytes
+################################################################################
+/*-----------------------------------*\
+  #style.css
+\*-----------------------------------*/
+
+
+/**
+ * copyright 2022 @codewithsadee
+ */
+
+
+
+
+
+/*-----------------------------------*\
+  #CUSTOM PROPERTY
+\*-----------------------------------*/
+
+:root {
+
+  /**
+   * colors
+   */
+
+  /* gradient */
+
+  --bg-gradient-onyx: linear-gradient(
+    to bottom right, 
+    hsl(240, 1%, 25%) 3%, 
+    hsl(0, 0%, 19%) 97%
+  );
+  --bg-gradient-jet: linear-gradient(
+    to bottom right, 
+    hsla(240, 1%, 18%, 0.251) 0%, 
+    hsla(240, 2%, 11%, 0) 100%
+  ), hsl(240, 2%, 13%);
+  --bg-gradient-yellow-1: linear-gradient(
+    to bottom right, 
+    hsl(45, 100%, 71%) 0%, 
+    hsla(36, 100%, 69%, 0) 50%
+  );
+  --bg-gradient-yellow-2: linear-gradient(
+    135deg, 
+    hsla(45, 100%, 71%, 0.251) 0%, 
+    hsla(35, 100%, 68%, 0) 59.86%
+  ), hsl(240, 2%, 13%);
+  --border-gradient-onyx: linear-gradient(
+    to bottom right, 
+    hsl(0, 0%, 25%) 0%, 
+    hsla(0, 0%, 25%, 0) 50%
+  );
+  --text-gradient-yellow: linear-gradient(
+    to right, 
+    hsl(45, 100%, 72%), 
+    hsl(35, 100%, 68%)
+  );
+
+  /* solid */
+
+  --jet: hsl(0, 0%, 22%);
+  --onyx: hsl(240, 1%, 17%);
+  --eerie-black-1: hsl(240, 2%, 13%);
+  --eerie-black-2: hsl(240, 2%, 12%);
+  --smoky-black: hsl(0, 0%, 7%);
+  --white-1: hsl(0, 0%, 100%);
+  --white-2: hsl(0, 0%, 98%);
+  --orange-yellow-crayola: hsl(45, 100%, 72%);
+  --vegas-gold: hsl(45, 54%, 58%);
+  --light-gray: hsl(0, 0%, 84%);
+  --light-gray-70: hsla(0, 0%, 84%, 0.7);
+  --bittersweet-shimmer: hsl(0, 43%, 51%);
+
+  /**
+   * typography
+   */
+
+  /* font-family */
+  --ff-poppins: 'Poppins', sans-serif;
+
+  /* font-size */
+  --fs-1: 24px;
+  --fs-2: 18px;
+  --fs-3: 17px;
+  --fs-4: 16px;
+  --fs-5: 15px;
+  --fs-6: 14px;
+  --fs-7: 13px;
+  --fs-8: 11px;
+
+  /* font-weight */
+  --fw-300: 300;
+  --fw-400: 400;
+  --fw-500: 500;
+  --fw-600: 600;
+
+  /**
+   * shadow
+   */
+  
+  --shadow-1: -4px 8px 24px hsla(0, 0%, 0%, 0.25);
+  --shadow-2: 0 16px 30px hsla(0, 0%, 0%, 0.25);
+  --shadow-3: 0 16px 40px hsla(0, 0%, 0%, 0.25);
+  --shadow-4: 0 25px 50px hsla(0, 0%, 0%, 0.15);
+  --shadow-5: 0 24px 80px hsla(0, 0%, 0%, 0.25);
+
+  /**
+   * transition
+   */
+
+  --transition-1: 0.25s ease;
+  --transition-2: 0.5s ease-in-out;
+
+}
+
+
+
+
+
+/*-----------------------------------*\
+  #RESET
+\*-----------------------------------*/
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a { text-decoration: none; }
+
+li { list-style: none; }
+
+img, ion-icon, a, button, time, span { display: block; }
+
+button {
+  font: inherit;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+input, textarea {
+  display: block;
+  width: 100%;
+  background: none;
+  font: inherit;
+}
+
+::selection {
+  background: var(--orange-yellow-crayola);
+  color: var(--smoky-black);
+}
+
+:focus { outline-color: var(--orange-yellow-crayola); }
+
+html { font-family: var(--ff-poppins); }
+
+body { background: var(--smoky-black); }
+
+
+
+
+
+/*-----------------------------------*\
+  #REUSED STYLE
+\*-----------------------------------*/
+
+.sidebar,
+article {
+  background: var(--eerie-black-2);
+  border: 1px solid var(--jet);
+  border-radius: 20px;
+  padding: 15px;
+  box-shadow: var(--shadow-1);
+  z-index: 1;
+}
+
+.separator {
+  width: 100%;
+  height: 1px;
+  background: var(--jet);
+  margin: 16px 0;
+}
+
+.icon-box {
+  position: relative;
+  background: var(--border-gradient-onyx);
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  color: var(--orange-yellow-crayola);
+  box-shadow: var(--shadow-1);
+  z-index: 1;
+}
+
+.icon-box::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  background: var(--eerie-black-1);
+  border-radius: inherit;
+  z-index: -1;
+}
+
+.icon-box ion-icon { --ionicon-stroke-width: 35px; }
+
+article { display: none; }
+
+article.active {
+  display: block;
+  animation: fade 0.5s ease backwards;
+}
+
+@keyframes fade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.h2,
+.h3,
+.h4,
+.h5 {
+  color: var(--white-2);
+  text-transform: capitalize;
+}
+
+.h2 { font-size: var(--fs-1); }
+
+.h3 { font-size: var(--fs-2); }
+
+.h4 { font-size: var(--fs-4); }
+
+.h5 {
+  font-size: var(--fs-7);
+  font-weight: var(--fw-500);
+}
+
+.article-title {
+  position: relative;
+  padding-bottom: 7px;
+}
+
+.article-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 30px;
+  height: 3px;
+  background: var(--text-gradient-yellow);
+  border-radius: 3px;
+}
+
+.has-scrollbar::-webkit-scrollbar {
+  width: 5px; /* for vertical scrollbar */
+  height: 5px; /* for horizontal scrollbar */
+}
+
+.has-scrollbar::-webkit-scrollbar-track {
+  background: var(--onyx);
+  border-radius: 5px;
+}
+
+.has-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--orange-yellow-crayola);
+  border-radius: 5px;
+}
+
+.has-scrollbar::-webkit-scrollbar-button { width: 20px; }
+
+.content-card {
+  position: relative;
+  background: var(--border-gradient-onyx);
+  padding: 15px;
+  padding-top: 45px;
+  border-radius: 14px;
+  box-shadow: var(--shadow-2);
+  cursor: pointer;
+  z-index: 1;
+}
+
+.content-card::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  background: var(--bg-gradient-jet);
+  border-radius: inherit;
+  z-index: -1;
+}
+
+
+
+
+
+/*-----------------------------------*\
+  #MAIN
+\*-----------------------------------*/
+
+main {
+  margin: 15px 12px;
+  margin-bottom: 75px;
+  min-width: 259px;
+}
+
+
+
+
+
+/*-----------------------------------*\
+  #SIDEBAR
+\*-----------------------------------*/
+
+.sidebar {
+  margin-bottom: 15px;
+  max-height: 112px;
+  overflow: hidden;
+  transition: var(--transition-2);
+}
+
+.sidebar.active { max-height: 405px; }
+
+.sidebar-info {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+}
+
+.avatar-box {
+  background: var(--bg-gradient-onyx);
+  border-radius: 20px;
+}
+
+.info-content .name {
+  color: var(--white-2);
+  font-size: var(--fs-3);
+  font-weight: var(--fw-500);
+  letter-spacing: -0.25px;
+  margin-bottom: 10px;
+}
+
+.info-content .title {
+  color: var(--white-1);
+  background: var(--onyx);
+  font-size: var(--fs-8);
+  font-weight: var(--fw-300);
+  width: max-content;
+  padding: 3px 12px;
+  border-radius: 8px;
+}
+
+.info_more-btn {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  border-radius: 0 15px;
+  font-size: 13px;
+  color: var(--orange-yellow-crayola);
+  background: var(--border-gradient-onyx);
+  padding: 10px;
+  box-shadow: var(--shadow-2);
+  transition: var(--transition-1);
+  z-index: 1;
+}
+
+.info_more-btn::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  background: var(--bg-gradient-jet);
+  transition: var(--transition-1);
+  z-index: -1;
+}
+
+.info_more-btn:hover,
+.info_more-btn:focus { background: var(--bg-gradient-yellow-1); }
+
+.info_more-btn:hover::before,
+.info_more-btn:focus::before { background: var(--bg-gradient-yellow-2); }
+
+.info_more-btn span { display: none; }
+
+.sidebar-info_more {
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--transition-2);
+}
+
+.sidebar.active .sidebar-info_more {
+  opacity: 1;
+  visibility: visible;
+}
+
+.contacts-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.contact-item {
+  min-width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.contact-info {
+  max-width: calc(100% - 46px);
+  width: calc(100% - 46px);
+}
+
+.contact-title {
+  color: var(--light-gray-70);
+  font-size: var(--fs-8);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.contact-info :is(.contact-link, time, address) {
+  color: var(--white-2);
+  font-size: var(--fs-7);
+}
+
+.contact-info address { font-style: normal; }
+
+.social-list {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+  padding-bottom: 4px;
+  padding-left: 7px;
+}
+
+.social-item .social-link {
+  color: var(--light-gray-70);
+  font-size: 18px;
+}
+
+
+.social-item .social-link:hover { color: var(--light-gray); }
+
+
+
+
+
+/*-----------------------------------*\
+  #NAVBAR
+\*-----------------------------------*/
+
+.navbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: hsla(240, 1%, 17%, 0.75);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--jet);
+  border-radius: 12px 12px 0 0;
+  box-shadow: var(--shadow-2);
+  z-index: 5;
+}
+
+.navbar-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.navbar-link {
+  color: var(--light-gray);
+  font-size: var(--fs-8);
+  padding: 20px 7px;
+  transition: color var(--transition-1);
+}
+
+.navbar-link:hover,
+.navbar-link:focus { color: var(--light-gray-70); }
+
+.navbar-link.active { color: var(--orange-yellow-crayola); }
+
+
+
+
+
+/*-----------------------------------*\
+  #ABOUT
+\*-----------------------------------*/
+
+.about .article-title { margin-bottom: 15px; }
+
+.about-text {
+  color: var(--light-gray);
+  font-size: var(--fs-6);
+  font-weight: var(--fw-300);
+  line-height: 1.6;
+}
+
+.about-text p { margin-bottom: 15px; }
+
+
+
+/**
+ * #service 
+ */
+
+.service { margin-bottom: 35px; }
+
+.service-title { margin-bottom: 20px; }
+
+.service-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.service-item {
+  position: relative;
+  background: var(--border-gradient-onyx);
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: var(--shadow-2);
+  z-index: 1;
+}
+
+.service-item::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  background: var(--bg-gradient-jet);
+  border-radius: inherit;
+  z-index: -1;
+}
+
+.service-icon-box { margin-bottom: 10px; }
+
+.service-icon-box img { margin: auto; }
+
+.service-content-box { text-align: center; }
+
+.service-item-title { margin-bottom: 7px; }
+
+.service-item-text {
+  color: var(--light-gray);
+  font-size: var(--fs-6);
+  font-weight: var(--fw-3);
+  line-height: 1.6;
+}
+
+
+/**
+ * #testimonials 
+ */
+
+.testimonials { margin-bottom: 30px; }
+
+.testimonials-title { margin-bottom: 20px; }
+
+.testimonials-list {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 15px;
+  margin: 0 -15px;
+  padding: 25px 15px;
+  padding-bottom: 35px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  overscroll-behavior-inline: contain;
+  scroll-snap-type: inline mandatory;
+}
+
+.testimonials-item {
+  min-width: 100%;
+  scroll-snap-align: center;
+}
+
+.testimonials-avatar-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(15px, -25px);
+  background: var(--bg-gradient-onyx);
+  border-radius: 14px;
+  box-shadow: var(--shadow-1);
+}
+
+.testimonials-item-title { margin-bottom: 7px; }
+
+.testimonials-text {
+  color: var(--light-gray);
+  font-size: var(--fs-6);
+  font-weight: var(--fw-300);
+  line-height: 1.6;
+  display: -webkit-box;
+  line-clamp: 4;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+
+/**
+ * #testimonials-modal
+ */
+
+.modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  z-index: 20;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.modal-container::-webkit-scrollbar { display: none; }
+
+.modal-container.active {
+  pointer-events: all;
+  visibility: visible;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: hsl(0, 0%, 5%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 1;
+  transition: var(--transition-1);
+}
+
+.overlay.active {
+  opacity: 0.8;
+  visibility: visible;
+  pointer-events: all;
+}
+
+.testimonials-modal {
+  background: var(--eerie-black-2);
+  position: relative;
+  padding: 15px;
+  margin: 15px 12px;
+  border: 1px solid var(--jet);
+  border-radius: 14px;
+  box-shadow: var(--shadow-5);
+  transform: scale(1.2);
+  opacity: 0;
+  transition: var(--transition-1);
+  z-index: 2;
+}
+
+.modal-container.active .testimonials-modal {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: var(--onyx);
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--white-2);
+  font-size: 18px;
+  opacity: 0.7;
+}
+
+.modal-close-btn:hover,
+.modal-close-btn:focus { opacity: 1; }
+
+.modal-close-btn ion-icon { --ionicon-stroke-width: 50px; }
+
+.modal-avatar-box {
+  background: var(--bg-gradient-onyx);
+  width: max-content;
+  border-radius: 14px;
+  margin-bottom: 15px;
+  box-shadow: var(--shadow-2);
+}
+
+.modal-img-wrapper > img { display: none; }
+
+.modal-title { margin-bottom: 4px; }
+
+.modal-content time {
+  font-size: var(--fs-6);
+  color: var(--light-gray-70);
+  font-weight: var(--fw-300);
+  margin-bottom: 10px;
+}
+
+.modal-content p {
+  color: var(--light-gray);
+  font-size: var(--fs-6);
+  font-weight: var(--fw-300);
+  line-height: 1.6;
+}
+
+
+/**
+ * #clients 
+ */
+
+.clients { margin-bottom: 15px; }
+
+.clients-list {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 15px;
+  margin: 0 -15px;
+  padding: 25px;
+  padding-bottom: 25px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  overscroll-behavior-inline: contain;
+  scroll-snap-type: inline mandatory;
+  scroll-padding-inline: 25px;
+}
+
+.clients-item {
+  min-width: 50%;
+  scroll-snap-align: start;
+}
+
+.clients-item img {
+  width: 100%;
+  height: 60px; /* Forzamos la altura para mantener uniformidad */
+  object-fit: contain; /* <--- ESTA ES LA SOLUCIÓN: Evita que se estire o deforme */
+  filter: grayscale(1);
+  transition: var(--transition-1);
+}
+
+.clients-item img:hover { filter: grayscale(0); }
+
+
+
+
+
+/*-----------------------------------*\
+  #RESUME
+\*-----------------------------------*/
+
+.article-title { margin-bottom: 30px; }
+
+
+/**
+ * education and experience 
+ */
+
+.timeline { margin-bottom: 30px; }
+
+.timeline .title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.timeline-list {
+  font-size: var(--fs-6);
+  margin-left: 45px;
+}
+
+.timeline-item { position: relative; }
+
+.timeline-item:not(:last-child) { margin-bottom: 20px; }
+
+.timeline-item-title {
+  font-size: var(--fs-6);
+  line-height: 1.3;
+  margin-bottom: 7px;
+}
+
+.timeline-list span {
+  color: var(--vegas-gold);
+  font-weight: var(--fw-400);
+  line-height: 1.6;
+}
+
+.timeline-item:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  top: -25px;
+  left: -30px;
+  width: 1px;
+  height: calc(100% + 50px);
+  background: var(--jet);
+}
+
+.timeline-item::after {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: -33px;
+  height: 6px;
+  width: 6px;
+  background: var(--text-gradient-yellow);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px var(--jet);
+}
+
+.timeline-text {
+  color: var(--light-gray);
+  font-weight: var(--fw-300);
+  line-height: 1.6;
+}
+
+
+/**
+ * skills 
+ */
+
+.skills-title { margin-bottom: 20px; }
+
+.skills-list { padding: 20px; }
+
+
+.skills-item:not(:last-child) { margin-bottom: 15px; }
+
+.skill .title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 8px;
+}
+
+.skill .title-wrapper data {
+  color: var(--light-gray);
+  font-size: var(--fs-7);
+  font-weight: var(--fw-300);
+}
+
+.skill-progress-bg {
+  background: var(--jet);
+  width: 100%;
+  height: 8px;
+  border-radius: 10px;
+}
+
+.skill-progress-fill {
+  background: var(--text-gradient-yellow);
+  height: 100%;
+  border-radius: inherit;
+}
+
+
+
+
+
+/*-----------------------------------*\
+  #PORTFOLIO
+\*-----------------------------------*/
+
+.filter-list { display: none; }
+
+.filter-select-box {
+  position: relative;
+  margin-bottom: 25px;
+}
+
+.filter-select {
+  background: var(--eerie-black-2);
+  color: var(--light-gray);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--jet);
+  border-radius: 14px;
+  font-size: var(--fs-6);
+  font-weight: var(--fw-300);
+}
+
+.filter-select.active .select-icon { transform: rotate(0.5turn); }
+
+.select-list {
+  background: var(--eerie-black-2);
+  position: absolute;
+  top: calc(100% + 6px);
+  width: 100%;
+  padding: 6px;
+  border: 1px solid var(--jet);
+  border-radius: 14px;
+  z-index: 2;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: 0.15s ease-in-out;
+}
+
+.filter-select.active + .select-list {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+}
+
+.select-item button {
+  background: var(--eerie-black-2);
+  color: var(--light-gray);
+  font-size: var(--fs-6);
+  font-weight: var(--fw-300);
+  text-transform: capitalize;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+
+.select-item button:hover { --eerie-black-2: hsl(240, 2%, 20%); }
+
+.project-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+  margin-bottom: 10px;
+}
+
+.project-item { display: none; }
+
+.project-item.active {
+  display: block;
+  animation: scaleUp 0.25s ease forwards;
+}
+
+@keyframes scaleUp {
+  0% { transform: scale(0.5); }
+  100% { transform: scale(1); }
+}
+
+.project-item > a { width: 100%; }
+
+.project-img {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.project-img::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  z-index: 1;
+  transition: var(--transition-1);
+}
+
+.project-item > a:hover .project-img::before { background: hsla(0, 0%, 0%, 0.5); }
+
+.project-item-icon-box {
+  --scale: 0.8;
+
+  background: var(--jet);
+  color: var(--orange-yellow-crayola);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(var(--scale));
+  font-size: 20px;
+  padding: 18px;
+  border-radius: 12px;
+  opacity: 0;
+  z-index: 1;
+  transition: var(--transition-1);
+}
+
+.project-item > a:hover .project-item-icon-box {
+  --scale: 1;
+  opacity: 1;
+}
+
+.project-item-icon-box ion-icon { --ionicon-stroke-width: 50px; }
+
+.project-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: var(--transition-1);
+}
+
+.project-item > a:hover img { transform: scale(1.1); }
+
+.project-title,
+.project-category { margin-left: 10px; }
+
+.project-title {
+  color: var(--white-2);
+  font-size: var(--fs-5);
+  font-weight: var(--fw-400);
+  text-transform: capitalize;
+  line-height: 1.3;
+}
+
+.project-category {
+  color: var(--light-gray-70);
+  font-size: var(--fs-6);
+  font-weight: var(--fw-300);
+}
+
+
+
+
+
+/*-----------------------------------*\
+  #BLOG
+\*-----------------------------------*/
+
+.blog-posts { margin-bottom: 10px; }
+
+.blog-posts-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.blog-post-item > a {
+  position: relative;
+  background: var(--border-gradient-onyx);
+  height: 100%;
+  box-shadow: var(--shadow-4);
+  border-radius: 16px;
+  z-index: 1;
+}
+
+.blog-post-item > a::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  background: var(--eerie-black-1);
+  z-index: -1;
+}
+
+.blog-banner-box {
+  width: 100%;
+  height: 200px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.blog-banner-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: var(--transition-1);
+}
+
+.blog-post-item > a:hover .blog-banner-box img { transform: scale(1.1); }
+
+.blog-content { padding: 15px; }
+
+.blog-meta {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 10px;
+}
+
+.blog-meta :is(.blog-category, time) {
+  color: var(--light-gray-70);
+  font-size: var(--fs-6);
+  font-weight: var(--fw-300);
+}
+
+.blog-meta .dot {
+  background: var(--light-gray-70);
+  width: 4px;
+  height: 4px;
+  border-radius: 4px;
+}
+
+.blog-item-title {
+  margin-bottom: 10px;
+  line-height: 1.3;
+  transition: var(--transition-1);
+}
+
+.blog-post-item > a:hover .blog-item-title { color: var(--orange-yellow-crayola); }
+
+.blog-text {
+  color: var(--light-gray);
+  font-size: var(--fs-6);
+  font-weight: var(--fw-300);
+  line-height: 1.6;
+}
+
+
+
+
+
+/*-----------------------------------*\
+  #CONTACT
+\*-----------------------------------*/
+
+.mapbox {
+  position: relative;
+  height: 250px;
+  width: 100%;
+  border-radius: 16px;
+  margin-bottom: 30px;
+  border: 1px solid var(--jet);
+  overflow: hidden;
+}
+
+.mapbox figure { height: 100%; }
+
+.mapbox iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  filter: grayscale(1) invert(1);
+}
+
+.contact-form { margin-bottom: 10px; }
+
+.form-title { margin-bottom: 20px; }
+
+.input-wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 25px;
+  margin-bottom: 25px;
+}
+
+.form-input {
+  color: var(--white-2);
+  font-size: var(--fs-6);
+  font-weight: var(--fw-400);
+  padding: 13px 20px;
+  border: 1px solid var(--jet);
+  border-radius: 14px;
+  outline: none;
+}
+
+.form-input::placeholder { font-weight: var(--fw-500); }
+
+.form-input:focus { border-color: var(--orange-yellow-crayola); }
+
+textarea.form-input {
+  min-height: 100px;
+  height: 120px;
+  max-height: 200px;
+  resize: vertical;
+  margin-bottom: 25px;
+}
+
+textarea.form-input::-webkit-resizer { display: none; }
+
+.form-input:focus:invalid { border-color: var(--bittersweet-shimmer); }
+
+.form-btn {
+  position: relative;
+  width: 100%;
+  background: var(--border-gradient-onyx);
+  color: var(--orange-yellow-crayola);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 20px;
+  border-radius: 14px;
+  font-size: var(--fs-6);
+  text-transform: capitalize;
+  box-shadow: var(--shadow-3);
+  z-index: 1;
+  transition: var(--transition-1);
+}
+
+.form-btn::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  background: var(--bg-gradient-jet);
+  border-radius: inherit;
+  z-index: -1;
+  transition: var(--transition-1);
+}
+
+.form-btn ion-icon { font-size: 16px; }
+
+.form-btn:hover { background: var(--bg-gradient-yellow-1); }
+
+.form-btn:hover::before { background: var(--bg-gradient-yellow-2); }
+
+.form-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.form-btn:disabled:hover { background: var(--border-gradient-onyx); }
+
+.form-btn:disabled:hover::before { background: var(--bg-gradient-jet); }
+
+
+
+
+
+/*-----------------------------------*\
+  #RESPONSIVE
+\*-----------------------------------*/
+
+/**
+ * responsive larger than 450px screen
+ */
+
+@media (min-width: 450px) {
+
+  /**
+   * client
+   */
+
+  .clients-item { min-width: calc(33.33% - 10px); }
+
+
+
+  /**
+   * #PORTFOLIO, BLOG 
+   */
+
+  .project-img,
+  .blog-banner-box { height: auto; }
+
+}
+
+
+
+
+
+/**
+ * responsive larger than 580px screen
+ */
+
+@media (min-width: 580px) {
+
+  /**
+   * CUSTOM PROPERTY
+   */
+
+  :root {
+
+    /**
+     * typography
+     */
+
+    --fs-1: 32px;
+    --fs-2: 24px;
+    --fs-3: 26px;
+    --fs-4: 18px;
+    --fs-6: 15px;
+    --fs-7: 15px;
+    --fs-8: 12px;
+
+  }
+
+
+
+  /**
+   * #REUSED STYLE
+   */
+
+  .sidebar, article {
+    width: 520px;
+    margin-inline: auto;
+    padding: 30px;
+  }
+
+  .article-title {
+    font-weight: var(--fw-600);
+    padding-bottom: 15px;
+  }
+
+  .article-title::after {
+    width: 40px;
+    height: 5px;
+  }
+
+  .icon-box {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    font-size: 18px;
+  }
+
+
+
+  /**
+   * #MAIN
+   */
+
+  main {
+    margin-top: 60px;
+    margin-bottom: 100px;
+  }
+
+
+
+  /**
+   * #SIDEBAR
+   */
+
+  .sidebar {
+    max-height: 180px;
+    margin-bottom: 30px;
+  }
+
+  .sidebar.active { max-height: 584px; }
+
+  .sidebar-info { gap: 25px; }
+
+  .avatar-box { border-radius: 30px; }
+
+  .avatar-box img { width: 120px; }
+
+  .info-content .name { margin-bottom: 15px; }
+
+  .info-content .title { padding: 5px 18px; }
+
+  .info_more-btn {
+    top: -30px;
+    right: -30px;
+    padding: 10px 15px;
+  }
+
+  .info_more-btn span {
+    display: block;
+    font-size: var(--fs-8);
+  }
+
+  .info_more-btn ion-icon { display: none; }
+
+  .separator { margin: 32px 0; }
+
+  .contacts-list { gap: 20px; }
+
+  .contact-info {
+    max-width: calc(100% - 64px);
+    width: calc(100% - 64px);
+  }
+
+
+
+  /**
+   * #NAVBAR
+   */
+
+  .navbar { border-radius: 20px 20px 0 0; }
+
+  .navbar-list { gap: 20px; }
+
+  .navbar-link { --fs-8: 14px; }
+
+
+
+  /**
+   * #ABOUT
+   */
+
+  .about .article-title { margin-bottom: 20px; }
+
+  .about-text { margin-bottom: 40px; }
+
+  /* service */
+
+  .service-item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 30px;
+  }
+
+  .service-icon-box {
+    margin-bottom: 0;
+    margin-top: 5px;
+  }
+
+  .service-content-box { text-align: left; }
+
+  /* testimonials */
+
+  .testimonials-title { margin-bottom: 25px; }
+
+  .testimonials-list {
+    gap: 30px;
+    margin: 0 -30px;
+    padding: 30px;
+    padding-bottom: 35px;
+  }
+
+  .content-card {
+    padding: 30px;
+    padding-top: 25px;
+  }
+
+  .testimonials-avatar-box {
+    transform: translate(30px, -30px);
+    border-radius: 20px;
+  }
+
+  .testimonials-avatar-box img { width: 80px; }
+
+  .testimonials-item-title {
+    margin-bottom: 10px;
+    margin-left: 95px;
+  }
+
+  .testimonials-text {
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+  }
+
+  /* testimonials modal */
+
+  .modal-container { padding: 20px; }
+
+  .testimonials-modal {
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 25px;
+    padding: 30px;
+    border-radius: 20px;
+  }
+
+  .modal-img-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .modal-avatar-box {
+    border-radius: 18px;
+    margin-bottom: 0;
+  }
+
+  .modal-avatar-box img { width: 65px; }
+
+  .modal-img-wrapper > img {
+    display: block;
+    flex-grow: 1;
+    width: 35px;
+  }
+
+  /* clients */
+
+  .clients-list {
+    gap: 50px;
+    margin: 0 -30px;
+    padding: 45px;
+    scroll-padding-inline: 45px;
+  }
+
+  .clients-item { min-width: calc(33.33% - 35px); }
+
+
+
+  /**
+   * #RESUME
+   */
+
+  .timeline-list { margin-left: 65px; }
+
+  .timeline-item:not(:last-child)::before { left: -40px; }
+
+  .timeline-item::after {
+    height: 8px;
+    width: 8px;
+    left: -43px;
+  }
+
+  .skills-item:not(:last-child) { margin-bottom: 25px; }
+
+
+
+  /**
+   * #PORTFOLIO, BLOG
+   */
+
+  .project-img, .blog-banner-box { border-radius: 16px; }
+
+  .blog-posts-list { gap: 30px; }
+
+  .blog-content { padding: 25px; }
+
+
+
+  /**
+   * #CONTACT
+   */
+
+  .mapbox {
+    height: 380px;
+    border-radius: 18px;
+  }
+
+  .input-wrapper {
+    gap: 30px;
+    margin-bottom: 30px;
+  }
+
+  .form-input { padding: 15px 20px; }
+
+  textarea.form-input { margin-bottom: 30px; }
+
+  .form-btn {
+    --fs-6: 16px;
+    padding: 16px 20px;
+  }
+
+  .form-btn ion-icon { font-size: 18px; }
+
+}
+
+
+
+
+
+/**
+ * responsive larger than 768px screen
+ */
+
+@media (min-width: 768px) {
+
+  /**
+   * REUSED STYLE
+   */
+
+  .sidebar, article { width: 700px; }
+
+  .has-scrollbar::-webkit-scrollbar-button { width: 100px; }
+
+
+
+  /**
+   * SIDEBAR
+   */
+
+  .contacts-list {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px 15px;
+  }
+
+
+
+  /**
+   * NAVBAR
+   */
+
+  .navbar-link { --fs-8: 15px; }
+
+
+
+  /**
+   * ABOUT
+   */
+
+  /* testimonials modal */
+
+  .testimonials-modal {
+    gap: 35px;
+    max-width: 680px;
+  }
+
+  .modal-avatar-box img { width: 80px; }
+
+
+
+  /**
+   * PORTFOLIO
+   */
+
+  .article-title { padding-bottom: 20px; }
+
+  .filter-select-box { display: none; }
+
+  .filter-list {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 25px;
+    padding-left: 5px;
+    margin-bottom: 30px;
+  }
+
+  .filter-item button {
+    color: var(--light-gray);
+    font-size: var(--fs-5);
+    transition: var(--transition-1);
+  }
+
+  .filter-item button:hover { color: var(--light-gray-70); }
+
+  .filter-item button.active { color: var(--orange-yellow-crayola); }
+
+  /* portfolio and blog grid */
+
+  .project-list, .blog-posts-list { grid-template-columns: 1fr 1fr; }
+
+
+
+  /**
+   * CONTACT
+   */
+
+  .input-wrapper { grid-template-columns: 1fr 1fr; }
+
+  .form-btn {
+    width: max-content;
+    margin-left: auto;
+  }
+  
+}
+
+
+
+
+
+/**
+ * responsive larger than 1024px screen
+ */
+
+@media (min-width: 1024px) {
+
+  /**
+   * CUSTOM PROPERTY
+   */
+
+  :root {
+
+    /**
+    * shadow
+    */
+
+    --shadow-1: -4px 8px 24px hsla(0, 0%, 0%, 0.125);
+    --shadow-2: 0 16px 30px hsla(0, 0%, 0%, 0.125);
+    --shadow-3: 0 16px 40px hsla(0, 0%, 0%, 0.125);
+
+  }
+
+
+
+  /**
+   * REUSED STYLE
+   */
+
+  .sidebar, article {
+    width: 950px;
+    box-shadow: var(--shadow-5);
+  }
+
+
+
+  /**
+   * MAIN 
+   */
+
+  main { margin-bottom: 60px; }
+
+  .main-content {
+    position: relative;
+    width: max-content;
+    margin: auto;
+  }
+
+
+
+  /**
+   * NAVBAR
+   */
+
+  .navbar {
+    position: absolute;
+    bottom: auto;
+    top: 0;
+    left: auto;
+    right: 0;
+    width: max-content;
+    border-radius: 0 20px;
+    padding: 0 20px;
+    box-shadow: none;
+  }
+
+  .navbar-list {
+    gap: 30px;
+    padding: 0 20px;
+  }
+
+  .navbar-link { font-weight: var(--fw-500); }
+
+
+
+  /**
+   * ABOUT
+   */
+
+  /* service */
+
+  .service-list {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 25px;
+  }
+
+  /* testimonials */
+
+  .testimonials-item { min-width: calc(50% - 15px); }
+
+  /* clients */
+
+  .clients-item { min-width: calc(25% - 38px); }
+
+
+
+  /**
+   * PORTFOLIO
+   */
+
+  .project-list { grid-template-columns: repeat(3, 1fr); }
+
+
+
+  /**
+   * BLOG
+   */
+
+  .blog-banner-box { height: 230px; }
+
+}
+
+
+
+
+
+/**
+ * responsive larger than 1250px screen
+ */
+
+@media (min-width: 1250px) {
+
+  /**
+   * RESET
+   */
+
+  body::-webkit-scrollbar { width: 20px; }
+
+  body::-webkit-scrollbar-track { background: var(--smoky-black); }
+
+  body::-webkit-scrollbar-thumb {
+    border: 5px solid var(--smoky-black);
+    background: hsla(0, 0%, 100%, 0.1);
+    border-radius: 20px;
+    box-shadow: inset 1px 1px 0 hsla(0, 0%, 100%, 0.11),
+                inset -1px -1px 0 hsla(0, 0%, 100%, 0.11);
+  }
+
+  body::-webkit-scrollbar-thumb:hover { background: hsla(0, 0%, 100%, 0.15); }
+
+  body::-webkit-scrollbar-button { height: 60px; }
+
+
+
+  /**
+   * REUSED STYLE
+   */
+
+  .sidebar, article { width: auto; }
+
+  article { min-height: 100%; }
+
+
+
+  /**
+   * MAIN
+   */
+
+  main {
+    max-width: 1200px;
+    margin-inline: auto;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 25px;
+  }
+
+  .main-content {
+    min-width: 75%;
+    width: 75%;
+    margin: 0;
+  }
+
+
+
+  /**
+   * SIDEBAR
+   */
+
+  .sidebar {
+    position: sticky;
+    top: 60px;
+    max-height: max-content;
+    height: 100%;
+    margin-bottom: 0;
+    padding-top: 60px;
+    z-index: 1;
+  }
+
+  .sidebar-info { flex-direction: column; }
+
+  .avatar-box img { width: 150px; }
+
+  .info-content .name {
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  .info-content .title { margin: auto; }
+
+  .info_more-btn { display: none; }
+
+  .sidebar-info_more {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .contacts-list { grid-template-columns: 1fr; }
+
+  .contact-info :is(.contact-link) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .contact-info :is(.contact-link, time, address) {
+    --fs-7: 14px;
+    font-weight: var(--fw-300);
+  }
+
+  .separator:last-of-type {
+    margin: 15px 0;
+    opacity: 0;
+  }
+
+  .social-list { justify-content: center; }
+
+
+
+  /**
+	 * RESUME
+	 */
+
+  .timeline-text { max-width: 700px; }
+
+}
+
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\src\images\icon-quote.svg
+TAMAÑO: 1173 bytes
+################################################################################
+[CONTENIDO BINARIO U MEDIA - OMITIDO PARA LECTURA CLARA]
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\src\images\logo.png
+TAMAÑO: 3781 bytes
+################################################################################
+[CONTENIDO BINARIO U MEDIA - OMITIDO PARA LECTURA CLARA]
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\src\jinja\about.j2
+TAMAÑO: 3272 bytes
+################################################################################
+<!-- about.j2 -->
+<article class="about  active" data-page="about">
+  <header>
+    <h2 class="h2 article-title">{{about.HEADER.label}}</h2>
+  </header>
+
+  <!--- PRESENTATION --->
+  <section class="about-text">
+    {% for line in about.PRESENTATION.description.split('\n') %}
+      {% if line.strip() %}
+      <p>{{ line }}</p>
+      {% endif %}
+    {% endfor %}
+  </section>
+
+  <!--- DOING -->
+  {% if about.DOING.enabled %}
+  <section class="service">
+    <h3 class="h3 service-title">What i'm doing</h3>
+    <ul class="service-list">
+      {% for item in about.DOING["items"] %}
+      <li class="service-item">
+        <div class="service-icon-box">
+          <img src="{{item.icon}}" alt="design icon" width="30" height="30">
+        </div>
+        <div class="service-content-box">
+          <h4 class="h4 service-item-title">{{item.title}}</h4>
+          <p class="service-item-text">
+            {{item.description}}
+          </p>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+
+  <!--- SKILLS -->
+  {% if about.SKILLS.enabled %}
+  <section class="testimonials">
+    <h3 class="h3 testimonials-title">{{about.SKILLS.label}}</h3>
+    <ul class="testimonials-list has-scrollbar">
+      {% for item in about.SKILLS["items"] %}
+      <li class="testimonials-item">
+        <div class="content-card" data-testimonials-item>
+          <figure class="testimonials-avatar-box">
+            <img src="{{item.icon}}" alt="{{item.title}}" width="60" data-testimonials-avatar>
+          </figure>
+          <h4 class="h4 testimonials-item-title" data-testimonials-title>{{item.title}}</h4>
+          <div class="testimonials-text" data-testimonials-text>
+            <p>
+              {{item.description}}
+            </p>
+          </div>
+        </div>
+      </li>
+      {% endfor %}
+      < </ul>
+  </section>
+
+  <!--- popup modal -->
+  <div class="modal-container" data-modal-container>
+    <div class="overlay" data-overlay></div>
+    <section class="testimonials-modal">
+      <button class="modal-close-btn" data-modal-close-btn>
+        <ion-icon name="close-outline"></ion-icon>
+      </button>
+      <div class="modal-img-wrapper">
+        <figure class="modal-avatar-box">
+          <img src="{{profile.USER.avatar}}" alt="{{profile.USER.name}}" width="80" data-modal-img>
+        </figure>
+        <img src="./src/images/icon-quote.svg" alt="quote icon">
+      </div>
+      <div class="modal-content">
+        <h4 class="h3 modal-title" data-modal-title>{{profile.USER.name}}</h4>
+        {# lorem #}
+        <div data-modal-text>
+          <p>
+            {# lorem #}
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+  {% endif %}
+
+  <!--- TECHNOLOGIES-->
+  {% if about.TECHNOLOGIES.enabled %}
+  <section class="clients">
+    <h3 class="h3 clients-title">{{about.TECHNOLOGIES.label}}</h3>
+    <ul class="clients-list has-scrollbar">
+      {% for item in about.TECHNOLOGIES["items"] %}
+      <li class="clients-item">
+        <a href="#">
+          <img src="{{item.icon}}" alt="{{item.title}}" width="50" height="50">
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+</article>
+
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\src\jinja\blog.j2
+TAMAÑO: 1011 bytes
+################################################################################
+<!-- blog.j2 -->
+<article class="blog" data-page="blog">
+  <header>
+    <h2 class="h2 article-title">{{blog.HEADER.label}}</h2>
+  </header>
+  <section class="blog-posts">
+    <ul class="blog-posts-list">
+      {% for post in blog.POSTS %}
+      <li class="blog-post-item">
+        <a href="{{post.url}}" target="_blank">
+          <figure class="blog-banner-box">
+            <img src="{{post.image}}" alt="{{post.title}}" loading="lazy">
+          </figure>
+          <div class="blog-content">
+            <div class="blog-meta">
+              <p class="blog-category">{{post.category}}</p>
+              <span class="dot"></span>
+              <time datetime="{{post.published}}">{{post.published | format_date}}</time>
+            </div>
+            <h3 class="h3 blog-item-title">{{post.title}}</h3>
+            <p class="blog-text">
+              {{post.subtitle}}
+            </p>
+          </div>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+</article>
+
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\src\jinja\contact.j2
+TAMAÑO: 1222 bytes
+################################################################################
+<!-- contact.j2 -->
+<article class="contact" data-page="contact">
+  <header>
+    <h2 class="h2 article-title">{{contact.HEADER.label}}</h2>
+  </header>
+  <section class="mapbox" data-mapbox>
+    <figure>
+      <iframe
+        src="{{contact.LOCATION.embed}}"
+        width="400" height="300" loading="lazy"></iframe>
+    </figure>
+  </section>
+  <section class="contact-form">
+    <h3 class="h3 form-title">{{contact.FORM.label}}</h3>
+    <form action="mailto:{{profile.USER.email}}" method="POST" class="form" data-form>
+      <div class="input-wrapper">
+        <input type="text" name="fullname" class="form-input" placeholder="{{contact.FORM.fields[0].name}}" required data-form-input>
+        <input type="email" name="email" class="form-input" placeholder="{{contact.FORM.fields[1].email}}" required data-form-input>
+      </div>
+      <textarea name="message" class="form-input" placeholder="{{contact.FORM.fields[2].message}}" required data-form-input></textarea>
+      <button class="form-btn" type="submit" disabled data-form-btn>
+        <ion-icon name="paper-plane"></ion-icon>
+        <span>{{contact.FORM.fields[3].submit}}</span>
+      </button>
+    </form>
+  </section>
+</article>
+
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\src\jinja\index.j2
+TAMAÑO: 1335 bytes
+################################################################################
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!--- META --->
+  {% include 'meta.j2' %}
+  <!--- FAVICON -->
+  <link rel="shortcut icon" href="./src/images/logo.png" type="image/png">
+  <!--- CSS --->
+  <link rel="stylesheet" href="./src/css/style.css">
+  <!--- GOOGLE FONT --->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <main>
+    <!--- SIDEBAR-->
+    {% include 'sidebar.j2' %}
+    <div class="main-content">
+      <!-- NAVBAR -->
+      {% include 'navbar.j2' %}
+      <!--- ABOUT -->
+      {% include 'about.j2' %}
+      <!-- RESUME --> 
+      {% include 'resume.j2' %}
+      <!-- PROJECTS -->
+      {% include 'projects.j2' %}
+      <!-- BLOG -->
+      {% include 'blog.j2' %}
+      <!-- CONTACT -->
+      {% include 'contact.j2' %}
+    </div>
+  </main>
+  <!--- JS --->
+  <script src="./src/js/script.js"></script>
+  <!--- IONICONS --->
+  <script type="module" src="https://cdn.jsdelivr.net/npm/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+</html>
+
+
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\src\jinja\meta.j2
+TAMAÑO: 1528 bytes
+################################################################################
+<!-- meta.j2 -->
+<title>Currículum | {{profile.USER.name}}</title>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="{{about.PRESENTATION.description}}">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="product">
+<meta property="og:url" content="https://{{profile.USER.username}}.github.io">
+<meta property="og:title" content="{{profile.USER.name}} | {{profile.USER.role}} | Portfolio">
+<meta property="og:description" content="{{about.PRESENTATION.description}}">
+<meta property="og:image" content="{{profile.USER.avatar}}">
+<meta property="og:image:secure_url" content="{{profile.USER.avatar}}">
+<meta property="og:site_name" content="{{profile.USER.name}} | {{profile.USER.role}} | Portfolio">
+<meta name="twitter:card" content="photo">
+<meta name="twitter:creator" content="@{{profile.USER.username}}">
+<meta name="twitter:title" content="{{profile.USER.name}} | {{profile.USER.role}} | Portfolio">
+<meta name="twitter:description" content="{{about.PRESENTATION.description}}">
+<meta name="twitter:image" content="{{profile.USER.avatar}}">
+<meta name="twitter:image:width" content="200">
+<meta name="twitter:image:height" content="200">
+<meta name="keywords" content="{{profile.USER.name}}, {{about.TECHNOLOGIES["items"] | map(attribute='title') | join(', ')}}" />
+<link href="https://{{profile.USER.username}}.github.io" rel="canonical">
+
+
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\src\jinja\navbar.j2
+TAMAÑO: 396 bytes
+################################################################################
+<!-- navbar.j2 -->
+<nav class="navbar">
+  <ul class="navbar-list">
+    <li class="navbar-item">
+      <button class="navbar-link  active" data-nav-link>{{ navbar.NAVBAR[0].label }}</button>
+    </li>
+    {% for item in navbar.NAVBAR[1:] %}
+    <li class="navbar-item">
+      <button class="navbar-link" data-nav-link>{{ item.label }}</button>
+    </li>
+    {% endfor %}
+  </ul>
+</nav>
+
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\src\jinja\projects.j2
+TAMAÑO: 1888 bytes
+################################################################################
+<!-- portfolio.j2 -->
+<article class="portfolio" data-page="portfolio">
+  <header>
+    <h2 class="h2 article-title">{{projects.HEADER.label}}</h2>
+  </header>
+  <section class="projects">
+    <ul class="filter-list">
+      <li class="filter-item">
+        <button class="active" data-filter-btn>All</button>
+      </li>
+      {% set categories = projects.PROJECTS | map(attribute='category') | unique | list %}
+      {% for category in categories %}
+      <li class="filter-item">
+        <button data-filter-btn>{{category}}</button>
+      </li>
+      {% endfor %}
+    </ul>
+    <div class="filter-select-box">
+      <button class="filter-select" data-select>
+        <div class="select-value" data-selecct-value>Select category</div>
+        <div class="select-icon">
+          <ion-icon name="chevron-down"></ion-icon>
+        </div>
+      </button>
+      <ul class="select-list">
+        <li class="select-item">
+          <button data-select-item>All</button>
+        </li>
+        {% for category in categories %}
+        <li class="select-item">
+          <button data-select-item>{{category}}</button>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <ul class="project-list">
+      {% for item in projects.PROJECTS %}
+      <li class="project-item  active" data-filter-item data-category="{{item.category | lower}}">
+        <a href="{{item.url}}" target="_blank">
+          <figure class="project-img">
+            <div class="project-item-icon-box">
+              <ion-icon name="eye-outline"></ion-icon>
+            </div>
+            <img src="{{item.image}}" alt="{{item.title}}" loading="lazy">
+          </figure>
+          <h3 class="project-title">{{item.title}}</h3>
+          <p class="project-category">{{item.category}}</p>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+</article>
+
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\src\jinja\resume.j2
+TAMAÑO: 3183 bytes
+################################################################################
+<!-- resume.j2 -->
+<article class="resume" data-page="resume">
+  <header>
+    <h2 class="h2 article-title">{{resume.HEADER.label}}</h2>
+  </header>
+
+  <!-- EDUCATION -->
+  {% if resume.EDUCATION.enabled %}
+  <section class="timeline">
+    <div class="title-wrapper">
+      <div class="icon-box">
+        <ion-icon name="book-outline"></ion-icon>
+      </div>
+      <h3 class="h3">{{resume.EDUCATION.label}}</h3>
+    </div>
+    <ol class="timeline-list">
+      {% for item in resume.EDUCATION["items"] | reverse %}
+      <li class="timeline-item">
+        <h4 class="h4 timeline-item-title">{{item.institution}}</h4>
+        <span>{{item.period}}</span>
+        <p class="timeline-text">
+          {{item.description}}
+        </p>
+      </li>
+      {% endfor %}
+    </ol>
+  </section>
+  {% endif %}
+
+  <!-- EXPERIENCE -->
+  {% if resume.EXPERIENCE.enabled %}
+  <section class="timeline">
+    <div class="title-wrapper">
+      <div class="icon-box">
+        <ion-icon name="book-outline"></ion-icon>
+      </div>
+      <h3 class="h3">{{resume.EXPERIENCE.label}}</h3>
+    </div>
+    <ol class="timeline-list">
+      {% for item in resume.EXPERIENCE["items"] | reverse %}
+      <li class="timeline-item">
+        <h4 class="h4 timeline-item-title">{{item.position}}</h4>
+        <span>{{item.period}}</span>
+        <p class="timeline-text">
+          {{item.description}}
+        </p>
+      </li>
+      {% endfor %}
+    </ol>
+  </section>
+  {% endif %}
+
+  <!-- LANGUAGES -->
+  {% if resume.LANGUAGES.enabled %}
+  <section class="skill">
+    <h3 class="h3 skills-title">{{resume.LANGUAGES.label}}</h3>
+    <ul class="skills-list content-card">
+      {% for item in resume.LANGUAGES["items"] %}
+      <li class="skills-item">
+        <div class="title-wrapper">
+          <h5 class="h5">{{item.language}}</h5>
+          {% if resume.LANGUAGES.display_percentage_values %}
+          <data value="{{item.proficiency[:-1]}}">{{item.proficiency}}</data>
+          {% endif %}
+        </div>
+        {% if resume.LANGUAGES.display_progress_bars %}
+        <div class="skill-progress-bg">
+          <div class="skill-progress-fill" style="width: {{item.proficiency}};"></div>
+        </div>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+  <br>
+  {% endif %}
+
+  <!-- SKILLS -->
+  {% if resume.SKILLS.enabled %}
+  <section class="skill">
+    <h3 class="h3 skills-title">{{resume.SKILLS.label}}</h3>
+    <ul class="skills-list content-card">
+      {% for item in resume.SKILLS["items"] %}
+      <li class="skills-item">
+        <div class="title-wrapper">
+          <h5 class="h5">{{item.skill}}</h5>
+          {% if resume.SKILLS.display_percentage_values %}
+          <data value="{{item.proficiency[:-1]}}">{{item.proficiency}}</data>
+          {% endif %}
+        </div>
+        {% if resume.SKILLS.display_progress_bars %}
+        <div class="skill-progress-bg">
+          <div class="skill-progress-fill" style="width: {{item.proficiency}};"></div>
+        </div>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+</article>
+
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\src\jinja\sidebar.j2
+TAMAÑO: 1399 bytes
+################################################################################
+<!-- sidebar.j2 -->
+<aside class="sidebar" data-sidebar>
+  <div class="sidebar-info">
+    <figure class="avatar-box">
+      <img src="{{profile.USER.avatar}}" alt="{{profile.USER.name}}" width="80">
+    </figure>
+    <div class="info-content">
+      <h1 class="name" title="{{profile.USER.name}}">{{profile.USER.name}}</h1>
+      <p class="title">{{profile.USER.role}}</p>
+    </div>
+    <button class="info_more-btn" data-sidebar-btn>
+      <span>{{profile.HEADER.label}}</span>
+      <ion-icon name="chevron-down"></ion-icon>
+    </button>
+  </div>
+  <div class="sidebar-info_more">
+    <div class="separator"></div>
+    <ul class="contacts-list">
+      {% for info in profile.INFO %}
+      <li class="contact-item">
+        <div class="icon-box">
+          <ion-icon name="{{info.icon}}"></ion-icon>
+        </div>
+        <div class="contact-info">
+          <p class="contact-title">{{info.label}}</p>
+          <a href="#" class="contact-link">{{info.value}}</a>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+    <div class="separator"></div>
+    <ul class="social-list">
+      {% for social in profile.SOCIAL %}
+      <li class="social-item">
+        <a href="{{social.url}}" class="social-link" , target="_blank">
+          <ion-icon name="{{social.icon}}"></ion-icon>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</aside>
+
+
+################################################################################
+RUTA: C:\Users\david\OneDrive\Desktop\Documentacion\curriculum-David-Vidal-Ramirez\src\js\script.js
+TAMAÑO: 4682 bytes
+################################################################################
+'use strict';
+
+
+
+// element toggle function
+const elementToggleFunc = function (elem) { elem.classList.toggle("active"); }
+
+
+
+// sidebar variables
+const sidebar = document.querySelector("[data-sidebar]");
+const sidebarBtn = document.querySelector("[data-sidebar-btn]");
+
+// sidebar toggle functionality for mobile
+sidebarBtn.addEventListener("click", function () { elementToggleFunc(sidebar); });
+
+
+
+// testimonials variables
+const testimonialsItem = document.querySelectorAll("[data-testimonials-item]");
+const modalContainer = document.querySelector("[data-modal-container]");
+const modalCloseBtn = document.querySelector("[data-modal-close-btn]");
+const overlay = document.querySelector("[data-overlay]");
+
+// modal variable
+const modalImg = document.querySelector("[data-modal-img]");
+const modalTitle = document.querySelector("[data-modal-title]");
+const modalText = document.querySelector("[data-modal-text]");
+
+// modal toggle function
+const testimonialsModalFunc = function () {
+  modalContainer.classList.toggle("active");
+  overlay.classList.toggle("active");
+}
+
+// add click event to all modal items
+for (let i = 0; i < testimonialsItem.length; i++) {
+
+  testimonialsItem[i].addEventListener("click", function () {
+
+    modalImg.src = this.querySelector("[data-testimonials-avatar]").src;
+    modalImg.alt = this.querySelector("[data-testimonials-avatar]").alt;
+    modalTitle.innerHTML = this.querySelector("[data-testimonials-title]").innerHTML;
+    modalText.innerHTML = this.querySelector("[data-testimonials-text]").innerHTML;
+
+    testimonialsModalFunc();
+
+  });
+
+}
+
+// add click event to modal close button
+modalCloseBtn.addEventListener("click", testimonialsModalFunc);
+overlay.addEventListener("click", testimonialsModalFunc);
+
+
+
+// custom select variables
+const select = document.querySelector("[data-select]");
+const selectItems = document.querySelectorAll("[data-select-item]");
+const selectValue = document.querySelector("[data-selecct-value]");
+const filterBtn = document.querySelectorAll("[data-filter-btn]");
+
+select.addEventListener("click", function () { elementToggleFunc(this); });
+
+// add event in all select items
+for (let i = 0; i < selectItems.length; i++) {
+  selectItems[i].addEventListener("click", function () {
+
+    let selectedValue = this.innerText.toLowerCase();
+    selectValue.innerText = this.innerText;
+    elementToggleFunc(select);
+    filterFunc(selectedValue);
+
+  });
+}
+
+// filter variables
+const filterItems = document.querySelectorAll("[data-filter-item]");
+
+const filterFunc = function (selectedValue) {
+
+  for (let i = 0; i < filterItems.length; i++) {
+
+    if (selectedValue === "all") {
+      filterItems[i].classList.add("active");
+    } else if (selectedValue === filterItems[i].dataset.category) {
+      filterItems[i].classList.add("active");
+    } else {
+      filterItems[i].classList.remove("active");
+    }
+
+  }
+
+}
+
+// add event in all filter button items for large screen
+let lastClickedBtn = filterBtn[0];
+
+for (let i = 0; i < filterBtn.length; i++) {
+
+  filterBtn[i].addEventListener("click", function () {
+
+    let selectedValue = this.innerText.toLowerCase();
+    selectValue.innerText = this.innerText;
+    filterFunc(selectedValue);
+
+    lastClickedBtn.classList.remove("active");
+    this.classList.add("active");
+    lastClickedBtn = this;
+
+  });
+
+}
+
+
+
+// contact form variables
+const form = document.querySelector("[data-form]");
+const formInputs = document.querySelectorAll("[data-form-input]");
+const formBtn = document.querySelector("[data-form-btn]");
+
+// add event to all form input field
+for (let i = 0; i < formInputs.length; i++) {
+  formInputs[i].addEventListener("input", function () {
+
+    // check form validation
+    if (form.checkValidity()) {
+      formBtn.removeAttribute("disabled");
+    } else {
+      formBtn.setAttribute("disabled", "");
+    }
+
+  });
+}
+
+
+
+// page navigation variables
+const navigationLinks = document.querySelectorAll("[data-nav-link]");
+const pages = document.querySelectorAll("[data-page]");
+
+// add event to all nav link
+for (let i = 0; i < navigationLinks.length; i++) {
+  navigationLinks[i].addEventListener("click", function () {
+
+    for (let i = 0; i < pages.length; i++) {
+      if (this.innerHTML.toLowerCase() === pages[i].dataset.page) {
+        pages[i].classList.add("active");
+        navigationLinks[i].classList.add("active");
+        window.scrollTo(0, 0);
+      } else {
+        pages[i].classList.remove("active");
+        navigationLinks[i].classList.remove("active");
+      }
+    }
+
+  });
+}
+
+
+================================================================================
+ESTRUCTURA VISUAL DE CARPETAS (TREE)
+================================================================================
+Listado de rutas de carpetas para el volumen OS
+El n·mero de serie del volumen es 626C-3709
+C:.
+|   .gitignore
+|   auditoria_completa_proyecto.txt
+|   index.html
+|   LICENSE
+|   main.py
+|   poetry.lock
+|   poetry.toml
+|   pyproject.toml
+|   README.md
+|   
++---.github
+|   \---workflows
+|           deploy.yml
+|           
++---.vscode
+|       extensions.json
+|       settings.json
+|       
++---config
+|   |   about.yml
+|   |   blog.yml
+|   |   contact.yml
+|   |   navbar.yml
+|   |   profile.yml
+|   |   projects.yml
+|   |   resume.yml
+|   |   
+|   \---assets
+|       +---avatars
+|       |       Foto_Infantil_David_Vidal_Ramirez.png
+|       |       
+|       +---icons
+|       |       bolt.svg
+|       |       code.svg
+|       |       comment.svg
+|       |       compass.svg
+|       |       css3.svg
+|       |       gear.svg
+|       |       git.svg
+|       |       html.svg
+|       |       ia.svg
+|       |       javascript.svg
+|       |       jupyter.svg
+|       |       laptop-code.svg
+|       |       linux.svg
+|       |       python.svg
+|       |       team.svg
+|       |       user.svg
+|       |       visual-studio-code.svg
+|       |       
+|       +---posts
+|       |       blog-1.jpg
+|       |       blog-2.jpg
+|       |       blog-3.jpg
+|       |       
+|       \---projects
+|               project-1.jpg
+|               project-2.png
+|               project-3.jpg
+|               
+\---src
+    +---css
+    |       style.css
+    |       
+    +---images
+    |       icon-quote.svg
+    |       logo.png
+    |       
+    +---jinja
+    |       about.j2
+    |       blog.j2
+    |       contact.j2
+    |       index.j2
+    |       meta.j2
+    |       navbar.j2
+    |       projects.j2
+    |       resume.j2
+    |       sidebar.j2
+    |       
+    \---js
+            script.js
+            
+

@@ -1,0 +1,13 @@
+HEADER:
+  label: "Contacto"
+
+LOCATION:
+  embed: "https://maps.google.com/maps?q=18.242740,-96.145029&hl=es&z=14&output=embed"
+
+FORM:
+  label: "Formulario de Contacto"
+  fields:
+    - name: "Nombre completo"
+    - email: "Correo electrónico"
+    - message: "Tu mensaje"
+    - submit: "Enviar mensaje"

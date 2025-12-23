@@ -1,0 +1,24 @@
+HEADER:
+  label: "Blog"
+
+POSTS:
+  - title: "Mi transición de la Logística al Código"
+    category: "Carrera"
+    subtitle: "Cómo aprovecho mis 10 años de experiencia operativa para resolver problemas de software."
+    published: "2025-01-15"
+    image: "config/assets/posts/blog-1.jpg"
+    url: "https://www.linkedin.com/in/david-vidal-ramirez-3ba01b147/"
+
+  - title: "Python para automatizar tareas aburridas"
+    category: "Python"
+    subtitle: "Scripts básicos que me ahorran horas de trabajo manual."
+    published: "2025-02-10"
+    image: "config/assets/posts/blog-2.jpg"
+    url: "https://github.com/David650991"
+
+  - title: "Entendiendo la IA Generativa"
+    category: "Inteligencia Artificial"
+    subtitle: "Mis aprendizajes sobre Prompt Engineering tras la certificación del MIT."
+    published: "2025-03-01"
+    image: "config/assets/posts/blog-3.jpg"
+    url: "https://github.com/David650991"
