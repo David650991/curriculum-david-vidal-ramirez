@@ -2,7 +2,9 @@ HEADER:
   label: "Contacto"
 
 LOCATION:
-  embed: "https://googleusercontent.com/maps.google.com/2"
+  # Contact Configuration
+  embed: "https://googleusercontent.com/maps.google.com/1"
+  # Security Fix: Force HTTPS
 
 FORM:
   label: "Formulario de Contacto"
