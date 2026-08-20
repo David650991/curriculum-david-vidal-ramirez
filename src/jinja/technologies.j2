@@ -1,0 +1,17 @@
+<section id="tecnologias" class="section section-anchor">
+  <div class="container">
+    <header class="section-heading">
+      <p class="eyebrow">{{ technologies.HEADER.eyebrow }}</p>
+      <h2>{{ technologies.HEADER.title }}</h2>
+      <p>{{ technologies.HEADER.description }}</p>
+    </header>
+    <div class="technology-groups">
+      {% for group in technologies.GROUPS %}
+      <article class="technology-group">
+        <h3>{{ group.title }}</h3>
+        <ul class="tags">{% for item in group["items"] %}<li>{{ item }}</li>{% endfor %}</ul>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>

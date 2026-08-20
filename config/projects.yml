@@ -1,18 +1,88 @@
 HEADER:
-  label: "Portafolio"
-
+  eyebrow: "Trabajo seleccionado"
+  title: "Lo que he construido hasta ahora"
+  description: "Aquí conviven herramientas que ya se utilizan y proyectos con los que practico. En cada caso indico su estado para no confundir un laboratorio con un producto terminado."
 PROJECTS:
-  - title: "La Luz y La Esperanza"
-    category: "Desarrollo Web Full Stack"
-    image: "config/assets/projects/project-1.jpg" # Asegúrate de poner una captura de tu web aquí
-    url: "https://www.laluzylaesperanzaquenecesito.me/"
-
-  - title: "Automatización con Python"
-    category: "Scripting & Backend"
-    image: "config/assets/projects/project-2.png"
-    url: "https://github.com/David650991"
-
-  - title: "Análisis IoT & Datos"
-    category: "Ciencia de Datos"
-    image: "config/assets/projects/project-3.jpg"
-    url: "https://github.com/David650991"
+  - slug: "generador-expedientes"
+    title: "Generador de Expedientes de Entrevista"
+    category: "Aplicación full stack serverless"
+    status: "Uso institucional privado"
+    featured: true
+    monogram: "GE"
+    summary: "Sistema privado para preparar, firmar, versionar y auditar expedientes legales y administrativos de entrevistas audiovisuales."
+    highlights: ["25 documentos con reglas de aplicabilidad", "Firmas en canvas y flujo secuencial", "Cloudflare Access, D1 y control de concurrencia", "Papelera, auditoría, invitaciones y pruebas"]
+    stack: ["JavaScript", "Web Components", "Cloudflare Pages Functions", "D1", "JWT"]
+    demo_url: "https://generador-expedientes-podcast.pages.dev/"
+    repository_url: null
+    note: "Código privado; la demostración requiere autorización."
+  - slug: "la-luz-esperanza"
+    title: "La Luz y La Esperanza Que Necesito"
+    category: "Sitio institucional e integraciones cloud"
+    status: "Producción"
+    featured: true
+    monogram: "LE"
+    image: "assets/projects/project-1.jpg"
+    summary: "Sitio institucional para comunicar servicios, instalaciones, equipo, podcast y canales de ayuda de un centro de rehabilitación."
+    highlights: ["SEO, Schema.org y contenido multimedia", "Consent Mode y eventos de conversión", "Firebase, Formspree, YouTube y Google Maps", "Diseño responsivo y portal de personal"]
+    stack: ["HTML", "CSS", "JavaScript", "Firebase", "GitHub Pages"]
+    demo_url: "https://www.laluzylaesperanzaquenecesito.me/"
+    repository_url: "https://github.com/David650991/La-Luz-Y-La-Esperanza-Que-Necesito"
+  - slug: "auth-practice"
+    title: "Auth Practice"
+    category: "Laboratorio de seguridad e identidad"
+    status: "Experimental"
+    featured: true
+    monogram: "AP"
+    summary: "Laboratorio Flask de autenticación por contraseña, correo, TOTP, códigos de recuperación, SMS y comparación facial."
+    highlights: ["Application factory y blueprints modulares", "Bcrypt, tokens firmados y rate limiting", "TOTP, SMS y códigos de recuperación", "OpenCV, Dlib y biometría experimental"]
+    stack: ["Python", "Flask", "SQLAlchemy", "SQLite", "OpenCV"]
+    demo_url: null
+    repository_url: null
+    note: "Demostrador académico; no destinado a identidades reales en producción."
+  - slug: "grid-chat"
+    title: "GRID-Chat"
+    category: "Aplicación web en tiempo real"
+    status: "Prototipo funcional"
+    featured: true
+    monogram: "GC"
+    summary: "Chat por salas con mensajes en tiempo real, presencia, historial, reacciones y administración básica."
+    highlights: ["Flask-SocketIO y eventos WebSocket", "Persistencia de mensajes en SQLite", "Salas, presencia, escritura y reacciones", "Interfaz responsiva y PWA básica"]
+    stack: ["Python", "Flask-SocketIO", "SQLite", "JavaScript", "Jinja"]
+    demo_url: "https://grid-chat-lknf.onrender.com/"
+    repository_url: "https://github.com/David650991/GRID-Chat"
+    note: "Prototipo pendiente de endurecimiento de seguridad."
+  - slug: "visionlab"
+    title: "VisionLab"
+    category: "Visión computacional en navegador"
+    status: "Laboratorio experimental"
+    featured: false
+    monogram: "VL"
+    summary: "Aplicación estática para experimentar con bordes, contornos, detección facial, landmarks y expresiones aparentes."
+    highlights: ["Canny y análisis heurístico de formas", "Detección facial y 68 landmarks", "Procesamiento local sobre Canvas", "Modelos ejecutados en el navegador"]
+    stack: ["OpenCV.js", "face-api.js", "Canvas", "JavaScript"]
+    demo_url: null
+    repository_url: "https://github.com/David650991/visionlab"
+    note: "Laboratorio educativo; no es un sistema de identificación biométrica."
+  - slug: "curriculum"
+    title: "Currículum y portafolio automatizado"
+    category: "Generación estática y CI/CD"
+    status: "Proyecto activo"
+    featured: false
+    monogram: "CV"
+    summary: "Este sitio: contenido profesional en YAML, plantillas Jinja, build reproducible y despliegue automático en GitHub Pages."
+    highlights: ["Contenido separado de la presentación", "HTML estático, rápido y accesible", "Pruebas del generador", "GitHub Actions y artefacto limpio"]
+    stack: ["Python", "Jinja2", "PyYAML", "Poetry", "GitHub Actions"]
+    demo_url: "https://david650991.github.io/curriculum-david-vidal-ramirez/"
+    repository_url: "https://github.com/David650991/curriculum-david-vidal-ramirez"
+  - slug: "tuxtepec-server"
+    title: "David Vidal IT Tuxtepec Server"
+    category: "Laboratorio Node.js y ARM64"
+    status: "Demostrador técnico"
+    featured: false
+    monogram: "NS"
+    summary: "Micrositio servido con Express para experimentar con publicación Node.js en un entorno ARM64/Android."
+    highlights: ["Servidor estático con Express", "Helmet, compresión y logging", "Interfaz ligera en JavaScript Vanilla", "Orientación a Termux y PM2"]
+    stack: ["Node.js", "Express", "Helmet", "CSS", "JavaScript"]
+    demo_url: null
+    repository_url: "https://github.com/David650991/David-Vidal-IT-Tuxtepec-Server"
+    note: "Demostrador de despliegue, no plataforma de monitoreo."

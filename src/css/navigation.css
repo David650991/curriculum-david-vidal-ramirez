@@ -1,0 +1,79 @@
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(7, 17, 31, .94);
+    border-bottom: 1px solid transparent;
+}
+
+.site-header.is-scrolled {
+    border-color: var(--line);
+}
+
+.nav-layout {
+    min-height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+}
+
+.brand-mark {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    background: linear-gradient(135deg, var(--brand), var(--accent));
+    color: #06101d;
+    font-weight: 900;
+}
+
+.brand strong,
+.brand small {
+    display: block;
+}
+
+.brand small {
+    margin-top: 3px;
+    color: var(--muted);
+    font-size: .76rem;
+}
+
+.main-nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.main-nav a {
+    padding: 9px 10px;
+    border-radius: 10px;
+    color: var(--muted);
+    font-size: .86rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.main-nav a:hover,
+.main-nav a.is-active {
+    background: var(--panel);
+    color: var(--text);
+}
+
+.menu-button {
+    display: none;
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--panel);
+    color: var(--text);
+    font-weight: 800;
+}

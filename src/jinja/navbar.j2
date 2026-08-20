@@ -1,13 +1,14 @@
-<!-- navbar.j2 -->
-<nav class="navbar">
-  <ul class="navbar-list">
-    <li class="navbar-item">
-      <button class="navbar-link  active" data-nav-link>{{ navbar.NAVBAR[0].label }}</button>
-    </li>
-    {% for item in navbar.NAVBAR[1:] %}
-    <li class="navbar-item">
-      <button class="navbar-link" data-nav-link>{{ item.label }}</button>
-    </li>
-    {% endfor %}
-  </ul>
-</nav>
+<header class="site-header" data-header>
+  <div class="container nav-layout">
+    <a class="brand" href="#inicio" aria-label="Ir al inicio">
+      <span class="brand-mark" aria-hidden="true">DV</span>
+      <span><strong>David Vidal</strong><small>Desarrollador de software</small></span>
+    </a>
+    <button class="menu-button" type="button" data-menu-button aria-expanded="false" aria-controls="main-nav">
+      <span class="sr-only">Abrir menú</span><span aria-hidden="true">Menú</span>
+    </button>
+    <nav id="main-nav" class="main-nav" data-menu aria-label="Navegación principal">
+      {% for item in navbar.NAVBAR %}<a href="{{ item.href }}">{{ item.label }}</a>{% endfor %}
+    </nav>
+  </div>
+</header>

@@ -1,6 +1,7 @@
 NAVBAR:
-  - label: "About"
-  - label: "Resume"
-  - label: "Portfolio"
-  - label: "Blog"
-  - label: "Contact"
+  - {label: "Inicio", href: "#inicio"}
+  - {label: "Perfil", href: "#perfil"}
+  - {label: "Proyectos", href: "#proyectos"}
+  - {label: "Tecnologías", href: "#tecnologias"}
+  - {label: "Trayectoria", href: "#trayectoria"}
+  - {label: "Contacto", href: "#contacto"}

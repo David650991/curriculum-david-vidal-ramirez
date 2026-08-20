@@ -1,102 +1,31 @@
-<!-- about.j2 -->
-<article class="about  active" data-page="about">
-  <header>
-    <h2 class="h2 article-title">{{about.HEADER.label}}</h2>
-  </header>
-
-  <!--- PRESENTATION --->
-  <section class="about-text">
-    {% for line in about.PRESENTATION.description.split('\n') %}
-      {% if line.strip() %}
-      <p>{{ line }}</p>
-      {% endif %}
-    {% endfor %}
-  </section>
-
-  <!--- DOING -->
-  {% if about.DOING.enabled %}
-  <section class="service">
-    <h3 class="h3 service-title">What i'm doing</h3>
-    <ul class="service-list">
-      {% for item in about.DOING["items"] %}
-      <li class="service-item">
-        <div class="service-icon-box">
-          <img src="{{item.icon}}" alt="design icon" width="30" height="30">
-        </div>
-        <div class="service-content-box">
-          <h4 class="h4 service-item-title">{{item.title}}</h4>
-          <p class="service-item-text">
-            {{item.description}}
-          </p>
-        </div>
-      </li>
-      {% endfor %}
-    </ul>
-  </section>
-  {% endif %}
-
-  <!--- SKILLS -->
-  {% if about.SKILLS.enabled %}
-  <section class="testimonials">
-    <h3 class="h3 testimonials-title">{{about.SKILLS.label}}</h3>
-    <ul class="testimonials-list has-scrollbar">
-      {% for item in about.SKILLS["items"] %}
-      <li class="testimonials-item">
-        <div class="content-card" data-testimonials-item>
-          <figure class="testimonials-avatar-box">
-            <img src="{{item.icon}}" alt="{{item.title}}" width="60" data-testimonials-avatar>
-          </figure>
-          <h4 class="h4 testimonials-item-title" data-testimonials-title>{{item.title}}</h4>
-          <div class="testimonials-text" data-testimonials-text>
-            <p>
-              {{item.description}}
-            </p>
-          </div>
-        </div>
-      </li>
-      {% endfor %}
-      < </ul>
-  </section>
-
-  <!--- popup modal -->
-  <div class="modal-container" data-modal-container>
-    <div class="overlay" data-overlay></div>
-    <section class="testimonials-modal">
-      <button class="modal-close-btn" data-modal-close-btn>
-        <ion-icon name="close-outline"></ion-icon>
-      </button>
-      <div class="modal-img-wrapper">
-        <figure class="modal-avatar-box">
-          <img src="{{profile.USER.avatar}}" alt="{{profile.USER.name}}" width="80" data-modal-img>
-        </figure>
-        <img src="./src/images/icon-quote.svg" alt="quote icon">
+<section id="perfil" class="section section-anchor">
+  <div class="container">
+    <header class="section-heading">
+      <p class="eyebrow">{{ about.HEADER.eyebrow }}</p>
+      <h2>{{ about.HEADER.title }}</h2>
+    </header>
+    <div class="profile-grid">
+      <div class="prose">
+        <p class="lead">{{ about.PRESENTATION.lead }}</p>
+        {% for paragraph in about.PRESENTATION.paragraphs %}<p>{{ paragraph }}</p>{% endfor %}
       </div>
-      <div class="modal-content">
-        <h4 class="h3 modal-title" data-modal-title>{{profile.USER.name}}</h4>
-        {# lorem #}
-        <div data-modal-text>
-          <p>
-            {# lorem #}
-          </p>
-        </div>
+      <dl class="metrics">
+        {% for item in about.METRICS %}<div><dt>{{ item.value }}</dt><dd>{{ item.label }}</dd></div>{% endfor %}
+      </dl>
+    </div>
+    <h3 class="subheading">{{ about.FOCUS.label }}</h3>
+    <div class="card-grid focus-grid">
+      {% for item in about.FOCUS["items"] %}<article class="info-card"><span class="card-number">0{{ loop.index }}</span><h4>{{ item.title }}</h4><p>{{ item.description }}</p></article>{% endfor %}
+    </div>
+    <div class="two-column-block">
+      <div>
+        <h3 class="subheading">{{ about.STRENGTHS.label }}</h3>
+        <ul class="check-list">{% for item in about.STRENGTHS["items"] %}<li>{{ item }}</li>{% endfor %}</ul>
       </div>
-    </section>
+      <div>
+        <h3 class="subheading">{{ about.STACK.label }}</h3>
+        <div class="stack-groups">{% for group in about.STACK.groups %}<div><h4>{{ group.title }}</h4><ul class="tags">{% for item in group['items'] %}<li>{{ item }}</li>{% endfor %}</ul></div>{% endfor %}</div>
+      </div>
+    </div>
   </div>
-  {% endif %}
-
-  <!--- TECHNOLOGIES-->
-  {% if about.TECHNOLOGIES.enabled %}
-  <section class="clients">
-    <h3 class="h3 clients-title">{{about.TECHNOLOGIES.label}}</h3>
-    <ul class="clients-list has-scrollbar">
-      {% for item in about.TECHNOLOGIES["items"] %}
-      <li class="clients-item">
-        <a href="#">
-          <img src="{{item.icon}}" alt="{{item.title}}" width="50" height="50">
-        </a>
-      </li>
-      {% endfor %}
-    </ul>
-  </section>
-  {% endif %}
-</article>
+</section>

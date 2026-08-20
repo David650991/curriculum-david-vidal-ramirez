@@ -26,3 +26,7 @@ build-backend = "poetry.core.masonry.api"
 preview = true
 select = ['E', 'F', 'W', 'I']
 ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

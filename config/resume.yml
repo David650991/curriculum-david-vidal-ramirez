@@ -1,59 +1,51 @@
 HEADER:
-  label: "Currículum"
-
+  eyebrow: "Trayectoria"
+  title: "Formación y experiencia"
 EDUCATION:
-  enabled: true
-  label: "Formación Académica y Certificaciones"
+  label: "Formación académica"
   items:
-    - period: "En Curso"
-      institution: "Instituto Tecnológico de Tuxtepec (TecNM)"
-      description: "Ingeniería en Sistemas Computacionales."
-    - period: "2025"
-      institution: "MIT Professional Education / Santander"
-      description: "Diplomados en Internet de las Cosas (IoT), Transformación Digital e IA Generativa."
-    - period: "2025"
-      institution: "Santander Open Academy"
-      description: "Python: Desarrollo Inteligente, Ciencia de Datos, Prompt Engineering y Microsoft Copilot."
-
+    - period: "En curso · 3.er semestre"
+      institution: "Instituto Tecnológico de Tuxtepec · Tecnológico Nacional de México"
+      description: "Ingeniería en Sistemas Computacionales, modalidad en línea."
+      detail: "Correo institucional: L25350801@tuxtepec.tecnm.mx"
+TRAINING:
+  label: "Formación complementaria"
+  items:
+    - {period: "2025", institution: "MIT Professional Education / Santander", description: "Formación en Internet de las Cosas, transformación digital e inteligencia artificial generativa."}
+    - {period: "2025", institution: "Santander Open Academy", description: "Python, ciencia de datos, prompt engineering y Microsoft Copilot."}
 EXPERIENCE:
-  enabled: true
-  label: "Trayectoria Profesional"
+  label: "Experiencia profesional"
   items:
     - period: "2024 — Presente"
-      position: "Desarrollador de Software (Freelance)"
-      description: "Desarrollo Full Stack del proyecto 'La Luz y La Esperanza'. Automatización de procesos con Python e integración de APIs de IA."
-    - period: "07/2021 — 08/2021"
-      position: "Asesor Comercial B2B"
-      description: "MEXICANA DE LUBRICANTES. Gestión de cartera de clientes, negociación y cierre de ventas en campo."
-    - period: "12/2020 — 06/2021"
-      position: "Logística y Operaciones"
-      description: "MERCADO LIBRE (Portos). Gestión eficiente de rutas de última milla y cumplimiento de KPIs de entrega bajo presión."
+      position: "Desarrollador de software freelance"
+      organization: "Proyectos independientes e institucionales"
+      bullets:
+        - "Desarrollo y mantenimiento del sitio institucional La Luz y La Esperanza Que Necesito."
+        - "Construcción de una aplicación privada para expedientes de entrevistas con reglas documentales, firmas, auditoría y almacenamiento remoto."
+        - "Desarrollo de prototipos con Flask, WebSockets, autenticación multifactor y visión computacional."
+        - "Automatización de generación y despliegue de sitios mediante Python, Jinja y GitHub Actions."
+    - period: "Julio 2021 — Agosto 2021"
+      position: "Asesor comercial B2B"
+      organization: "Mexicana de Lubricantes"
+      bullets: ["Gestión de cartera, atención en campo, negociación y seguimiento comercial."]
+    - period: "Diciembre 2020 — Junio 2021"
+      position: "Logística y operaciones"
+      organization: "Mercado Libre / Portos"
+      bullets: ["Coordinación de rutas de última milla y cumplimiento de indicadores de entrega."]
     - period: "2009 — 2020"
-      position: "Experiencia Operativa y Comercial"
-      description: "Diversos roles en ventas, banca y servicios (Banco Azteca, Walmart, etc.). Desarrollo de resiliencia laboral y atención al cliente."
-
+      position: "Experiencia operativa, comercial y de servicio"
+      organization: "Diversas organizaciones, entre ellas Banco Azteca y Walmart"
+      bullets: ["Atención al cliente, ventas, operación y trabajo orientado a resultados."]
+COMPETENCIES:
+  label: "Competencias demostradas"
+  items:
+    - {name: "Python y Flask", level: "Experiencia práctica", evidence: "Autenticación, tiempo real y generación estática"}
+    - {name: "JavaScript web", level: "Experiencia práctica", evidence: "Web Components, Canvas, APIs y estado cliente"}
+    - {name: "Persistencia SQL", level: "Fundamentos aplicados", evidence: "SQLite, SQLAlchemy y Cloudflare D1"}
+    - {name: "Cloud y CI/CD", level: "Fundamentos aplicados", evidence: "Cloudflare y GitHub Actions"}
+    - {name: "Seguridad web", level: "En desarrollo", evidence: "Access, JWT, MFA experimental y autorización"}
 LANGUAGES:
-  enabled: true
-  display_progress_bars: true
-  display_percentage_values: true
   label: "Idiomas"
   items:
-    - language: "Español"
-      proficiency: "100%"
-    - language: "Inglés Técnico"
-      proficiency: "25%"
-
-SKILLS:
-  enabled: true
-  display_progress_bars: true
-  display_percentage_values: true
-  label: "Habilidades Técnicas"
-  items:
-    - skill: "Python & Scripting"
-      proficiency: "75%"
-    - skill: "IA Generativa & Prompting"
-      proficiency: "85%"
-    - skill: "HTML5 / CSS3 / JS"
-      proficiency: "70%"
-    - skill: "Git / GitHub"
-      proficiency: "60%"
+    - {language: "Español", level: "Nativo"}
+    - {language: "Inglés técnico", level: "Básico, en formación continua"}

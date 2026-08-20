@@ -1,0 +1,21 @@
+HEADER:
+  eyebrow: "Tecnologías"
+  title: "Herramientas que ya he usado en proyectos"
+  description: "Esta lista reúne tecnologías que aparecen en mi código. No significa que domine todas al mismo nivel; algunas forman parte de productos activos y otras de laboratorios donde sigo aprendiendo."
+GROUPS:
+  - title: "Lenguajes y presentación"
+    items: ["Python", "JavaScript", "SQL", "HTML5", "CSS3", "YAML", "Jinja2"]
+  - title: "Aplicaciones web"
+    items: ["Flask", "Flask-SocketIO", "Web Components", "Node.js", "Express.js", "Canvas API", "WebSocket", "PWA"]
+  - title: "Datos y servicios"
+    items: ["SQLite", "SQLAlchemy", "Cloudflare D1", "Firebase", "Formspree", "YouTube", "Google Maps"]
+  - title: "Cloud y publicación"
+    items: ["Cloudflare Pages", "Cloudflare Pages Functions", "Cloudflare Access", "GitHub Pages", "GitHub Actions", "Render"]
+  - title: "Seguridad"
+    items: ["JSON Web Token (JWT)", "bcrypt", "TOTP", "Rate limiting", "Helmet"]
+  - title: "Visión computacional"
+    items: ["OpenCV", "OpenCV.js", "face-api.js", "Dlib"]
+  - title: "Analítica y privacidad"
+    items: ["Google Tag Manager", "Google Consent Mode", "Schema.org"]
+  - title: "Herramientas de trabajo"
+    items: ["Git", "GitHub", "GitLab", "Poetry", "PyYAML", "Ruff", "pytest", "Wrangler", "PM2", "Termux", "Visual Studio Code"]

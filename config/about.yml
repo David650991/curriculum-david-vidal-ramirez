@@ -1,63 +1,30 @@
 HEADER:
-  label: "Sobre mí"
-
+  eyebrow: "Perfil profesional"
+  title: "Aprendo construyendo soluciones para problemas que conozco de cerca"
 PRESENTATION:
-  description: |
-    Soy estudiante de Ingeniería en Sistemas Computacionales en el TecNM y me encuentro en una etapa de transición profesional hacia el sector tecnológico. Tras más de 10 años de experiencia en logística y gestión comercial, he redirigido mi disciplina y capacidad de resolución de problemas hacia el código.
-
-    Mi enfoque actual es construir soluciones digitales funcionales. No solo programo; busco resolver problemas reales. Combino el Desarrollo Web (HTML5/CSS3/JS) con la automatización en Python y el uso estratégico de Inteligencia Artificial para crear proyectos con impacto social, como mi plataforma "La Luz y La Esperanza".
-
-DOING:
-  enabled: true
-  label: "Lo que hago"
+  lead: "Soy David Vidal. Estudio Ingeniería en Sistemas Computacionales y desarrollo aplicaciones web para resolver necesidades concretas."
+  paragraphs:
+    - "Antes de dedicarme al código trabajé en logística, ventas, operación y atención al cliente. Esa etapa me enseñó a escuchar, ordenar procesos y buscar soluciones que funcionen fuera de la pantalla."
+    - "Una parte importante de mi trabajo nació en La Luz y La Esperanza Que Necesito. Primero desarrollé su sitio público y después una herramienta privada para preparar expedientes, recopilar firmas y conservar un historial de cada cambio."
+METRICS:
+  - {value: "7", label: "proyectos documentados"}
+  - {value: "25", label: "documentos en el sistema de expedientes"}
+  - {value: "3.er", label: "semestre de Ingeniería en Sistemas"}
+  - {value: "10+", label: "años de experiencia operativa previa"}
+FOCUS:
+  label: "En qué trabajo"
   items:
-    - title: "Desarrollo Web"
-      icon: "config/assets/icons/laptop-code.svg"
-      description: "Creación de sitios web responsivos y accesibles utilizando HTML5, CSS3 y JavaScript moderno."
-    - title: "Scripting & Python"
-      icon: "config/assets/icons/python.svg"
-      description: "Desarrollo de scripts para automatización de tareas y análisis de datos básico."
-    - title: "IA & Productividad"
-      icon: "config/assets/icons/ia.svg"
-      description: "Implementación de IA Generativa (Prompt Engineering/Copilot) para acelerar flujos de trabajo."
-    - title: "Transformación Digital"
-      icon: "config/assets/icons/compass.svg"
-      description: "Aplicación de conceptos de IoT y digitalización para modernizar procesos."
-
-SKILLS:
-  enabled: true
-  label: "Habilidades Blandas"
-  items:
-    - title: "Disciplina Autodidacta"
-      icon: "config/assets/icons/bolt.svg"
-      description: "Capacidad probada para dominar nuevas tecnologías de forma intensiva y continua."
-    - title: "Resolución de Problemas"
-      icon: "config/assets/icons/gear.svg"
-      description: "Enfoque pragmático adquirido en operaciones logísticas: diagnosticar el fallo y ejecutar la solución."
-    - title: "Adaptabilidad"
-      icon: "config/assets/icons/compass.svg"
-      description: "Facilidad para transicionar entre entornos operativos y técnicos, ajustándome a nuevos desafíos."
-    - title: "Comunicación Efectiva"
-      icon: "config/assets/icons/comment.svg"
-      description: "Habilidad para traducir conceptos técnicos complejos a un lenguaje claro."
-
-TECHNOLOGIES:
-  enabled: true
-  label: "Stack Tecnológico"
-  items:
-    - title: "Python"
-      icon: "config/assets/icons/python.svg"
-    - title: "JavaScript"
-      icon: "config/assets/icons/javascript.svg"
-    - title: "HTML5"
-      icon: "config/assets/icons/html.svg"
-    - title: "CSS3"
-      icon: "config/assets/icons/css3.svg"
-    - title: "Git"
-      icon: "config/assets/icons/git.svg"
-    - title: "VS Code"
-      icon: "config/assets/icons/visual-studio-code.svg"
-    - title: "Linux/Bash"
-      icon: "config/assets/icons/linux.svg"
-    - title: "AI Tools"
-      icon: "config/assets/icons/ia.svg"
+    - {title: "Desarrollo web", description: "Creo sitios y aplicaciones que se adaptan a teléfonos y computadoras, procurando que sean claros y fáciles de mantener."}
+    - {title: "Backend y datos", description: "Conecto formularios, reglas de negocio y bases de datos para que la información no se quede sólo en la interfaz."}
+    - {title: "Procesos", description: "Estudio tareas manuales y las convierto en recorridos más ordenados, con validaciones y seguimiento."}
+    - {title: "Seguridad aplicada", description: "He practicado autenticación, permisos y protección de rutas; sigo fortaleciendo esta área en cada proyecto."}
+STRENGTHS:
+  label: "Fortalezas profesionales"
+  items: ["Resolución pragmática de problemas", "Disciplina autodidacta", "Documentación técnica clara", "Adaptabilidad entre dominios", "Enfoque en necesidades reales", "Uso responsable de IA como herramienta de desarrollo"]
+STACK:
+  label: "Tecnologías con experiencia práctica"
+  groups:
+    - {title: "Lenguajes y frontend", items: ["Python", "JavaScript", "SQL", "HTML5", "CSS3", "YAML", "Jinja2", "Web Components"]}
+    - {title: "Backend y datos", items: ["Flask", "SQLAlchemy", "Flask-SocketIO", "Node.js", "Express", "SQLite", "Cloudflare D1", "Firebase"]}
+    - {title: "Cloud y herramientas", items: ["Cloudflare Pages", "Pages Functions", "Cloudflare Access", "GitHub Actions", "GitHub Pages", "Poetry", "Wrangler", "Git"]}
+    - {title: "Visión computacional", items: ["OpenCV", "OpenCV.js", "face-api.js", "Dlib"]}

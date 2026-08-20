@@ -1,31 +1,26 @@
-HEADER:
-  label: "Contacto"
-
+SITE:
+  name: "David Vidal Ramírez | Desarrollador de Software"
+  url: "https://david650991.github.io/curriculum-david-vidal-ramirez"
+  repository: "https://github.com/David650991/curriculum-david-vidal-ramirez"
+  description: "Portafolio de David Vidal Ramírez: desarrollador de software enfocado en Python, JavaScript, aplicaciones web, automatización y digitalización de procesos."
+  language: "es-MX"
 USER:
-  role: "Desarrollador Python & Web | IA Entusiasta"
+  role: "Desarrollador de Software | Python, JavaScript y Soluciones Web"
   name: "David Vidal Ramírez"
-  username: "David650991" # [cite: 1]
+  username: "David650991"
   email: "David650991@gmail.com"
-  avatar: "config/assets/avatars/Foto_Infantil_David_Vidal_Ramirez.png"
-
+  institutional_email: "L25350801@tuxtepec.tecnm.mx"
+  phone_display: "+52 287 124 6128"
+  phone_href: "+522871246128"
+  location: "Tres Valles, Veracruz, México"
+  avatar: "assets/avatars/Foto_Infantil_David_Vidal_Ramirez.png"
+  availability: "Disponible para oportunidades de desarrollo y colaboración"
 INFO:
-  - label: "Email"
-    value: "David650991@gmail.com" # [cite: 1]
-    icon: "mail-outline"
-  - label: "Teléfono"
-    value: "+52 287 124 61 28" # [cite: 1]
-    icon: "phone-portrait-outline"
-  - label: "Nacimiento"
-    value: "15 de Junio, 1991" # Derivado de RFC: VIRD910615 [cite: 12]
-    icon: "calendar-outline"
-  - label: "Ubicación"
-    value: "Tres Valles, Veracruz, MX" # [cite: 1]
-    icon: "location-outline"
-
+  - {label: "Correo profesional", value: "David650991@gmail.com", href: "mailto:David650991@gmail.com"}
+  - {label: "Correo institucional", value: "L25350801@tuxtepec.tecnm.mx", href: "mailto:L25350801@tuxtepec.tecnm.mx"}
+  - {label: "Teléfono", value: "+52 287 124 6128", href: "tel:+522871246128"}
+  - {label: "Ubicación", value: "Tres Valles, Veracruz, México", href: "https://www.google.com/maps/search/?api=1&query=Tres+Valles%2C+Veracruz%2C+México"}
 SOCIAL:
-  - icon: "logo-linkedin"
-    url: "https://www.linkedin.com/in/david-vidal-ramirez-3ba01b147/" # [cite: 1]
-  - icon: "logo-github"
-    url: "https://github.com/David650991" # [cite: 1]
-  - icon: "logo-gitlab"
-    url: "https://gitlab.com/david650991" # [cite: 1]
+  - {label: "LinkedIn", url: "https://www.linkedin.com/in/david-vidal-ramirez-3ba01b147/"}
+  - {label: "GitHub", url: "https://github.com/David650991"}
+  - {label: "GitLab", url: "https://gitlab.com/david650991"}

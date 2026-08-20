@@ -1,0 +1,233 @@
+.hero {
+    position: relative;
+    overflow: clip;
+    padding: 90px 0 110px;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: -30% auto auto 45%;
+    width: 700px;
+    height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(11, 99, 246, .22), transparent 68%);
+    pointer-events: none;
+}
+
+.hero-grid,
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1.18fr .82fr;
+    align-items: center;
+    gap: clamp(42px, 8vw, 100px);
+}
+
+h1 {
+    max-width: 760px;
+    margin-bottom: 12px;
+    font-size: clamp(3.25rem, 8vw, 6.6rem);
+    line-height: .93;
+    letter-spacing: -.065em;
+}
+
+.hero-role {
+    margin-bottom: 22px;
+    color: var(--brand);
+    font-size: clamp(1.15rem, 2.1vw, 1.55rem);
+    font-weight: 800;
+}
+
+.hero-summary {
+    max-width: 670px;
+    margin-bottom: 30px;
+    color: var(--muted);
+    font-size: 1.12rem;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 11px 19px;
+    border: 1px solid transparent;
+    border-radius: 13px;
+    font-weight: 850;
+    text-decoration: none;
+}
+
+.button-primary {
+    background: #0b63f6;
+    color: white;
+}
+
+.button-secondary {
+    border-color: var(--line);
+    background: var(--panel);
+}
+
+.availability {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 26px 0 0;
+    color: var(--muted);
+    font-size: .88rem;
+}
+
+.availability span {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+}
+
+.portrait-panel {
+    position: relative;
+    min-height: 470px;
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    border: 1px solid var(--line);
+    border-radius: 34px;
+    background: linear-gradient(160deg, #142d4d, #091525);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.portrait-panel>img {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 430px);
+}
+
+.portrait-glow {
+    position: absolute;
+    top: 12%;
+    left: 50%;
+    width: 310px;
+    height: 310px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--brand), var(--accent));
+    opacity: .7;
+}
+
+.portrait-caption {
+    position: absolute;
+    z-index: 2;
+    right: 18px;
+    bottom: 18px;
+    left: 18px;
+    padding: 14px 16px;
+    border: 1px solid rgba(255, 255, 255, .14);
+    border-radius: 14px;
+    background: rgba(7, 17, 31, .9);
+}
+
+.portrait-caption strong,
+.portrait-caption span {
+    display: block;
+}
+
+.portrait-caption span {
+    color: var(--muted);
+    font-size: .82rem;
+}
+
+.profile-grid {
+    grid-template-columns: 1.15fr .85fr;
+    align-items: start;
+    gap: 56px;
+}
+
+.prose .lead {
+    color: var(--text);
+    font-size: 1.26rem;
+    font-weight: 650;
+}
+
+.metrics {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 0;
+}
+
+.metrics div,
+.info-card,
+.technology-group {
+    padding: 24px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--panel);
+}
+
+.metrics dt {
+    color: var(--accent);
+    font-size: 2.1rem;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.metrics dd {
+    margin: 9px 0 0;
+    color: var(--muted);
+    font-size: .88rem;
+}
+
+.subheading {
+    margin: 58px 0 24px;
+}
+
+.focus-grid,
+.technology-groups {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.info-card p {
+    color: var(--muted);
+    font-size: .91rem;
+}
+
+.card-number {
+    color: var(--brand);
+    font-size: .8rem;
+    font-weight: 900;
+}
+
+.two-column-block {
+    display: grid;
+    grid-template-columns: .7fr 1.3fr;
+    gap: 56px;
+}
+
+.check-list {
+    display: grid;
+    gap: 11px;
+    padding: 0;
+    list-style: none;
+}
+
+.check-list li {
+    color: var(--muted);
+}
+
+.stack-groups {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.technology-group h3 {
+    font-size: 1rem;
+}

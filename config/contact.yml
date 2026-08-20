@@ -1,17 +1,12 @@
 HEADER:
-  label: "Contacto"
-
+  eyebrow: "Contacto"
+  title: "Conversemos sobre software y procesos que necesitan una solución"
+  description: "Estoy disponible para oportunidades de desarrollo, colaboración y proyectos donde pueda aportar análisis operativo y construcción de herramientas web."
+CALLS_TO_ACTION:
+  - {label: "Escribir por correo", value: "David650991@gmail.com", href: "mailto:David650991@gmail.com?subject=Contacto%20desde%20tu%20portafolio"}
+  - {label: "Contactar por LinkedIn", value: "David Vidal Ramírez", href: "https://www.linkedin.com/in/david-vidal-ramirez-3ba01b147/"}
+  - {label: "Consultar GitHub", value: "@David650991", href: "https://github.com/David650991"}
 LOCATION:
-  # Contact Configuration
-
-  # Contact Configuration
-  # Ubicación exacta: Tres Valles, Veracruz
-  embed: "https://maps.google.com/maps?q=18.242750,-96.145015&hl=es&z=14&output=embed"
-
-FORM:
-  label: "Formulario de Contacto"
-  fields:
-    - name: "Nombre completo"
-    - email: "Correo electrónico"
-    - message: "Tu mensaje"
-    - submit: "Enviar mensaje"
+  label: "Base profesional"
+  value: "Tres Valles, Veracruz, México"
+  href: "https://www.google.com/maps/search/?api=1&query=Tres+Valles%2C+Veracruz%2C+México"
