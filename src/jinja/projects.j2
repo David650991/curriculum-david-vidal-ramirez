@@ -15,6 +15,11 @@
           <div class="project-meta"><span>{{ item.category }}</span><strong>{{ item.status }}</strong></div>
           <h3>{{ item.title }}</h3>
           <p>{{ item.summary }}</p>
+          <dl class="project-details">
+            <div><dt>Mi aportación</dt><dd>{{ item.contribution }}</dd></div>
+            <div><dt>Cómo funciona</dt><dd>{{ item.operation }}</dd></div>
+            <div><dt>Alcance actual</dt><dd>{{ item.scope }}</dd></div>
+          </dl>
           <ul class="project-highlights">{% for highlight in item.highlights %}<li>{{ highlight }}</li>{% endfor %}</ul>
           <ul class="tags">{% for technology in item.stack %}<li>{{ technology }}</li>{% endfor %}</ul>
           {% if item.note is defined %}<p class="project-note">{{ item.note }}</p>{% endif %}

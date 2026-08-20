@@ -44,12 +44,19 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
     assert 'lang="es-MX"' in html
     assert "Generador de Expedientes de Entrevista" in html
     assert "Herramientas que ya he usado en proyectos" in html
+    assert "Mi aportación" in html
+    assert "Cómo funciona" in html
+    assert "Alcance actual" in html
     assert "David Vidal Ramírez" in html
     assert "fonts.googleapis.com" not in html
     assert "ionicons" not in html.lower()
     assert "< </ul>" not in html
     assert "&#34;@context&#34;" not in html
     assert '"@context":"https://schema.org"' in html
+    for obsolete_label in (">About<", ">Resume<", ">Portfolio<", ">Blog<", ">Contact<"):
+        assert obsolete_label not in html
+    assert "<iframe" not in html
+    assert "maps.google.com/maps/embed" not in html
 
     manifest = json.loads((output / "site.webmanifest").read_text(encoding="utf-8"))
     assert manifest["lang"] == "es-MX"

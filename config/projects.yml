@@ -10,6 +10,9 @@ PROJECTS:
     featured: true
     monogram: "GE"
     summary: "Sistema privado para preparar, firmar, versionar y auditar expedientes legales y administrativos de entrevistas audiovisuales."
+    contribution: "Diseñé y desarrollé el flujo completo: captura guiada, reglas que determinan qué documentos corresponden, firmas, persistencia, permisos y seguimiento de cambios."
+    operation: "La interfaz está construida con Web Components y se comunica con funciones serverless. Cloudflare Access protege el acceso; D1 conserva los datos y el sistema controla versiones y ediciones simultáneas."
+    scope: "Es mi proyecto con mayor amplitud funcional: reúne 25 documentos, invitaciones, papelera, auditoría, firmas secuenciales y pruebas. El repositorio es privado porque maneja un proceso institucional."
     highlights: ["25 documentos con reglas de aplicabilidad", "Firmas en canvas y flujo secuencial", "Cloudflare Access, D1 y control de concurrencia", "Papelera, auditoría, invitaciones y pruebas"]
     stack: ["JavaScript", "Web Components", "Cloudflare Pages Functions", "D1", "JWT"]
     demo_url: "https://generador-expedientes-podcast.pages.dev/"
@@ -23,6 +26,9 @@ PROJECTS:
     monogram: "LE"
     image: "assets/projects/project-1.jpg"
     summary: "Sitio institucional para comunicar servicios, instalaciones, equipo, podcast y canales de ayuda de un centro de rehabilitación."
+    contribution: "Me encargué de la estructura, la interfaz, la publicación y las integraciones. El sitio funciona como la presencia pública del centro y como punto de entrada hacia sus medios de contacto."
+    operation: "Es un sitio estático responsivo conectado con Firebase, Formspree, YouTube y Google Maps. Incluye datos estructurados, medición de conversiones y consentimiento para analítica."
+    scope: "Está publicado y en uso. Aún puede mejorar en optimización multimedia, cobertura de pruebas y mantenimiento sistemático de accesibilidad."
     highlights: ["SEO, Schema.org y contenido multimedia", "Consent Mode y eventos de conversión", "Firebase, Formspree, YouTube y Google Maps", "Diseño responsivo y portal de personal"]
     stack: ["HTML", "CSS", "JavaScript", "Firebase", "GitHub Pages"]
     demo_url: "https://www.laluzylaesperanzaquenecesito.me/"
@@ -34,6 +40,9 @@ PROJECTS:
     featured: true
     monogram: "AP"
     summary: "Laboratorio Flask de autenticación por contraseña, correo, TOTP, códigos de recuperación, SMS y comparación facial."
+    contribution: "Lo construí para entender cómo se relacionan distintos factores de autenticación y cómo separar responsabilidades en una aplicación Flask."
+    operation: "Usa una fábrica de aplicación, blueprints, SQLAlchemy y SQLite. Las prácticas incluyen contraseñas con bcrypt, tokens firmados, límites de intentos, TOTP y comparación facial experimental."
+    scope: "Es un laboratorio técnico, no un proveedor de identidad. Antes de usarlo con cuentas reales necesitaría auditoría, gestión segura de secretos, pruebas de ataque y políticas operativas."
     highlights: ["Application factory y blueprints modulares", "Bcrypt, tokens firmados y rate limiting", "TOTP, SMS y códigos de recuperación", "OpenCV, Dlib y biometría experimental"]
     stack: ["Python", "Flask", "SQLAlchemy", "SQLite", "OpenCV"]
     demo_url: null
@@ -46,6 +55,9 @@ PROJECTS:
     featured: true
     monogram: "GC"
     summary: "Chat por salas con mensajes en tiempo real, presencia, historial, reacciones y administración básica."
+    contribution: "Desarrollé el servidor, los eventos en tiempo real, la persistencia y la interfaz para practicar comunicación bidireccional más allá de las peticiones HTTP tradicionales."
+    operation: "Flask-SocketIO distribuye mensajes y eventos de presencia; SQLite conserva el historial. El cliente permite entrar a salas, ver actividad, escribir y reaccionar."
+    scope: "El prototipo funciona y está desplegado en Render. Le faltan controles de seguridad, moderación y una estrategia de escalado antes de admitir una comunidad pública."
     highlights: ["Flask-SocketIO y eventos WebSocket", "Persistencia de mensajes en SQLite", "Salas, presencia, escritura y reacciones", "Interfaz responsiva y PWA básica"]
     stack: ["Python", "Flask-SocketIO", "SQLite", "JavaScript", "Jinja"]
     demo_url: "https://grid-chat-lknf.onrender.com/"
@@ -58,6 +70,9 @@ PROJECTS:
     featured: false
     monogram: "VL"
     summary: "Aplicación estática para experimentar con bordes, contornos, detección facial, landmarks y expresiones aparentes."
+    contribution: "Preparé una interfaz donde se puede cargar una imagen y observar diferentes etapas del procesamiento sin enviar el archivo a un servidor."
+    operation: "OpenCV.js trabaja con bordes y contornos sobre Canvas; face-api.js ejecuta detección facial, 68 puntos de referencia y estimaciones de expresión en el navegador."
+    scope: "Su finalidad es educativa. No identifica personas, no debe utilizarse para tomar decisiones sensibles y sus resultados dependen de la imagen y de los modelos empleados."
     highlights: ["Canny y análisis heurístico de formas", "Detección facial y 68 landmarks", "Procesamiento local sobre Canvas", "Modelos ejecutados en el navegador"]
     stack: ["OpenCV.js", "face-api.js", "Canvas", "JavaScript"]
     demo_url: null
@@ -70,6 +85,9 @@ PROJECTS:
     featured: false
     monogram: "CV"
     summary: "Este sitio: contenido profesional en YAML, plantillas Jinja, build reproducible y despliegue automático en GitHub Pages."
+    contribution: "Separé mis datos del diseño para poder actualizar el currículum sin reescribir HTML. También incorporé validación, pruebas, archivos SEO y publicación automática."
+    operation: "Python carga y valida YAML, Jinja genera HTML y los módulos CSS se unen durante el build. GitHub Actions revisa el código, ejecuta pruebas y publica únicamente el directorio final."
+    scope: "Es un proyecto activo y el punto de unión de mi trayectoria. Cada dato debe mantenerse verificable y cada nuevo recurso debe justificar su efecto en la carga."
     highlights: ["Contenido separado de la presentación", "HTML estático, rápido y accesible", "Pruebas del generador", "GitHub Actions y artefacto limpio"]
     stack: ["Python", "Jinja2", "PyYAML", "Poetry", "GitHub Actions"]
     demo_url: "https://david650991.github.io/curriculum-david-vidal-ramirez/"
@@ -81,6 +99,9 @@ PROJECTS:
     featured: false
     monogram: "NS"
     summary: "Micrositio servido con Express para experimentar con publicación Node.js en un entorno ARM64/Android."
+    contribution: "Preparé el servidor y una interfaz ligera para comprobar que podía levantar y administrar una aplicación Node.js desde un dispositivo ARM64 con Termux."
+    operation: "Express sirve los archivos estáticos; Helmet añade cabeceras, compression reduce las respuestas y el registro facilita revisar solicitudes. PM2 se utiliza para mantener el proceso."
+    scope: "Es una demostración de despliegue y administración básica. No monitorea infraestructura ni sustituye una plataforma de observabilidad."
     highlights: ["Servidor estático con Express", "Helmet, compresión y logging", "Interfaz ligera en JavaScript Vanilla", "Orientación a Termux y PM2"]
     stack: ["Node.js", "Express", "Helmet", "CSS", "JavaScript"]
     demo_url: null
