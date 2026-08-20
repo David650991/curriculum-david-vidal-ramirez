@@ -1,157 +1,122 @@
-@media(max-width:900px) {
-
-    .hero-grid,
-    .profile-grid,
-    .resume-grid,
-    .contact-grid {
-        grid-template-columns: 1fr
-    }
-
-    .focus-grid,
-    .technology-groups {
-        grid-template-columns: repeat(2, 1fr)
-    }
-
-    .project-grid {
-        grid-template-columns: 1fr
-    }
+@media (max-width: 1180px) {
+  .portfolio-shell { grid-template-columns: 270px minmax(0, 1fr); width: min(1120px, calc(100% - 32px)); }
+  .section { padding-inline: 30px; }
+  .main-nav a { padding-inline: 11px; font-size: .84rem; }
+  .project-grid { gap: 16px; }
 }
 
-@media(max-width:720px) {
-    .container {
-        width: min(calc(100% - 28px), var(--max))
-    }
-
-    .brand small {
-        display: none
-    }
-
-    .menu-button {
-        display: block
-    }
-
-    .main-nav {
-        position: absolute;
-        top: 100%;
-        right: 14px;
-        left: 14px;
-        display: none;
-        padding: 10px;
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        background: var(--soft)
-    }
-
-    .main-nav.is-open {
-        display: grid
-    }
-
-    .hero {
-        padding: 62px 0 78px
-    }
-
-    .section {
-        padding: 76px 0
-    }
-
-    .two-column-block {
-        grid-template-columns: 1fr
-    }
-
-    .project-card {
-        grid-template-rows: 190px auto
-    }
-
-    .footer-layout {
-        display: grid
-    }
+@media (max-width: 1020px) {
+  .portfolio-shell { grid-template-columns: 240px minmax(0, 1fr); width: min(960px, calc(100% - 28px)); margin: 28px auto; }
+  .profile-card { padding: 22px 17px; }
+  .main-nav a { padding-inline: 9px; font-size: .79rem; }
+  .section { padding-inline: 28px; }
+  .project-grid, .resume-grid { grid-template-columns: 1fr; }
+  .contact-workspace { grid-template-columns: 1fr; }
+  .contact-map { min-height: 300px; }
 }
 
-@media(max-width:480px) {
-
-    .metrics,
-    .focus-grid,
-    .technology-groups,
-    .stack-groups {
-        grid-template-columns: 1fr
-    }
-
-    .portrait-panel {
-        min-height: 390px
-    }
-
-    .hero-actions .button {
-        width: 100%
-    }
-
-    .project-meta {
-        display: grid
-    }
-
-    .project-meta strong {
-        text-align: left
-    }
+@media (max-width: 840px) {
+  .portfolio-shell { grid-template-columns: 220px minmax(0, 1fr); width: min(810px, calc(100% - 24px)); gap: 14px; }
+  .profile-card { padding-inline: 14px; }
+  .profile-portrait { width: 142px; height: 142px; }
+  .profile-actions { grid-template-columns: 1fr; }
+  .section { padding: 36px 22px 48px; }
+  .panel-header { padding-inline: 12px; }
+  .main-nav a { padding-inline: 7px; font-size: .73rem; }
+  .career-grid { grid-template-columns: 1fr; }
+  .ecosystem-grid { grid-template-columns: 1fr; }
 }
 
-@media(prefers-reduced-motion:reduce) {
-    html {
-        scroll-behavior: auto
-    }
+@media (max-width: 760px) {
+  .portfolio-shell { display: block; width: min(680px, calc(100% - 24px)); margin: 12px auto 28px; }
+  .profile-card { position: static; display: grid; grid-template-columns: 96px 1fr; gap: 16px; align-items: center; margin-bottom: 14px; border-radius: 18px; }
+  .profile-portrait { width: 104px; height: 104px; margin: 0; }
+  .profile-identity { text-align: left; }
+  .profile-identity h1 { font-size: 1.3rem; }
+  .profile-toggle { display: block; grid-column: 1 / -1; }
+  .profile-details { display: none; grid-column: 1 / -1; margin-top: 0; }
+  .profile-details.is-open { display: block; }
+  .profile-data { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .content-panel { border-radius: 18px; }
+  .panel-header { justify-content: space-between; padding: 10px 14px; }
+  .compact-brand { display: block; }
+  .menu-button { display: none; }
+  .panel-header { overflow: hidden; }
+  .main-nav { min-width: 0; overflow-x: auto; scrollbar-width: none; }
+  .main-nav::-webkit-scrollbar { display: none; }
+  .main-nav a { flex: 0 0 auto; padding: 18px 10px 16px; white-space: nowrap; }
+  .section { padding: 34px 22px 42px; }
+  #contenido { min-height: 600px; }
+  .profile-grid, .two-column-block { grid-template-columns: 1fr; }
+  .focus-grid, .technology-groups, .stack-groups, .career-grid { grid-template-columns: repeat(2, 1fr); }
+  .site-footer { padding: 20px 22px; }
+  .contact-map { min-height: 320px; }
+}
 
-    *,
-    *::before,
-    *::after {
-        animation-duration: .01ms !important;
-        transition-duration: .01ms !important
-    }
+@media (max-width: 600px) {
+  .portfolio-shell { width: min(100% - 16px, 560px); margin-top: 8px; }
+  .profile-card { grid-template-columns: 88px minmax(0, 1fr); padding: 18px; }
+  .profile-portrait { width: 90px; height: 90px; }
+  .profile-identity h1 { font-size: 1.22rem; }
+  .profile-data, .focus-grid, .technology-groups, .stack-groups, .career-grid { grid-template-columns: 1fr; }
+  .panel-header { min-height: 64px; }
+  .compact-brand span { width: 36px; height: 36px; }
+  .main-nav a { min-height: 44px; padding: 14px 9px 12px; font-size: .72rem; }
+  .section-heading h2, .contact-section h2 { font-size: clamp(2rem, 10vw, 2.75rem); }
+  .project-content { padding: 20px; }
+  .site-footer { align-items: flex-start; flex-direction: column; }
+  .integration-list, .technology-context-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  body { font-size: 16px; }
+  .profile-card { grid-template-columns: 78px 1fr; padding: 16px; }
+  .profile-portrait { width: 82px; height: 82px; }
+  .profile-identity > p:last-child, .profile-kicker { display: none; }
+  .profile-data, .metrics, .focus-grid, .technology-groups, .stack-groups, .career-grid { grid-template-columns: 1fr; }
+  .concept-list { columns: 1; }
+  .section { padding-inline: 17px; }
+  .section-heading h2, .contact-section h2 { font-size: 2.2rem; }
+  .project-card { grid-template-rows: 170px 1fr; }
+  .project-meta { display: grid; }
+  .project-meta strong { text-align: left; }
+  .earlier-experience li { grid-template-columns: 1fr; grid-template-areas: "period" "company" "location"; gap: 6px; padding: 13px; }
+  .earlier-experience span { align-self: auto; }
+  .contact-quick-actions { grid-template-columns: 1fr; }
+  .profile-social .social-link span { display: none; }
+  .profile-social .social-link { padding: 8px; }
+}
+
+@media (max-width: 360px) {
+  .portfolio-shell { width: calc(100% - 10px); }
+  .profile-card { grid-template-columns: 66px minmax(0, 1fr); gap: 11px; padding: 13px; }
+  .profile-portrait { width: 68px; height: 68px; }
+  .profile-identity h1 { font-size: 1.05rem; }
+  .profile-role strong { font-size: .76rem; }
+  .section { padding: 30px 14px 38px; }
+  .metrics { grid-template-columns: 1fr; }
+  .project-filters { gap: 6px; }
+  .project-filters button { min-height: 40px; }
+  .profile-actions { grid-template-columns: 1fr; }
+  .contact-map { min-height: 240px; }
+}
+
+@media (max-height: 760px) and (min-width: 761px) {
+  .profile-card { position: static; }
+  .portfolio-shell { margin-block: 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
 
 @media print {
-    body {
-        background: white;
-        color: #111;
-        font-size: 11pt
-    }
-
-    .site-header,
-    .hero-actions,
-    .site-footer,
-    .contact-section {
-        display: none
-    }
-
-    .hero,
-    .section {
-        padding: 24px 0
-    }
-
-    .hero-grid,
-    .profile-grid,
-    .resume-grid {
-        display: block
-    }
-
-    .portrait-panel {
-        min-height: 0;
-        border: 0
-    }
-
-    .portrait-panel img {
-        width: 150px
-    }
-
-    .portrait-caption,
-    .portrait-glow,
-    .project-visual {
-        display: none
-    }
-
-    .project-card,
-    .resume-card,
-    .metrics div,
-    .info-card {
-        break-inside: avoid;
-        background: white;
-        color: #111
-    }
+  body { background: white; color: #111; font-size: 10pt; }
+  .portfolio-shell { display: block; width: 100%; margin: 0; }
+  .profile-card, .panel-header, .site-footer { display: none; }
+  .content-panel { border: 0; box-shadow: none; }
+  [data-page] { display: block !important; }
+  .section { padding: 18px 0; break-before: page; }
+  .project-card, .resume-card, .metrics div, .info-card { break-inside: avoid; background: white; color: #111; }
+  .project-visual { display: none; }
 }

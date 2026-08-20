@@ -1,32 +1,42 @@
-<section id="proyectos" class="section section-alt section-anchor">
+{% from "components/icons.j2" import tech_chip with context %}
+<section id="proyectos" class="section page" data-page hidden>
   <div class="container">
     <header class="section-heading">
-      <p class="eyebrow">{{ projects.HEADER.eyebrow }}</p>
+      <p class="eyebrow"><span>03 /</span> {{ projects.HEADER.eyebrow }}</p>
       <h2>{{ projects.HEADER.title }}</h2>
       <p>{{ projects.HEADER.description }}</p>
     </header>
+    <div class="project-filters" role="group" aria-label="Filtrar proyectos">
+      {% for category in ["Todos", "Aplicaciones web", "Backend", "Tiempo real", "Visión computacional", "Seguridad", "Automatización", "Web institucional"] %}<button type="button" data-project-filter="{{ category }}"{% if loop.first %} class="is-active" aria-pressed="true"{% else %} aria-pressed="false"{% endif %}>{{ category }}</button>{% endfor %}
+    </div>
     <div class="project-grid">
-      {% for item in projects.PROJECTS %}
-      <article class="project-card{% if item.featured %} project-featured{% endif %}">
+      {% for item in projects.PROJECTS | sort(attribute="priority") %}
+      <article class="project-card{% if item.featured %} project-featured{% endif %}" data-project data-categories="{{ item.categories | join('|') }}">
         <div class="project-visual visual-{{ loop.index }}">
           {% if item.image is defined %}<img src="{{ item.image }}" alt="Vista del proyecto {{ item.title }}" width="1366" height="1136" loading="lazy" decoding="async">{% else %}<span aria-hidden="true">{{ item.monogram }}</span>{% endif %}
         </div>
         <div class="project-content">
-          <div class="project-meta"><span>{{ item.category }}</span><strong>{{ item.status }}</strong></div>
+          <div class="project-meta"><span>{{ item.category }}</span><strong data-status="{{ item.status_kind }}">{{ item.status }}</strong></div>
           <h3>{{ item.title }}</h3>
           <p>{{ item.summary }}</p>
-          <dl class="project-details">
-            <div><dt>Mi aportación</dt><dd>{{ item.contribution }}</dd></div>
-            <div><dt>Cómo funciona</dt><dd>{{ item.operation }}</dd></div>
-            <div><dt>Alcance actual</dt><dd>{{ item.scope }}</dd></div>
-          </dl>
-          <ul class="project-highlights">{% for highlight in item.highlights %}<li>{{ highlight }}</li>{% endfor %}</ul>
-          <ul class="tags">{% for technology in item.stack %}<li>{{ technology }}</li>{% endfor %}</ul>
-          {% if item.note is defined %}<p class="project-note">{{ item.note }}</p>{% endif %}
-          <div class="project-links">
-            {% if item.demo_url %}<a href="{{ item.demo_url }}" target="_blank" rel="noopener noreferrer">Ver aplicación <span aria-hidden="true">↗</span></a>{% endif %}
-            {% if item.repository_url %}<a href="{{ item.repository_url }}" target="_blank" rel="noopener noreferrer">Ver repositorio <span aria-hidden="true">↗</span></a>{% endif %}
-          </div>
+          <ul class="tags project-stack-preview tech-chip-list">{% for technology in item.stack[:5] %}{{ tech_chip(technology, iconography) }}{% endfor %}</ul>
+          <details class="project-case">
+            <summary>Ver caso técnico <span aria-hidden="true">＋</span></summary>
+            <div class="project-case-content">
+              <section class="case-section"><h4>Problema</h4><p>{{ item.problem }}</p></section>
+              <section class="case-section"><h4>Solución</h4><p>{{ item.operation }}</p></section>
+              <dl class="project-details">
+                <div><dt>Mi aportación</dt><dd>{{ item.contribution }}</dd></div>
+                <div><dt>Retos y alcance actual</dt><dd>{{ item.scope }}</dd></div>
+              </dl>
+              <h4>Arquitectura</h4><div class="architecture-flow" aria-label="Arquitectura de {{ item.title }}">{% for step in item.architecture %}<span>{{ step }}</span>{% if not loop.last %}<b aria-hidden="true">→</b>{% endif %}{% endfor %}</div>
+              <h4>Funciones</h4><ul class="project-highlights">{% for highlight in item.highlights %}<li>{{ highlight }}</li>{% endfor %}</ul>
+              <p class="project-aspects"><strong>Aspectos técnicos trabajados:</strong> {{ item.aspects }}</p>
+              <h4>Stack completo</h4><ul class="tags tech-chip-list">{% for technology in item.stack %}{{ tech_chip(technology, iconography) }}{% endfor %}</ul>
+              {% if item.note is defined %}<p class="project-note">{{ item.note }}</p>{% endif %}
+              {% if item.demo_url or item.repository_url %}<div class="project-links">{% if item.demo_url %}<a href="{{ item.demo_url }}" target="_blank" rel="noopener noreferrer">Ver aplicación ↗</a>{% endif %}{% if item.repository_url %}<a href="{{ item.repository_url }}" target="_blank" rel="noopener noreferrer">Ver repositorio ↗</a>{% endif %}</div>{% endif %}
+            </div>
+          </details>
         </div>
       </article>
       {% endfor %}

@@ -1,0 +1,17 @@
+INTERESTS:
+  label: "Áreas en las que quiero seguir creciendo"
+  items: ["Desarrollo de software", "Backend con Python", "Aplicaciones web", "Automatización", "Inteligencia artificial aplicada", "Visión computacional", "Seguridad web", "Sistemas en tiempo real", "Cloud y despliegue"]
+DATABASES:
+  label: "Datos y persistencia"
+  items:
+    - {name: "SQLite", use: "Historial y cuentas en GRID-Chat y Auth Practice."}
+    - {name: "Cloudflare D1", use: "Persistencia remota del Generador de Expedientes."}
+    - {name: "Firebase Realtime Database", use: "Presencia y métricas del sitio institucional."}
+    - {name: "SQLAlchemy", use: "ORM utilizado en Auth Practice."}
+DELIVERY:
+  label: "Desarrollo, versiones y despliegue"
+  text: "Trabajo con Git y utilizo GitHub y GitLab para administrar código. He automatizado validación y despliegue con GitHub Actions, GitHub Pages, Cloudflare Pages y Wrangler."
+  items: ["Git", "GitHub", "GitLab", "GitHub Actions", "GitHub Pages", "Cloudflare Pages", "Wrangler"]
+CONCEPTS:
+  label: "Arquitecturas y conceptos trabajados"
+  items: ["Cliente-servidor", "Frontend modular", "Application factory", "Blueprints de Flask", "Web Components", "Programación orientada a eventos", "WebSockets", "Control optimista de concurrencia", "Persistencia y sesiones", "Autenticación y autorización", "Procesamiento local", "Generación estática", "CI/CD", "PWA", "APIs", "Procesamiento de imágenes"]

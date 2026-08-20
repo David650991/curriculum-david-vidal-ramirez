@@ -1,0 +1,98 @@
+FUNCTIONAL:
+  mail: {icon: "functional/mail.svg"}
+  download: {icon: "functional/download.svg"}
+  map-pin: {icon: "functional/map-pin.svg"}
+  phone: {icon: "functional/phone.svg"}
+  education: {icon: "functional/graduation-cap.svg"}
+  briefcase: {icon: "functional/briefcase.svg"}
+  projects: {icon: "functional/folder-git.svg"}
+  documents: {icon: "functional/files.svg"}
+  database: {icon: "functional/database.svg"}
+  security: {icon: "functional/shield-check.svg"}
+  realtime: {icon: "functional/radio-tower.svg"}
+  canvas: {icon: "functional/frame.svg"}
+SOCIAL:
+  linkedin: {icon: "brands/linkedin.svg", color: "#0A66C2"}
+  github: {icon: "brands/github.svg", color: "#FFFFFF"}
+  gitlab: {icon: "brands/gitlab.svg", color: "#FC6D26"}
+  whatsapp: {icon: "brands/whatsapp.svg", color: "#25D366"}
+  gmail: {icon: "brands/gmail.svg", color: "#EA4335"}
+  outlook: {icon: "brands/microsoft-outlook.png", raster: true}
+TECHNOLOGIES:
+  Python: {icon: "technologies/python.svg", color: "#3776AB"}
+  JavaScript: {icon: "technologies/javascript.svg", color: "#F7DF1E"}
+  HTML5: {icon: "technologies/html5.svg", color: "#E34F26"}
+  CSS3: {icon: "technologies/css3.svg", color: "#663399"}
+  Flask: {icon: "technologies/flask.svg", color: "#FFFFFF"}
+  Flask-SQLAlchemy: {icon: "technologies/sqlalchemy.svg", color: "#D71F00"}
+  SQLAlchemy: {icon: "technologies/sqlalchemy.svg", color: "#D71F00"}
+  SQLite: {icon: "technologies/sqlite.svg", color: "#44A2D6"}
+  SQL: {icon: "functional/database.svg", color: "#C86BD3"}
+  Node.js: {icon: "technologies/nodejs.svg", color: "#5FA04E"}
+  Express: {icon: "technologies/expressjs.svg", color: "#FFFFFF"}
+  Express.js: {icon: "technologies/expressjs.svg", color: "#FFFFFF"}
+  Git: {icon: "technologies/git.svg", color: "#F05032"}
+  GitHub: {icon: "brands/github.svg", color: "#FFFFFF"}
+  GitLab: {icon: "brands/gitlab.svg", color: "#FC6D26"}
+  GitHub Actions: {icon: "technologies/github-actions.svg", color: "#2088FF"}
+  GitHub Pages: {icon: "brands/github.svg", color: "#FFFFFF"}
+  Cloudflare: {icon: "technologies/cloudflare.svg", color: "#F38020"}
+  Cloudflare Pages: {icon: "technologies/cloudflare.svg", color: "#F38020"}
+  Cloudflare D1: {icon: "technologies/cloudflare.svg", color: "#F38020"}
+  Cloudflare Access: {icon: "technologies/cloudflare.svg", color: "#F38020"}
+  Pages Functions: {icon: "technologies/cloudflare.svg", color: "#F38020"}
+  Firebase: {icon: "technologies/firebase.svg", color: "#DD2C00"}
+  Firebase Realtime Database: {icon: "technologies/firebase.svg", color: "#DD2C00"}
+  Jinja2: {icon: "technologies/jinja2.svg", color: "#B41717"}
+  YAML: {icon: "technologies/yaml.svg", color: "#CB171E"}
+  PyYAML: {icon: "technologies/yaml.svg", color: "#CB171E"}
+  Poetry: {icon: "technologies/poetry.svg", color: "#60A5FA"}
+  pytest: {icon: "technologies/pytest.svg", color: "#0A9EDC"}
+  Ruff: {icon: "technologies/ruff.svg", color: "#D7FF64"}
+  OpenCV: {icon: "technologies/opencv.svg", color: "#5C3EE8"}
+  OpenCV.js: {icon: "technologies/opencv.svg", color: "#5C3EE8"}
+  Socket.IO: {icon: "technologies/socketio.svg", color: "#FFFFFF"}
+  Flask-SocketIO: {icon: "technologies/socketio.svg", color: "#FFFFFF"}
+  PWA: {icon: "technologies/pwa.svg", color: "#5A0FC8"}
+  Service Worker: {icon: "technologies/pwa.svg", color: "#5A0FC8"}
+  WebSocket: {icon: "functional/radio-tower.svg", color: "#C86BD3"}
+  WebSockets: {icon: "functional/radio-tower.svg", color: "#C86BD3"}
+  Canvas API: {icon: "functional/frame.svg", color: "#C86BD3"}
+  Web Components: {icon: "functional/frame.svg", color: "#C86BD3"}
+  face-api.js: {icon: "functional/frame.svg", color: "#C86BD3"}
+  Dlib: {icon: "functional/frame.svg", color: "#C86BD3"}
+  JWT: {icon: "functional/shield-check.svg", color: "#C86BD3"}
+  bcrypt: {icon: "functional/shield-check.svg", color: "#C86BD3"}
+  TOTP: {icon: "functional/shield-check.svg", color: "#C86BD3"}
+  Rate limiting: {icon: "functional/shield-check.svg", color: "#C86BD3"}
+  Helmet: {icon: "functional/shield-check.svg", color: "#C86BD3"}
+  Wrangler: {icon: "technologies/cloudflare.svg", color: "#F38020"}
+  Morgan: {icon: "functional/files.svg", color: "#C86BD3"}
+  Compression: {icon: "functional/files.svg", color: "#C86BD3"}
+  PM2: {icon: "functional/radio-tower.svg", color: "#C86BD3"}
+  Termux: {icon: "functional/frame.svg", color: "#C86BD3"}
+  Formspree: {icon: "brands/formspree.svg", color: "#E5122E"}
+  Google Maps: {icon: "brands/google-maps.svg", color: "#4285F4"}
+  YouTube: {icon: "brands/youtube.svg", color: "#FF0000"}
+  Desarrollo de software: {icon: "functional/folder-git.svg", color: "#C86BD3"}
+  Backend con Python: {icon: "technologies/python.svg", color: "#3776AB"}
+  Aplicaciones web: {icon: "functional/frame.svg", color: "#C86BD3"}
+  Automatización: {icon: "functional/radio-tower.svg", color: "#C86BD3"}
+  Inteligencia artificial aplicada: {icon: "functional/radio-tower.svg", color: "#C86BD3"}
+  Visión computacional: {icon: "technologies/opencv.svg", color: "#5C3EE8"}
+  Seguridad web: {icon: "functional/shield-check.svg", color: "#C86BD3"}
+  Sistemas en tiempo real: {icon: "functional/radio-tower.svg", color: "#C86BD3"}
+  Cloud y despliegue: {icon: "technologies/cloudflare.svg", color: "#F38020"}
+ECOSYSTEMS:
+  - {name: "Ecosistema Python", level: "Principal", icon: "Python", description: "Backend, automatización, plantillas y pruebas.", items: ["Python", "Flask", "SQLAlchemy", "Jinja2", "PyYAML", "Poetry", "pytest", "Ruff"]}
+  - {name: "JavaScript y web", level: "Principal", icon: "JavaScript", description: "Interfaces web, componentes y aplicaciones instalables.", items: ["JavaScript", "HTML5", "CSS3", "Web Components", "Canvas API", "PWA"]}
+  - {name: "Backend Node.js", level: "Aplicada", icon: "Node.js", description: "Servicios HTTP y publicación en entornos ARM64.", items: ["Node.js", "Express", "Helmet", "Morgan", "Compression", "PM2", "Termux"]}
+  - {name: "Datos y persistencia", level: "Principal", icon: "SQLite", description: "Persistencia local, ORM y almacenamiento serverless.", items: ["SQLite", "SQLAlchemy", "Cloudflare D1", "Firebase"]}
+  - {name: "Cloudflare", level: "Aplicada", icon: "Cloudflare", description: "Publicación, funciones, acceso y datos en el edge.", items: ["Cloudflare Pages", "Pages Functions", "Cloudflare Access", "Cloudflare D1", "Wrangler"]}
+  - {name: "GitHub y CI/CD", level: "Aplicada", icon: "GitHub Actions", description: "Versionado, automatización y despliegue continuo.", items: ["Git", "GitHub", "GitHub Actions", "GitHub Pages"]}
+  - {name: "Visión computacional", level: "Laboratorio", icon: "OpenCV", description: "Procesamiento local de imágenes y análisis facial experimental.", items: ["OpenCV", "OpenCV.js", "face-api.js", "Dlib", "Canvas API"]}
+  - {name: "Seguridad aplicada", level: "Laboratorio", functional_icon: "security", description: "Autenticación, autorización y protección de rutas.", items: ["JWT", "bcrypt", "TOTP", "Rate limiting", "Cloudflare Access", "Helmet"]}
+INTEGRATIONS:
+  - {name: "Formspree", context: "Formularios del sitio institucional"}
+  - {name: "Google Maps", context: "Ubicación y contacto institucional"}
+  - {name: "YouTube", context: "Contenido multimedia e integración en proyectos"}

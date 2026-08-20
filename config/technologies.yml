@@ -2,20 +2,46 @@ HEADER:
   eyebrow: "Tecnologías"
   title: "Herramientas que ya he usado en proyectos"
   description: "Esta lista reúne tecnologías que aparecen en mi código. No significa que domine todas al mismo nivel; algunas forman parte de productos activos y otras de laboratorios donde sigo aprendiendo."
+LEVELS:
+  - level: "Principal"
+    description: "Uso frecuente y capacidad para explicar decisiones y código."
+    items:
+      - {name: "Python", evidence: "Auth Practice, GRID-Chat y generador del currículum"}
+      - {name: "JavaScript", evidence: "Los siete proyectos web"}
+      - {name: "HTML5 y CSS3", evidence: "Interfaces institucionales, laboratorios y portafolio"}
+      - {name: "Flask", evidence: "Auth Practice y GRID-Chat"}
+      - {name: "SQLite", evidence: "Auth Practice y GRID-Chat"}
+      - {name: "Git", evidence: "Control de versiones de todos los repositorios"}
+  - level: "Aplicada"
+    description: "Utilizada para resolver funciones concretas en productos y prototipos."
+    items:
+      - {name: "Cloudflare D1 y Pages Functions", evidence: "Generador de Expedientes"}
+      - {name: "Web Components", evidence: "Generador de Expedientes"}
+      - {name: "Node.js y Express", evidence: "David Vidal IT Tuxtepec Server"}
+      - {name: "Socket.IO", evidence: "GRID-Chat"}
+      - {name: "GitHub Actions", evidence: "Currículum automatizado"}
+      - {name: "Firebase", evidence: "La Luz y La Esperanza"}
+  - level: "Laboratorio"
+    description: "Tecnologías exploradas en entornos experimentales y educativos."
+    items:
+      - {name: "OpenCV y OpenCV.js", evidence: "Auth Practice y VisionLab"}
+      - {name: "Dlib y face-api.js", evidence: "Autenticación y análisis facial experimental"}
+      - {name: "TOTP", evidence: "Auth Practice"}
+      - {name: "PM2 y Termux", evidence: "Demostrador Node.js sobre ARM64"}
 GROUPS:
   - title: "Lenguajes y presentación"
     items: ["Python", "JavaScript", "SQL", "HTML5", "CSS3", "YAML", "Jinja2"]
   - title: "Aplicaciones web"
-    items: ["Flask", "Flask-SocketIO", "Web Components", "Node.js", "Express.js", "Canvas API", "WebSocket", "PWA"]
+    items: ["Flask", "Flask-SocketIO", "Web Components", "Node.js", "Express.js", "JavaScript Vanilla", "Canvas API", "Socket.IO", "WebSocket", "PWA", "Service Worker"]
   - title: "Datos y servicios"
-    items: ["SQLite", "SQLAlchemy", "Cloudflare D1", "Firebase", "Formspree", "YouTube", "Google Maps"]
+    items: ["SQLite", "SQLAlchemy", "Cloudflare D1", "Firebase Realtime Database", "Formspree", "YouTube", "Google Maps"]
   - title: "Cloud y publicación"
     items: ["Cloudflare Pages", "Cloudflare Pages Functions", "Cloudflare Access", "GitHub Pages", "GitHub Actions", "Render"]
   - title: "Seguridad"
-    items: ["JSON Web Token (JWT)", "bcrypt", "TOTP", "Rate limiting", "Helmet"]
+    items: ["JSON Web Token (JWT)", "bcrypt", "TOTP", "Flask-Login", "Flask-Bcrypt", "Flask-Mail", "Flask-Limiter", "PyOTP", "Cloudflare Access", "Google Identity", "Rate limiting", "Helmet", "SHA-256"]
   - title: "Visión computacional"
-    items: ["OpenCV", "OpenCV.js", "face-api.js", "Dlib"]
+    items: ["OpenCV", "OpenCV.js", "face-api.js", "Dlib", "face_recognition", "NumPy", "Canvas API"]
   - title: "Analítica y privacidad"
     items: ["Google Tag Manager", "Google Consent Mode", "Schema.org"]
   - title: "Herramientas de trabajo"
-    items: ["Git", "GitHub", "GitLab", "Poetry", "PyYAML", "Ruff", "pytest", "Wrangler", "PM2", "Termux", "Visual Studio Code"]
+    items: ["Git", "GitHub", "GitLab", "Poetry", "PyYAML", "Ruff", "pytest", "Wrangler", "npm", "PM2", "Termux", "Visual Studio Code", "Google Search Console", "Morgan", "Compression", "AdminLTE"]

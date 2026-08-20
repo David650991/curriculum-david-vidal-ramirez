@@ -11,10 +11,13 @@ EDUCATION:
 TRAINING:
   label: "Formación complementaria"
   items:
-    - {period: "2025", institution: "MIT Professional Education / Santander", description: "Formación en Internet de las Cosas, transformación digital e inteligencia artificial generativa."}
-    - {period: "2025", institution: "Santander Open Academy", description: "Python, ciencia de datos, prompt engineering y Microsoft Copilot."}
+    - {period: "2025", institution: "MIT Professional Education / Santander", type: "Formación complementaria", description: "Internet de las Cosas, transformación digital e inteligencia artificial generativa.", credential: "Constancia disponible bajo solicitud."}
+    - {period: "2025", institution: "Santander Open Academy", type: "Cursos", description: "Python, ciencia de datos, prompt engineering y Microsoft Copilot.", credential: "Constancias disponibles bajo solicitud."}
+OBJECTIVE:
+  label: "Objetivo profesional"
+  text: "Continuar desarrollándome dentro de un equipo de tecnología donde pueda participar en aplicaciones, automatización de procesos y soluciones web, mientras profundizo mis conocimientos de ingeniería de software y aporto la experiencia práctica obtenida en proyectos propios."
 EXPERIENCE:
-  label: "Experiencia profesional"
+  label: "Experiencia reciente"
   items:
     - period: "2024 — Presente"
       position: "Desarrollador de software freelance"
@@ -32,10 +35,31 @@ EXPERIENCE:
       position: "Logística y operaciones"
       organization: "Mercado Libre / Portos"
       bullets: ["Coordinación de rutas de última milla y cumplimiento de indicadores de entrega."]
-    - period: "2009 — 2020"
-      position: "Experiencia operativa, comercial y de servicio"
-      organization: "Diversas organizaciones, entre ellas Banco Azteca y Walmart"
-      bullets: ["Atención al cliente, ventas, operación y trabajo orientado a resultados."]
+EARLIER_EXPERIENCE:
+  label: "Trayectoria anterior"
+  introduction: "Antes de dedicarme al desarrollo de software trabajé en distintas empresas y ciudades. Esa etapa me dio experiencia práctica en operación, servicio, trabajo de campo y adaptación a equipos muy diferentes. Para mantener este currículum legible, presento la trayectoria por periodos y sin atribuirme cargos que no aparecen en mis constancias."
+  groups:
+    - period: "Abril — Mayo 2022"
+      title: "Daeyeong México"
+      location: "Querétaro"
+    - period: "Junio — Agosto 2021"
+      title: "Consultoría Empresarial de Playa del Carmen"
+      location: "Oaxaca"
+    - period: "Enero — Abril 2020"
+      title: "Promo Conceptos"
+      location: "Ciudad de México"
+    - period: "Octubre 2015 — Diciembre 2016"
+      title: "AG999 y Corporativo Mayorista Peninsular"
+      location: "Estado de México y Yucatán"
+    - period: "Diciembre 2012 — Mayo 2013"
+      title: "Banco Forjadores, Fomento Dragón y Serfincor"
+      location: "Oaxaca"
+    - period: "Enero — Noviembre 2012"
+      title: "Agroloma, Parador del Viajero y Mercadotecnia Tezontle"
+      location: "Oaxaca y Estado de México"
+    - period: "Diciembre 2009 — Septiembre 2011"
+      title: "Eulen México, Super Smart de Veracruz y Operadora Gigante"
+      location: "Oaxaca y Veracruz"
 COMPETENCIES:
   label: "Competencias demostradas"
   items:

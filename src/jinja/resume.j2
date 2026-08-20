@@ -1,14 +1,21 @@
-<section id="trayectoria" class="section section-anchor">
+{% from "components/icons.j2" import icon with context %}
+<section id="trayectoria" class="section page" data-page hidden>
   <div class="container">
-    <header class="section-heading"><p class="eyebrow">{{ resume.HEADER.eyebrow }}</p><h2>{{ resume.HEADER.title }}</h2></header>
+    <header class="section-heading"><p class="eyebrow"><span>02 /</span> {{ resume.HEADER.eyebrow }}</p><h2>{{ resume.HEADER.title }}</h2></header>
     <div class="resume-grid">
       <div>
-        <h3 class="subheading">{{ resume.EXPERIENCE.label }}</h3>
+        <h3 class="subheading heading-with-icon">{{ icon(iconography.FUNCTIONAL.briefcase.icon, None, "heading-icon") }}{{ resume.EXPERIENCE.label }}</h3>
         <ol class="timeline">{% for item in resume.EXPERIENCE['items'] %}<li><p class="timeline-period">{{ item.period }}</p><h4>{{ item.position }}</h4><p class="timeline-org">{{ item.organization }}</p><ul>{% for bullet in item.bullets %}<li>{{ bullet }}</li>{% endfor %}</ul></li>{% endfor %}</ol>
+        <section class="earlier-experience">
+          <h3>{{ resume.EARLIER_EXPERIENCE.label }}</h3>
+          <p>{{ resume.EARLIER_EXPERIENCE.introduction }}</p>
+          <ol>{% for item in resume.EARLIER_EXPERIENCE.groups %}<li><span>{{ item.period }}</span><strong>{{ item.title }}</strong><small>{{ item.location }}</small></li>{% endfor %}</ol>
+        </section>
       </div>
       <aside class="resume-aside">
-        <div class="resume-card"><h3>{{ resume.EDUCATION.label }}</h3>{% for item in resume.EDUCATION['items'] %}<article><span>{{ item.period }}</span><h4>{{ item.institution }}</h4><p>{{ item.description }}</p><small>{{ item.detail }}</small></article>{% endfor %}</div>
-        <div class="resume-card"><h3>{{ resume.TRAINING.label }}</h3>{% for item in resume.TRAINING['items'] %}<article><span>{{ item.period }}</span><h4>{{ item.institution }}</h4><p>{{ item.description }}</p></article>{% endfor %}</div>
+        <div class="resume-card"><h3 class="heading-with-icon">{{ icon(iconography.FUNCTIONAL.education.icon, None, "heading-icon") }}{{ resume.EDUCATION.label }}</h3>{% for item in resume.EDUCATION['items'] %}<article><span>{{ item.period }}</span><h4>{{ item.institution }}</h4><p>{{ item.description }}</p><small>{{ item.detail }}</small></article>{% endfor %}</div>
+        <div class="resume-card"><h3 class="heading-with-icon">{{ icon(iconography.FUNCTIONAL.education.icon, None, "heading-icon") }}{{ resume.TRAINING.label }}</h3>{% for item in resume.TRAINING['items'] %}<article><span>{{ item.period }} · {{ item.type }}</span><h4>{{ item.institution }}</h4><p>{{ item.description }}</p><small>{{ item.credential }}</small></article>{% endfor %}</div>
+        <div class="resume-card objective-card"><h3>{{ resume.OBJECTIVE.label }}</h3><p>{{ resume.OBJECTIVE.text }}</p></div>
         <div class="resume-card"><h3>{{ resume.COMPETENCIES.label }}</h3><ul class="competencies">{% for item in resume.COMPETENCIES['items'] %}<li><strong>{{ item.name }}</strong><span>{{ item.level }}</span><small>{{ item.evidence }}</small></li>{% endfor %}</ul></div>
         <div class="resume-card"><h3>{{ resume.LANGUAGES.label }}</h3><ul class="languages">{% for item in resume.LANGUAGES['items'] %}<li><strong>{{ item.language }}</strong><span>{{ item.level }}</span></li>{% endfor %}</ul></div>
       </aside>

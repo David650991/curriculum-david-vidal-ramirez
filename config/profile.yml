@@ -2,10 +2,12 @@ SITE:
   name: "David Vidal Ramírez | Desarrollador de Software"
   url: "https://david650991.github.io/curriculum-david-vidal-ramirez"
   repository: "https://github.com/David650991/curriculum-david-vidal-ramirez"
-  description: "Portafolio de David Vidal Ramírez: desarrollador de software enfocado en Python, JavaScript, aplicaciones web, automatización y digitalización de procesos."
+  description: "David Vidal Ramírez, desarrollador de software y estudiante de Ingeniería en Sistemas Computacionales. Proyectos en Python, JavaScript, Flask, Node.js, automatización, aplicaciones web y visión computacional."
   language: "es-MX"
 USER:
-  role: "Desarrollador de Software | Python, JavaScript y Soluciones Web"
+  role: "Desarrollador de Software"
+  role_stack: "Python · JavaScript · Aplicaciones Web"
+  academic_status: "Ingeniería en Sistemas Computacionales · TecNM · 3.er semestre · Modalidad en línea"
   name: "David Vidal Ramírez"
   username: "David650991"
   email: "David650991@gmail.com"
@@ -16,11 +18,11 @@ USER:
   avatar: "assets/avatars/Foto_Infantil_David_Vidal_Ramirez.png"
   availability: "Disponible para oportunidades de desarrollo y colaboración"
 INFO:
-  - {label: "Correo profesional", value: "David650991@gmail.com", href: "mailto:David650991@gmail.com"}
-  - {label: "Correo institucional", value: "L25350801@tuxtepec.tecnm.mx", href: "mailto:L25350801@tuxtepec.tecnm.mx"}
-  - {label: "Teléfono", value: "+52 287 124 6128", href: "tel:+522871246128"}
-  - {label: "Ubicación", value: "Tres Valles, Veracruz, México", href: "https://www.google.com/maps/search/?api=1&query=Tres+Valles%2C+Veracruz%2C+México"}
+  - {label: "Correo profesional", value: "David650991@gmail.com", href: "mailto:David650991@gmail.com", brand_icon: "gmail"}
+  - {label: "Correo institucional", value: "L25350801@tuxtepec.tecnm.mx", href: "mailto:L25350801@tuxtepec.tecnm.mx", brand_icon: "outlook", badge: "TecNM"}
+  - {label: "Teléfono", value: "+52 287 124 6128", href: "tel:+522871246128", icon: "phone"}
+  - {label: "Ubicación", value: "Tres Valles, Veracruz, México", href: "https://www.google.com/maps/search/?api=1&query=Tres+Valles%2C+Veracruz%2C+México", icon: "map-pin"}
 SOCIAL:
-  - {label: "LinkedIn", url: "https://www.linkedin.com/in/david-vidal-ramirez-3ba01b147/"}
-  - {label: "GitHub", url: "https://github.com/David650991"}
-  - {label: "GitLab", url: "https://gitlab.com/david650991"}
+  - {label: "LinkedIn", icon: "linkedin", url: "https://www.linkedin.com/in/david-vidal-ramirez-3ba01b147/"}
+  - {label: "GitHub", icon: "github", url: "https://github.com/David650991"}
+  - {label: "GitLab", icon: "gitlab", url: "https://gitlab.com/david650991"}

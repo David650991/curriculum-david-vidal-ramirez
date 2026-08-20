@@ -4,25 +4,26 @@
   {% include "meta.j2" %}
   <link rel="icon" href="assets/logo.png" type="image/png">
   <link rel="manifest" href="site.webmanifest">
+  <link rel="preload" href="{{ profile.USER.avatar }}" as="image" fetchpriority="high">
   <link rel="stylesheet" href="assets/css/style.css">
-  <script src="assets/js/script.js" defer></script>
+  <script src="assets/js/script.js" type="module"></script>
 </head>
 <body>
-  <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
-  {% include "navbar.j2" %}
-  <main id="contenido">
+  <canvas class="neural-canvas" data-neural-canvas aria-hidden="true"></canvas>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <div class="portfolio-shell">
     {% include "sidebar.j2" %}
-    {% include "about.j2" %}
-    {% include "projects.j2" %}
-    {% include "technologies.j2" %}
-    {% include "resume.j2" %}
-    {% include "contact.j2" %}
-  </main>
-  <footer class="site-footer">
-    <div class="container footer-layout">
-      <p>© {{ build.year }} {{ profile.USER.name }}. Diseñado, desarrollado y mantenido por su autor.</p>
-      <a href="{{ profile.SITE.repository }}" target="_blank" rel="noopener noreferrer">Código de este portafolio</a>
+    <div class="content-panel">
+      {% include "navbar.j2" %}
+      <main id="contenido" tabindex="-1">
+        {% include "about.j2" %}
+        {% include "resume.j2" %}
+        {% include "projects.j2" %}
+        {% include "technologies.j2" %}
+        {% include "contact.j2" %}
+      </main>
+      <footer class="site-footer"><p>© {{ build.year }} {{ profile.USER.name }}.<small>Construido con Python · Jinja2 · YAML · GitHub Actions</small></p><a href="{{ profile.SITE.repository }}" target="_blank" rel="noopener noreferrer">Código del portafolio</a></footer>
     </div>
-  </footer>
+  </div>
 </body>
 </html>

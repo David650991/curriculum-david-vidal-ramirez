@@ -1,6 +1,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0b63f6">
+<meta name="theme-color" content="#751182">
 <title>{{ profile.SITE.name }}</title>
 <meta name="description" content="{{ profile.SITE.description }}">
 <meta name="author" content="{{ profile.USER.name }}">
@@ -31,6 +31,6 @@
   "address": {"@type": "PostalAddress", "addressLocality": "Tres Valles", "addressRegion": "Veracruz", "addressCountry": "MX"},
   "sameAs": profile.SOCIAL | map(attribute="url") | list,
   "alumniOf": {"@type": "CollegeOrUniversity", "name": "Instituto Tecnológico de Tuxtepec · Tecnológico Nacional de México"},
-  "knowsAbout": ["Python", "JavaScript", "Flask", "Cloudflare", "aplicaciones web", "automatización de procesos"]
+  "knowsAbout": ["Python", "JavaScript", "Flask", "Node.js", "Cloudflare", "aplicaciones web", "automatización de procesos", "visión computacional", "sistemas en tiempo real"]
 } | json | safe }}
 </script>

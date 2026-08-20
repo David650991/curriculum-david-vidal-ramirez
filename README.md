@@ -33,6 +33,8 @@ dist/               Resultado local; no se versiona
 
 El sitio publicado no necesita servidor, base de datos ni framework del lado cliente. Durante la compilación, los módulos CSS se unen en un solo archivo para mantener el código ordenado sin aumentar las solicitudes del navegador. La publicación incluye únicamente tres imágenes y aplica carga diferida a la captura de proyecto.
 
+La compilación también genera `cv.html` y un PDF de dos páginas con texto seleccionable, estructura lineal y nombres explícitos de tecnologías para facilitar su lectura por sistemas ATS.
+
 ## Requisitos y ejecución
 
 - Python 3.10 o posterior compatible
@@ -58,6 +60,7 @@ python -m http.server 8000 --directory dist
 - Formación y experiencia: `config/resume.yml`
 - Proyectos y estados: `config/projects.yml`
 - Tecnologías utilizadas: `config/technologies.yml`
+- Sistema central de iconografía: `config/iconography.yml`
 - Contacto: `config/contact.yml`
 - Navegación: `config/navbar.yml`
 
@@ -81,6 +84,10 @@ Desarrollado y mantenido por **David Vidal Ramírez**.
 - Correo institucional: [L25350801@tuxtepec.tecnm.mx](mailto:L25350801@tuxtepec.tecnm.mx)
 - GitHub: [David650991](https://github.com/David650991)
 - LinkedIn: [David Vidal Ramírez](https://www.linkedin.com/in/david-vidal-ramirez-3ba01b147/)
+
+## Iconografía y rendimiento
+
+Las marcas tecnológicas se almacenan como SVG locales procedentes de Simple Icons y los conceptos funcionales utilizan Lucide. La resolución se centraliza en `config/iconography.yml` y los componentes reutilizables se encuentran en `src/jinja/components/`. El sitio no depende de CDN para mostrar iconos.
 
 ## Licencia
 

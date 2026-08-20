@@ -10,13 +10,13 @@ METRICS:
   - {value: "7", label: "proyectos documentados"}
   - {value: "25", label: "documentos en el sistema de expedientes"}
   - {value: "3.er", label: "semestre de Ingeniería en Sistemas"}
-  - {value: "10+", label: "años de experiencia operativa previa"}
+  - {value: "10+", label: "años de experiencia profesional previa"}
 FOCUS:
   label: "En qué trabajo"
   items:
     - {title: "Desarrollo web", description: "Creo sitios y aplicaciones que se adaptan a teléfonos y computadoras, procurando que sean claros y fáciles de mantener."}
     - {title: "Backend y datos", description: "Conecto formularios, reglas de negocio y bases de datos para que la información no se quede sólo en la interfaz."}
-    - {title: "Procesos", description: "Estudio tareas manuales y las convierto en recorridos más ordenados, con validaciones y seguimiento."}
+    - {title: "Automatización y procesos", description: "Estudio tareas manuales y las convierto en recorridos más ordenados, con validaciones y seguimiento."}
     - {title: "Seguridad aplicada", description: "He practicado autenticación, permisos y protección de rutas; sigo fortaleciendo esta área en cada proyecto."}
 STRENGTHS:
   label: "Fortalezas profesionales"

@@ -4,106 +4,149 @@ HEADER:
   description: "Aquí conviven herramientas que ya se utilizan y proyectos con los que practico. En cada caso indico su estado para no confundir un laboratorio con un producto terminado."
 PROJECTS:
   - slug: "generador-expedientes"
+    priority: 1
+    categories: ["Aplicaciones web", "Backend", "Automatización", "Seguridad"]
     title: "Generador de Expedientes de Entrevista"
     category: "Aplicación full stack serverless"
     status: "Uso institucional privado"
+    status_kind: "private"
     featured: true
     monogram: "GE"
     summary: "Sistema privado para preparar, firmar, versionar y auditar expedientes legales y administrativos de entrevistas audiovisuales."
+    problem: "El proceso exigía preparar numerosos documentos relacionados, repetir datos, reunir firmas y conservar trazabilidad sin perder el control de versiones."
     contribution: "Diseñé y desarrollé el flujo completo: captura guiada, reglas que determinan qué documentos corresponden, firmas, persistencia, permisos y seguimiento de cambios."
     operation: "La interfaz está construida con Web Components y se comunica con funciones serverless. Cloudflare Access protege el acceso; D1 conserva los datos y el sistema controla versiones y ediciones simultáneas."
     scope: "Es mi proyecto con mayor amplitud funcional: reúne 25 documentos, invitaciones, papelera, auditoría, firmas secuenciales y pruebas. El repositorio es privado porque maneja un proceso institucional."
-    highlights: ["25 documentos con reglas de aplicabilidad", "Firmas en canvas y flujo secuencial", "Cloudflare Access, D1 y control de concurrencia", "Papelera, auditoría, invitaciones y pruebas"]
-    stack: ["JavaScript", "Web Components", "Cloudflare Pages Functions", "D1", "JWT"]
+    highlights: ["Expedientes versionados y 25 documentos configurados", "Reglas de aplicabilidad y reutilización de datos", "Firmas manuscritas, búsqueda, administración e impresión", "Papelera, restauración, auditoría e invitaciones", "Persistencia remota y control optimista de concurrencia"]
+    aspects: "Modelado documental, autenticación, autorización, firmas electrónicas, auditoría y concurrencia."
+    architecture: ["Web Components", "Pages Functions", "Cloudflare D1"]
+    stack: ["HTML5", "CSS3", "JavaScript", "Web Components", "Canvas API", "Cloudflare Pages", "Pages Functions", "Cloudflare D1", "SQLite", "Cloudflare Access", "JWT", "Google Identity", "SHA-256"]
     demo_url: "https://generador-expedientes-podcast.pages.dev/"
     repository_url: null
     note: "Código privado; la demostración requiere autorización."
   - slug: "la-luz-esperanza"
+    priority: 5
+    categories: ["Aplicaciones web", "Web institucional"]
     title: "La Luz y La Esperanza Que Necesito"
     category: "Sitio institucional e integraciones cloud"
     status: "Producción"
+    status_kind: "production"
     featured: true
     monogram: "LE"
     image: "assets/projects/project-1.jpg"
     summary: "Sitio institucional para comunicar servicios, instalaciones, equipo, podcast y canales de ayuda de un centro de rehabilitación."
+    problem: "El centro necesitaba una presencia pública clara que concentrara su información, servicios, contenido y canales de contacto."
     contribution: "Me encargué de la estructura, la interfaz, la publicación y las integraciones. El sitio funciona como la presencia pública del centro y como punto de entrada hacia sus medios de contacto."
     operation: "Es un sitio estático responsivo conectado con Firebase, Formspree, YouTube y Google Maps. Incluye datos estructurados, medición de conversiones y consentimiento para analítica."
     scope: "Está publicado y en uso. Aún puede mejorar en optimización multimedia, cobertura de pruebas y mantenimiento sistemático de accesibilidad."
-    highlights: ["SEO, Schema.org y contenido multimedia", "Consent Mode y eventos de conversión", "Firebase, Formspree, YouTube y Google Maps", "Diseño responsivo y portal de personal"]
-    stack: ["HTML", "CSS", "JavaScript", "Firebase", "GitHub Pages"]
+    highlights: ["Arquitectura modular con componentes cargados mediante fetch", "SEO técnico, Schema.org y contenido multimedia", "Consent Mode, analítica y eventos de conversión", "Firebase, Formspree, YouTube y Google Maps", "Diseño responsivo y acceso a herramientas internas"]
+    aspects: "Arquitectura frontend modular, SEO, formularios, analítica, consentimiento e integraciones externas."
+    architecture: ["Componentes HTML", "JavaScript modular", "Firebase y servicios externos"]
+    stack: ["HTML5", "CSS3", "JavaScript", "Firebase", "Google Tag Manager", "Google Consent Mode", "Formspree", "YouTube", "Google Maps", "Schema.org", "GitHub Pages"]
     demo_url: "https://www.laluzylaesperanzaquenecesito.me/"
     repository_url: "https://github.com/David650991/La-Luz-Y-La-Esperanza-Que-Necesito"
+    note: "Sitio institucional; no constituye un expediente clínico ni una plataforma médica."
   - slug: "auth-practice"
+    priority: 2
+    categories: ["Backend", "Seguridad", "Visión computacional"]
     title: "Auth Practice"
     category: "Laboratorio de seguridad e identidad"
     status: "Experimental"
+    status_kind: "experimental"
     featured: true
     monogram: "AP"
     summary: "Laboratorio Flask de autenticación por contraseña, correo, TOTP, códigos de recuperación, SMS y comparación facial."
+    problem: "Era necesario estudiar, dentro de un entorno controlado, cómo conviven varios factores de autenticación y sus flujos de recuperación."
     contribution: "Lo construí para entender cómo se relacionan distintos factores de autenticación y cómo separar responsabilidades en una aplicación Flask."
     operation: "Usa una fábrica de aplicación, blueprints, SQLAlchemy y SQLite. Las prácticas incluyen contraseñas con bcrypt, tokens firmados, límites de intentos, TOTP y comparación facial experimental."
     scope: "Es un laboratorio técnico, no un proveedor de identidad. Antes de usarlo con cuentas reales necesitaría auditoría, gestión segura de secretos, pruebas de ataque y políticas operativas."
-    highlights: ["Application factory y blueprints modulares", "Bcrypt, tokens firmados y rate limiting", "TOTP, SMS y códigos de recuperación", "OpenCV, Dlib y biometría experimental"]
-    stack: ["Python", "Flask", "SQLAlchemy", "SQLite", "OpenCV"]
+    highlights: ["Application factory y blueprints modulares", "Registro, confirmación de correo y recuperación de contraseña", "Bcrypt, sesiones, tokens firmados y rate limiting", "TOTP, SMS y códigos de recuperación", "Comparación facial experimental con OpenCV y Dlib"]
+    aspects: "Arquitectura Flask, gestión de sesiones, factores de autenticación, limitación de intentos y biometría experimental."
+    architecture: ["Cliente web", "Blueprints Flask", "SQLAlchemy y SQLite"]
+    stack: ["Python", "Flask", "Flask-SQLAlchemy", "SQLite", "Flask-Login", "Flask-Bcrypt", "Flask-Mail", "Flask-Limiter", "PyOTP", "OpenCV", "Dlib", "face_recognition", "NumPy", "JavaScript", "Jinja2"]
     demo_url: null
-    repository_url: null
+    repository_url: "https://github.com/David650991/auth-practice"
     note: "Demostrador académico; no destinado a identidades reales en producción."
   - slug: "grid-chat"
+    priority: 3
+    categories: ["Aplicaciones web", "Backend", "Tiempo real"]
     title: "GRID-Chat"
     category: "Aplicación web en tiempo real"
     status: "Prototipo funcional"
+    status_kind: "mvp"
     featured: true
     monogram: "GC"
     summary: "Chat por salas con mensajes en tiempo real, presencia, historial, reacciones y administración básica."
+    problem: "El objetivo era comprender comunicación bidireccional, presencia e historial persistente más allá del ciclo tradicional de petición y respuesta."
     contribution: "Desarrollé el servidor, los eventos en tiempo real, la persistencia y la interfaz para practicar comunicación bidireccional más allá de las peticiones HTTP tradicionales."
     operation: "Flask-SocketIO distribuye mensajes y eventos de presencia; SQLite conserva el historial. El cliente permite entrar a salas, ver actividad, escribir y reaccionar."
     scope: "El prototipo funciona y está desplegado en Render. Le faltan controles de seguridad, moderación y una estrategia de escalado antes de admitir una comunidad pública."
-    highlights: ["Flask-SocketIO y eventos WebSocket", "Persistencia de mensajes en SQLite", "Salas, presencia, escritura y reacciones", "Interfaz responsiva y PWA básica"]
-    stack: ["Python", "Flask-SocketIO", "SQLite", "JavaScript", "Jinja"]
+    highlights: ["Entrada mediante nickname y salas públicas", "Mensajería, presencia e indicador de escritura en tiempo real", "Historial SQLite, reacciones y administración básica", "Avatares, enlaces enriquecidos e integración de YouTube", "PWA con Service Worker"]
+    aspects: "Comunicación en tiempo real, conexiones Socket.IO, persistencia, presencia de usuarios y PWA."
+    architecture: ["Cliente PWA", "Socket.IO y Flask", "SQLite"]
+    stack: ["Python", "Flask", "Flask-SocketIO", "Socket.IO", "SQLite", "Jinja2", "HTML5", "CSS3", "JavaScript", "PWA", "Service Worker"]
     demo_url: "https://grid-chat-lknf.onrender.com/"
     repository_url: "https://github.com/David650991/GRID-Chat"
     note: "Prototipo pendiente de endurecimiento de seguridad."
   - slug: "visionlab"
+    priority: 4
+    categories: ["Aplicaciones web", "Visión computacional"]
     title: "VisionLab"
     category: "Visión computacional en navegador"
     status: "Laboratorio experimental"
+    status_kind: "experimental"
     featured: false
     monogram: "VL"
     summary: "Aplicación estática para experimentar con bordes, contornos, detección facial, landmarks y expresiones aparentes."
+    problem: "Se buscaba observar técnicas de visión computacional directamente en el navegador, manteniendo las imágenes en el dispositivo del usuario."
     contribution: "Preparé una interfaz donde se puede cargar una imagen y observar diferentes etapas del procesamiento sin enviar el archivo a un servidor."
     operation: "OpenCV.js trabaja con bordes y contornos sobre Canvas; face-api.js ejecuta detección facial, 68 puntos de referencia y estimaciones de expresión en el navegador."
     scope: "Su finalidad es educativa. No identifica personas, no debe utilizarse para tomar decisiones sensibles y sus resultados dependen de la imagen y de los modelos empleados."
-    highlights: ["Canny y análisis heurístico de formas", "Detección facial y 68 landmarks", "Procesamiento local sobre Canvas", "Modelos ejecutados en el navegador"]
-    stack: ["OpenCV.js", "face-api.js", "Canvas", "JavaScript"]
+    highlights: ["Detección de bordes Canny y contornos", "Clasificación heurística de formas", "Detección facial y 68 landmarks", "Estimación experimental de expresiones", "Procesamiento local sin API, fetch, XHR ni WebSockets"]
+    aspects: "Procesamiento de imágenes, memoria WebAssembly, Canvas, detección facial y modelos ejecutados en navegador."
+    architecture: ["Imagen local", "Canvas y modelos web", "Resultado en navegador"]
+    stack: ["HTML5", "CSS3", "JavaScript", "OpenCV.js", "face-api.js", "Canvas API", "AdminLTE"]
     demo_url: null
     repository_url: "https://github.com/David650991/visionlab"
-    note: "Laboratorio educativo; no es un sistema de identificación biométrica."
+    note: "No identifica personas. Las expresiones son estimaciones del modelo, no evaluaciones psicológicas."
   - slug: "curriculum"
+    priority: 6
+    categories: ["Automatización", "Aplicaciones web"]
     title: "Currículum y portafolio automatizado"
     category: "Generación estática y CI/CD"
     status: "Proyecto activo"
+    status_kind: "functional"
     featured: false
     monogram: "CV"
     summary: "Este sitio: contenido profesional en YAML, plantillas Jinja, build reproducible y despliegue automático en GitHub Pages."
+    problem: "El currículum debía mantenerse coherente y verificable sin duplicar manualmente los mismos datos entre páginas, estilos y documentos."
     contribution: "Separé mis datos del diseño para poder actualizar el currículum sin reescribir HTML. También incorporé validación, pruebas, archivos SEO y publicación automática."
     operation: "Python carga y valida YAML, Jinja genera HTML y los módulos CSS se unen durante el build. GitHub Actions revisa el código, ejecuta pruebas y publica únicamente el directorio final."
     scope: "Es un proyecto activo y el punto de unión de mi trayectoria. Cada dato debe mantenerse verificable y cada nuevo recurso debe justificar su efecto en la carga."
-    highlights: ["Contenido separado de la presentación", "HTML estático, rápido y accesible", "Pruebas del generador", "GitHub Actions y artefacto limpio"]
-    stack: ["Python", "Jinja2", "PyYAML", "Poetry", "GitHub Actions"]
+    highlights: ["Contenido YAML separado de la presentación", "Plantillas y generación estática automatizada", "HTML accesible y recursos optimizados", "Pruebas y revisión con Ruff", "GitHub Actions y publicación aislada en dist"]
+    aspects: "Templating, automatización, configuración mediante datos, pruebas, CI/CD y despliegue automático."
+    architecture: ["YAML", "Python y Jinja2", "HTML y GitHub Pages"]
+    stack: ["Python", "Jinja2", "YAML", "PyYAML", "Poetry", "HTML5", "CSS3", "JavaScript", "pytest", "Ruff", "GitHub Actions", "GitHub Pages"]
     demo_url: "https://david650991.github.io/curriculum-david-vidal-ramirez/"
     repository_url: "https://github.com/David650991/curriculum-david-vidal-ramirez"
   - slug: "tuxtepec-server"
+    priority: 7
+    categories: ["Backend", "Aplicaciones web"]
     title: "David Vidal IT Tuxtepec Server"
     category: "Laboratorio Node.js y ARM64"
     status: "Demostrador técnico"
+    status_kind: "demo"
     featured: false
     monogram: "NS"
     summary: "Micrositio servido con Express para experimentar con publicación Node.js en un entorno ARM64/Android."
+    problem: "Se quería comprobar que un dispositivo ARM64 con Android y Termux podía alojar y mantener un servicio Node.js ligero."
     contribution: "Preparé el servidor y una interfaz ligera para comprobar que podía levantar y administrar una aplicación Node.js desde un dispositivo ARM64 con Termux."
     operation: "Express sirve los archivos estáticos; Helmet añade cabeceras, compression reduce las respuestas y el registro facilita revisar solicitudes. PM2 se utiliza para mantener el proceso."
     scope: "Es una demostración de despliegue y administración básica. No monitorea infraestructura ni sustituye una plataforma de observabilidad."
-    highlights: ["Servidor estático con Express", "Helmet, compresión y logging", "Interfaz ligera en JavaScript Vanilla", "Orientación a Termux y PM2"]
-    stack: ["Node.js", "Express", "Helmet", "CSS", "JavaScript"]
+    highlights: ["Servidor HTTP y contenido estático con Express", "Helmet para cabeceras de seguridad", "Compression para reducir respuestas", "Morgan para registro HTTP", "Ejecución ARM64 con Termux y PM2"]
+    aspects: "Servidor HTTP, middlewares, contenido estático, compresión, registro y administración básica del proceso."
+    architecture: ["Cliente web", "Node.js y Express", "Archivos estáticos"]
+    stack: ["Node.js", "Express", "Helmet", "Compression", "Morgan", "HTML5", "CSS3", "JavaScript", "PM2", "Termux"]
     demo_url: null
     repository_url: "https://github.com/David650991/David-Vidal-IT-Tuxtepec-Server"
     note: "Demostrador de despliegue, no plataforma de monitoreo."

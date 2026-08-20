@@ -23,7 +23,7 @@ def write_public_files(output: Path, site: dict[str, Any]) -> None:
         "name": site["name"], "short_name": "CV David Vidal",
         "description": site["description"], "lang": "es-MX",
         "start_url": "./", "scope": "./", "display": "standalone",
-        "background_color": "#07111f", "theme_color": "#0b63f6",
+        "background_color": "#03050d", "theme_color": "#751182",
         "icons": [{"src": "assets/logo.png", "sizes": "96x96", "type": "image/png"}],
     }
     (output / "site.webmanifest").write_text(

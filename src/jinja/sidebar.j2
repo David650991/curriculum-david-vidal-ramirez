@@ -1,20 +1,30 @@
-<section id="inicio" class="hero section-anchor">
-  <div class="container hero-grid">
-    <div class="hero-copy">
-      <p class="eyebrow">Creador y desarrollador de soluciones digitales</p>
-      <h1>{{ profile.USER.name }}</h1>
-      <p class="hero-role">{{ profile.USER.role }}</p>
-      <p class="hero-summary">Construyo aplicaciones que convierten procesos manuales y necesidades institucionales en experiencias web funcionales, documentadas y desplegables.</p>
-      <div class="hero-actions">
-        <a class="button button-primary" href="#proyectos">Explorar proyectos</a>
-        <a class="button button-secondary" href="mailto:{{ profile.USER.email }}">Contactarme</a>
-      </div>
-      <p class="availability"><span aria-hidden="true"></span>{{ profile.USER.availability }}</p>
-    </div>
-    <div class="portrait-panel">
-      <div class="portrait-glow" aria-hidden="true"></div>
-      <img src="{{ profile.USER.avatar }}" alt="Retrato profesional de {{ profile.USER.name }}" width="472" height="528" fetchpriority="high">
-      <div class="portrait-caption"><strong>3.er semestre</strong><span>Ingeniería en Sistemas Computacionales · TecNM</span></div>
-    </div>
+{% from "components/icons.j2" import icon, image_icon, social_link with context %}
+<aside class="profile-card" aria-label="Datos de contacto de David Vidal Ramírez">
+  <div class="profile-portrait">
+    <img src="{{ profile.USER.avatar }}" alt="Retrato profesional de {{ profile.USER.name }}" width="472" height="528" fetchpriority="high" decoding="async">
   </div>
-</section>
+  <div class="profile-identity">
+    <p class="profile-kicker">Portafolio profesional</p>
+    <h1>{{ profile.USER.name }}</h1>
+    <p class="profile-role"><strong>{{ profile.USER.role }}</strong><span>{{ profile.USER.role_stack }}</span></p>
+    <small class="academic-status">{{ profile.USER.academic_status }}</small>
+  </div>
+  <button class="profile-toggle" type="button" data-profile-toggle aria-expanded="false" aria-controls="profile-details">Mostrar datos de contacto</button>
+  <div id="profile-details" class="profile-details" data-profile-details>
+    <ul class="profile-data">
+      {% for item in profile.INFO %}
+      {% if item.get('brand_icon') %}
+      {% set brand = iconography.SOCIAL[item.brand_icon] %}
+      {% set item_icon = image_icon(brand.icon, item.label, "profile-data-icon") if brand.get('raster') else icon(brand.icon, None, "profile-data-icon", brand.color) %}
+      {% else %}
+      {% set functional = iconography.FUNCTIONAL[item.icon] %}
+      {% set item_icon = icon(functional.icon, None, "profile-data-icon") %}
+      {% endif %}
+      <li class="profile-data-item">{{ item_icon }}<span class="profile-data-content"><span>{{ item.label }}{% if item.get('badge') %}<small>{{ item.badge }}</small>{% endif %}</span>{% if item.href %}<a href="{{ item.href }}"{% if item.href.startswith('http') %} target="_blank" rel="noopener noreferrer"{% endif %}>{{ item.value }}</a>{% else %}<strong>{{ item.value }}</strong>{% endif %}</span></li>
+      {% endfor %}
+    </ul>
+    <div class="profile-social">{% for item in profile.SOCIAL %}{{ social_link(item, iconography, profile.USER.name) }}{% endfor %}</div>
+    <div class="profile-actions"><a class="primary-action" href="mailto:{{ profile.USER.email }}">{{ icon(iconography.FUNCTIONAL.mail.icon, None, "action-icon") }}<span>Contactarme</span></a><a href="assets/cv-david-vidal-ramirez.pdf" download>{{ icon(iconography.FUNCTIONAL.download.icon, None, "action-icon") }}<span>Descargar CV</span></a></div>
+    <p class="profile-availability"><span aria-hidden="true"></span>{{ profile.USER.availability }}</p>
+  </div>
+</aside>

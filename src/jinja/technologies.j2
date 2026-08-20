@@ -1,17 +1,35 @@
-<section id="tecnologias" class="section section-anchor">
+{% from "components/icons.j2" import icon, technology_icon, tech_chip with context %}
+<section id="tecnologias" class="section page" data-page hidden>
   <div class="container">
     <header class="section-heading">
-      <p class="eyebrow">{{ technologies.HEADER.eyebrow }}</p>
-      <h2>{{ technologies.HEADER.title }}</h2>
-      <p>{{ technologies.HEADER.description }}</p>
+      <p class="eyebrow"><span>04 /</span> {{ technologies.HEADER.eyebrow }}</p>
+      <h2>Mapa de mi stack tecnológico</h2>
+      <p>Las herramientas están agrupadas por el contexto en que las he utilizado. Las etiquetas Principal, Aplicada y Laboratorio distinguen experiencia frecuente, uso concreto y exploración educativa.</p>
     </header>
-    <div class="technology-groups">
-      {% for group in technologies.GROUPS %}
-      <article class="technology-group">
-        <h3>{{ group.title }}</h3>
-        <ul class="tags">{% for item in group["items"] %}<li>{{ item }}</li>{% endfor %}</ul>
+
+    <div class="ecosystem-grid">
+      {% for group in iconography.ECOSYSTEMS %}
+      <article class="ecosystem-card">
+        <header class="ecosystem-card__header">
+          <span class="tech-logo">
+            {% if group.get('icon') %}{{ technology_icon(group.icon, iconography, "technology-card-icon") }}{% else %}{{ icon(iconography.FUNCTIONAL[group.functional_icon].icon, None, "technology-card-icon") }}{% endif %}
+          </span>
+          <div><span class="experience-level">{{ group.level }}</span><h3>{{ group.name }}</h3></div>
+        </header>
+        <p>{{ group.description }}</p>
+        <ul class="tags tech-chip-list ecosystem-tools">{% for item in group['items'] %}{{ tech_chip(item, iconography) }}{% endfor %}</ul>
       </article>
       {% endfor %}
+    </div>
+
+    <section class="integration-section" aria-labelledby="integration-title">
+      <header><h3 id="integration-title">Servicios e integraciones</h3><p>Estos servicios aparecen dentro de proyectos concretos; no se presentan como competencias principales.</p></header>
+      <div class="integration-list">{% for item in iconography.INTEGRATIONS %}<article><h4>{{ technology_icon(item.name, iconography, "integration-icon") }}<span>{{ item.name }}</span></h4><p>{{ item.context }}</p></article>{% endfor %}</div>
+    </section>
+
+    <div class="career-grid technology-context-grid">
+      <article class="career-block"><h3>{{ career.INTERESTS.label }}</h3><ul class="tags tech-chip-list">{% for item in career.INTERESTS['items'] %}{{ tech_chip(item, iconography) }}{% endfor %}</ul></article>
+      <article class="career-block"><h3>{{ career.DELIVERY.label }}</h3><p>{{ career.DELIVERY.text }}</p><ul class="tags tech-chip-list">{% for item in career.DELIVERY['items'] %}{{ tech_chip(item, iconography) }}{% endfor %}</ul></article>
     </div>
   </div>
 </section>

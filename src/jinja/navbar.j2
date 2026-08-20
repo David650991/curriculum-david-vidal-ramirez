@@ -1,14 +1,6 @@
-<header class="site-header" data-header>
-  <div class="container nav-layout">
-    <a class="brand" href="#inicio" aria-label="Ir al inicio">
-      <span class="brand-mark" aria-hidden="true">DV</span>
-      <span><strong>David Vidal</strong><small>Desarrollador de software</small></span>
-    </a>
-    <button class="menu-button" type="button" data-menu-button aria-expanded="false" aria-controls="main-nav">
-      <span class="sr-only">Abrir menú</span><span aria-hidden="true">Menú</span>
-    </button>
-    <nav id="main-nav" class="main-nav" data-menu aria-label="Navegación principal">
-      {% for item in navbar.NAVBAR %}<a href="{{ item.href }}">{{ item.label }}</a>{% endfor %}
-    </nav>
-  </div>
+<header class="panel-header">
+  <a class="compact-brand" href="#perfil" aria-label="Ir al perfil"><span>DV</span></a>
+  <nav id="main-nav" class="main-nav" data-menu aria-label="Secciones del portafolio">
+    {% for item in navbar.NAVBAR %}<a href="{{ item.href }}" data-page-link>{{ item.label }}</a>{% endfor %}
+  </nav>
 </header>

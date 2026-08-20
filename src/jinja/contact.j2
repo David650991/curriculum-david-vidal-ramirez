@@ -1,6 +1,23 @@
-<section id="contacto" class="section contact-section section-anchor">
-  <div class="container contact-grid">
-    <div><p class="eyebrow">{{ contact.HEADER.eyebrow }}</p><h2>{{ contact.HEADER.title }}</h2><p>{{ contact.HEADER.description }}</p><a class="location" href="{{ contact.LOCATION.href }}" target="_blank" rel="noopener noreferrer"><span>{{ contact.LOCATION.label }}</span><strong>{{ contact.LOCATION.value }}</strong></a></div>
-    <div class="contact-links">{% for item in contact.CALLS_TO_ACTION %}<a href="{{ item.href }}"{% if item.href.startswith('http') %} target="_blank" rel="noopener noreferrer"{% endif %}><span>{{ item.label }}</span><strong>{{ item.value }}</strong><b aria-hidden="true">↗</b></a>{% endfor %}</div>
+{% from "components/icons.j2" import icon with context %}
+<section id="contacto" class="section page contact-section" data-page hidden>
+  <div class="container">
+    <header class="section-heading contact-heading">
+      <p class="eyebrow"><span>05 /</span> {{ contact.HEADER.eyebrow }}</p>
+      <h2>{{ contact.HEADER.title }}</h2>
+      <p>{{ contact.HEADER.description }}</p>
+    </header>
+    <div class="contact-workspace">
+      <div class="contact-map">
+        <iframe data-map-source="{{ contact.LOCATION.embed }}" title="Mapa de Tres Valles, Veracruz" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+      </div>
+      <aside class="contact-aside" aria-label="Canales de contacto">
+        <div class="contact-quick-actions">
+          <a class="contact-primary" href="mailto:{{ profile.USER.email }}">{{ icon(iconography.FUNCTIONAL.mail.icon, None, "contact-action-icon") }} Enviar correo</a>
+          <a class="contact-primary contact-whatsapp" href="https://wa.me/{{ profile.USER.phone_href | replace('+', '') }}" target="_blank" rel="noopener noreferrer">{{ icon(iconography.SOCIAL.whatsapp.icon, None, "contact-action-icon", iconography.SOCIAL.whatsapp.color) }} WhatsApp</a>
+        </div>
+        <a class="location" href="{{ contact.LOCATION.href }}" target="_blank" rel="noopener noreferrer">{{ icon(iconography.FUNCTIONAL['map-pin'].icon, None, "location-icon") }}<span>{{ contact.LOCATION.label }}</span><strong>{{ contact.LOCATION.value }}</strong><small>Consultar ubicación ↗</small></a>
+        <div class="contact-links">{% for item in contact.CALLS_TO_ACTION %}<a href="{{ item.href }}"{% if item.href.startswith('http') %} target="_blank" rel="noopener noreferrer"{% endif %}>{% if item.get('icon_key') %}{% set action_icon = iconography.SOCIAL.get(item.icon_key) or iconography.FUNCTIONAL.get(item.icon_key) %}{{ icon(action_icon.icon, None, "contact-link-icon", action_icon.get('color')) }}{% endif %}<span>{{ item.label }}</span><strong>{{ item.value }}</strong><b aria-hidden="true">↗</b></a>{% endfor %}</div>
+      </aside>
+    </div>
   </div>
 </section>

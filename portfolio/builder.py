@@ -11,6 +11,7 @@ from jinja2 import Environment, FileSystemLoader, StrictUndefined, select_autoes
 from .assets import copy_public_assets
 from .content import load_content
 from .public_files import write_public_files
+from .pdf import create_cv_pdf
 
 
 class Portfolio:
@@ -59,5 +60,7 @@ class Portfolio:
         copy_public_assets(self.root, self.output)
         self.render("index.j2", "index.html", context)
         self.render("404.j2", "404.html", context)
+        self.render("cv.j2", "cv.html", context)
+        create_cv_pdf(context, self.output / "assets" / "cv-david-vidal-ramirez.pdf")
         write_public_files(self.output, context["profile"]["SITE"])
         return self.output

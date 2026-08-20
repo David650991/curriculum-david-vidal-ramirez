@@ -29,6 +29,10 @@ def copy_public_assets(root: Path, output: Path) -> None:
     )
     css_target.write_text(f"{css}\n", encoding="utf-8")
 
-    js_target = output / "assets/js/script.js"
-    js_target.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(root / "src/js/script.js", js_target)
+    js_source = root / "src/js"
+    js_target = output / "assets/js"
+    shutil.copytree(js_source, js_target, dirs_exist_ok=True)
+
+    icon_source = root / "src/assets/icons"
+    icon_target = output / "assets/icons"
+    shutil.copytree(icon_source, icon_target, dirs_exist_ok=True)

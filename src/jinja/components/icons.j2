@@ -1,0 +1,23 @@
+{% macro icon(asset, label=None, class_name="", color=None) -%}
+<span class="ui-icon {{ class_name }}" style="-webkit-mask-image:url('assets/icons/{{ asset }}');mask-image:url('assets/icons/{{ asset }}');{% if color %}--icon-color:{{ color }};{% endif %}"{% if label %} role="img" aria-label="{{ label }}"{% else %} aria-hidden="true"{% endif %}></span>
+{%- endmacro %}
+
+{% macro image_icon(asset, label, class_name="") -%}
+<img class="image-icon {{ class_name }}" src="assets/icons/{{ asset }}" alt="{{ label }}" width="24" height="24" decoding="async">
+{%- endmacro %}
+
+{% macro technology_icon(name, iconography, class_name="") -%}
+{% set technology = iconography.TECHNOLOGIES.get(name) %}
+{% if technology %}{{ icon(technology.icon, None, "technology-icon " ~ class_name, technology.color) }}{% endif %}
+{%- endmacro %}
+
+{% macro tech_chip(name, iconography) -%}
+<li class="tech-chip">{{ technology_icon(name, iconography, "tech-chip__icon") }}<span>{{ name }}</span></li>
+{%- endmacro %}
+
+{% macro social_link(item, iconography, owner) -%}
+{% set social = iconography.SOCIAL.get(item.icon) %}
+<a class="social-link" href="{{ item.url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ item.label }} de {{ owner }}">
+  {{ icon(social.icon, None, "social-link__icon", social.color) }}<span>{{ item.label }}</span>
+</a>
+{%- endmacro %}
