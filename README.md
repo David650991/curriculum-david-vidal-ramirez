@@ -31,9 +31,11 @@ main.py             Generador estático
 dist/               Resultado local; no se versiona
 ```
 
-El sitio publicado no necesita servidor, base de datos ni framework del lado cliente. Durante la compilación, los módulos CSS se unen en un solo archivo para mantener el código ordenado sin aumentar las solicitudes del navegador. La publicación incluye únicamente tres imágenes y aplica carga diferida a la captura de proyecto.
+El sitio publicado no necesita servidor, base de datos ni framework del lado cliente. Durante la compilación, los módulos CSS se unen en un solo archivo para mantener el código ordenado sin aumentar las solicitudes del navegador. La publicación incluye únicamente cuatro recursos rasterizados optimizados y aplica carga diferida a la captura de proyecto.
 
-La compilación también genera `cv.html` y un PDF de dos páginas con texto seleccionable, estructura lineal y nombres explícitos de tecnologías para facilitar su lectura por sistemas ATS.
+La compilación también genera `cv.html` y un PDF de tres páginas con texto seleccionable, estructura lineal y nombres explícitos de tecnologías para facilitar su lectura por sistemas ATS. El PDF conserva los 17 periodos laborales; evita repetir la sección de competencias porque la tercera página ya organiza las tecnologías por nivel de experiencia.
+
+El historial laboral usa nombres y fechas tomados de una constancia IMSS emitida el 15 de marzo de 2025. El documento fuente no se versiona y sus identificadores, salarios, registros patronales y sellos no se publican.
 
 ## Requisitos y ejecución
 
@@ -60,6 +62,7 @@ python -m http.server 8000 --directory dist
 - Formación y experiencia: `config/resume.yml`
 - Proyectos y estados: `config/projects.yml`
 - Tecnologías utilizadas: `config/technologies.yml`
+- Certificaciones seleccionadas: `config/certifications.yml`
 - Sistema central de iconografía: `config/iconography.yml`
 - Contacto: `config/contact.yml`
 - Navegación: `config/navbar.yml`
@@ -74,11 +77,11 @@ El flujo de GitHub Actions valida código y pruebas en cada `push` o `pull reque
 
 La fotografía profesional actual es utilizable. El diseño emplea monogramas cuando no existe una captura representativa, de modo que ninguna imagen genérica se presenta como evidencia de un proyecto. Para enriquecer el portafolio pueden incorporarse después capturas reales, sin datos privados, de los proyectos que aún no las tienen.
 
-La selección y el tratamiento de futuros logotipos se documentan en `docs/TECNOLOGIAS-Y-LOGOS.md`.
+La selección, organización y licencia de los iconos se documentan en `docs/ICONOGRAFIA-Y-LICENCIAS.md`.
 
 ## Autor y contacto
 
-Desarrollado y mantenido por **David Vidal Ramírez**.
+Creado, diseñado, desarrollado y mantenido por **David Vidal Ramírez**.
 
 - Correo profesional: [David650991@gmail.com](mailto:David650991@gmail.com)
 - Correo institucional: [L25350801@tuxtepec.tecnm.mx](mailto:L25350801@tuxtepec.tecnm.mx)
@@ -91,4 +94,4 @@ Las marcas tecnológicas se almacenan como SVG locales procedentes de Simple Ico
 
 ## Licencia
 
-El código se distribuye bajo la licencia MIT incluida en [LICENSE](LICENSE). Los datos personales, fotografías, textos curriculares y marcas de terceros no se conceden como material reutilizable.
+El código propio se distribuye bajo la licencia MIT incluida en [LICENSE](LICENSE). Los datos personales, fotografías, textos curriculares y marcas de terceros no se conceden como material reutilizable. La autoría, procedencia y límites de reutilización se detallan en [NOTICE.md](NOTICE.md), y la cobertura del contenido profesional se documenta en [docs/VERIFICACION-CONTENIDO.md](docs/VERIFICACION-CONTENIDO.md).

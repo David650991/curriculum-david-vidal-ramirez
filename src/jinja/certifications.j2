@@ -1,0 +1,29 @@
+{% from "components/icons.j2" import icon with context %}
+<section id="certificaciones" class="section page" data-page hidden>
+  <div class="container">
+    <header class="section-heading">
+      <p class="eyebrow"><span>05 /</span> {{ certifications.HEADER.eyebrow }}</p>
+      <h2>{{ certifications.HEADER.title }}</h2>
+      <p>{{ certifications.HEADER.description }}</p>
+    </header>
+    <div class="certification-grid">
+      {% for item in certifications.FEATURED %}
+      <article class="certification-card">
+        <span class="certification-icon">{{ icon(iconography.FUNCTIONAL.education.icon, None, "heading-icon") }}</span>
+        <p class="certification-date">{{ item.date }}{% if item.duration %} · {{ item.duration }}{% endif %}</p>
+        <h3>{{ item.title }}</h3>
+        <p class="certification-institution">{{ item.institution }}</p>
+        <p>{{ item.focus }}</p>
+        <small>{{ item.credential }}</small>
+      </article>
+      {% endfor %}
+    </div>
+    <section class="learning-paths" aria-labelledby="learning-paths-title">
+      <header><h3 id="learning-paths-title">Rutas complementarias</h3><p>Formación breve agrupada por contexto. Estas rutas complementan los proyectos y no sustituyen experiencia laboral.</p></header>
+      <div class="career-grid">
+        {% for path in certifications.PATHS %}<article class="career-block"><h3>{{ path.title }}</h3><p>{{ path.summary }}</p><ul class="check-list">{% for item in path['items'] %}<li>{{ item }}</li>{% endfor %}</ul></article>{% endfor %}
+      </div>
+    </section>
+    <a class="button-secondary certification-profile" href="{{ certifications.PUBLIC_PROFILE.url }}" target="_blank" rel="noopener noreferrer">{{ certifications.PUBLIC_PROFILE.label }} ↗</a>
+  </div>
+</section>

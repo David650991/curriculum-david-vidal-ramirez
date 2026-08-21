@@ -2,7 +2,7 @@
 <html lang="{{ profile.SITE.language }}">
 <head>
   {% include "meta.j2" %}
-  <link rel="icon" href="assets/logo.png" type="image/png">
+  <link rel="icon" href="assets/images/branding/app-icon.png" type="image/png">
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="{{ profile.USER.avatar }}" as="image" fetchpriority="high">
   <link rel="stylesheet" href="assets/css/style.css">
@@ -20,9 +20,10 @@
         {% include "resume.j2" %}
         {% include "projects.j2" %}
         {% include "technologies.j2" %}
+        {% include "certifications.j2" %}
         {% include "contact.j2" %}
       </main>
-      <footer class="site-footer"><p>© {{ build.year }} {{ profile.USER.name }}.<small>Construido con Python · Jinja2 · YAML · GitHub Actions</small></p><a href="{{ profile.SITE.repository }}" target="_blank" rel="noopener noreferrer">Código del portafolio</a></footer>
+      <footer class="site-footer"><p>{{ profile.SITE.copyright }}. Diseñado, desarrollado y mantenido por {{ profile.SITE.creator }}.<small>Construido con Python · Jinja2 · YAML · GitHub Actions</small></p><span><a href="LICENSE.txt">Licencia</a> · <a href="humans.txt">Autoría</a> · <a href="{{ profile.SITE.repository }}" target="_blank" rel="noopener noreferrer">Código del portafolio</a></span></footer>
     </div>
   </div>
 </body>

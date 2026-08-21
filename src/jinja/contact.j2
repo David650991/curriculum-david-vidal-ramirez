@@ -1,14 +1,30 @@
-{% from "components/icons.j2" import icon with context %}
+{% from "components/icons.j2" import icon, image_icon with context %}
 <section id="contacto" class="section page contact-section" data-page hidden>
   <div class="container">
     <header class="section-heading contact-heading">
-      <p class="eyebrow"><span>05 /</span> {{ contact.HEADER.eyebrow }}</p>
+      <p class="eyebrow"><span>06 /</span> {{ contact.HEADER.eyebrow }}</p>
       <h2>{{ contact.HEADER.title }}</h2>
       <p>{{ contact.HEADER.description }}</p>
     </header>
     <div class="contact-workspace">
-      <div class="contact-map">
+      <div class="contact-map" data-map-container data-destination-lat="{{ contact.LOCATION.latitude }}" data-destination-lng="{{ contact.LOCATION.longitude }}" data-map-zoom="{{ contact.LOCATION.zoom }}">
+        <div class="map-placeholder">
+          {{ image_icon(iconography.SOCIAL['google-maps'].icon, "Google Maps", "map-placeholder-icon") }}
+          <strong>Tres Valles, Veracruz</strong>
+          <span>El mapa interactivo se carga únicamente cuando lo solicitas.</span>
+          <button type="button" data-map-load>Cargar mapa interactivo</button>
+          <a href="{{ contact.LOCATION.directions }}" target="_blank" rel="noopener noreferrer">Abrir indicaciones de manejo ↗</a>
+        </div>
         <iframe data-map-source="{{ contact.LOCATION.embed }}" title="Mapa de Tres Valles, Veracruz" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        <div class="map-controls" aria-label="Controles del mapa">
+          <div class="map-zoom" role="group" aria-label="Nivel de acercamiento">
+            <button type="button" data-map-zoom-in aria-label="Acercar mapa">+</button>
+            <button type="button" data-map-zoom-out aria-label="Alejar mapa">−</button>
+          </div>
+          <button class="map-location" type="button" data-map-location>Usar mi ubicación</button>
+          <a class="map-directions" data-map-directions href="{{ contact.LOCATION.directions }}" target="_blank" rel="noopener noreferrer">Cómo llegar ↗</a>
+        </div>
+        <p class="map-status" data-map-status role="status" aria-live="polite"></p>
       </div>
       <aside class="contact-aside" aria-label="Canales de contacto">
         <div class="contact-quick-actions">

@@ -1,0 +1,14 @@
+.certification-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.certification-card { position: relative; min-width: 0; padding: 22px; border: 1px solid var(--border-soft); border-radius: var(--radius-lg); background: linear-gradient(145deg, rgba(15,27,45,.92), rgba(8,17,29,.86)); box-shadow: inset 0 1px rgba(255,255,255,.025); }
+.certification-card h3 { max-width: 28ch; margin-bottom: 7px; color: var(--text); }
+.certification-card > p:not(.certification-date):not(.certification-institution) { margin-bottom: 12px; color: var(--muted); }
+.certification-card small { color: #7dd3fc; }
+.certification-date { margin: 0 48px 12px 0; color: var(--cyan); font: 750 .72rem/1.4 var(--font-code); text-transform: uppercase; }
+.certification-institution { margin-bottom: 12px; color: #cbd5e1; font-weight: 750; }
+.certification-icon { position: absolute; top: 20px; right: 20px; color: var(--violet-light); }
+.learning-paths { margin-top: 30px; }
+.learning-paths > header { max-width: 68ch; margin-bottom: 18px; }
+.learning-paths > header p { color: var(--muted); }
+.learning-paths .career-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.learning-paths .career-block > p { color: #7dd3fc; font: 700 .72rem/1.5 var(--font-code); }
+.certification-profile { display: inline-flex; margin-top: 24px; text-decoration: none; }

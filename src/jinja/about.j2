@@ -10,7 +10,7 @@
       <div class="prose">
         <p class="lead">{{ about.PRESENTATION.lead }}</p>
         {% for paragraph in about.PRESENTATION.paragraphs %}<p>{{ paragraph }}</p>{% endfor %}
-        <div class="profile-cta"><a class="button-primary" href="#proyectos" data-page-shortcut>Ver proyectos</a><a class="button-secondary" href="{{ profile.SITE.repository }}" target="_blank" rel="noopener noreferrer">Ver GitHub</a></div>
+        <div class="profile-cta"><a class="button-primary" href="#proyectos" data-page-shortcut>{{ icon(iconography.FUNCTIONAL.projects.icon, None, "button-icon") }}Ver proyectos</a><a class="button-secondary" href="{{ profile.SITE.repository }}" target="_blank" rel="noopener noreferrer">{{ icon(iconography.SOCIAL.github.icon, None, "button-icon", iconography.SOCIAL.github.color) }}Ver GitHub</a></div>
       </div>
       <dl class="metrics">
         {% set metric_icons = ["projects", "documents", "education", "briefcase"] %}
@@ -19,7 +19,7 @@
     </div>
     <h3 class="subheading">{{ about.FOCUS.label }}</h3>
     <div class="card-grid focus-grid">
-      {% for item in about.FOCUS["items"] %}<article class="info-card"><span class="card-number">0{{ loop.index }}</span><span class="focus-icon" aria-hidden="true">{% if loop.index == 1 %}<svg viewBox="0 0 24 24"><path d="M4 5h16v11H4zM8 20h8M12 16v4"/><path d="m9 9-2 2 2 2m6-4 2 2-2 2"/></svg>{% elif loop.index == 2 %}<svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>{% elif loop.index == 3 %}<svg viewBox="0 0 24 24"><path d="M4 7h10M4 17h16M18 7h2M8 12h12M4 12h1"/><circle cx="16" cy="7" r="2"/><circle cx="7" cy="12" r="2"/><circle cx="10" cy="17" r="2"/></svg>{% else %}<svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.8 2.8 8.2 7 10 4.2-1.8 7-5.2 7-10V6z"/><path d="m9 12 2 2 4-5"/></svg>{% endif %}</span><h4>{{ item.title }}</h4><p>{{ item.description }}</p></article>{% endfor %}
+      {% set focus_icons = ["canvas", "database", "realtime", "security"] %}{% for item in about.FOCUS["items"] %}{% set focus_icon = iconography.FUNCTIONAL[focus_icons[loop.index0]] %}<article class="info-card"><span class="card-number">0{{ loop.index }}</span>{{ icon(focus_icon.icon, None, "focus-icon") }}<h4>{{ item.title }}</h4><p>{{ item.description }}</p></article>{% endfor %}
     </div>
     <div class="two-column-block">
       <div>
@@ -28,7 +28,7 @@
       </div>
       <div>
         <h3 class="subheading">{{ about.STACK.label }}</h3>
-        <div class="main-stack"><ul class="tags tech-chip-list">{% for item in ["Python", "JavaScript", "Flask", "Node.js", "SQL", "Cloudflare", "Git", "OpenCV"] %}{{ tech_chip(item, iconography) }}{% endfor %}</ul><a href="#tecnologias" data-page-shortcut>Ver stack completo →</a></div>
+        <div class="main-stack">{% for group in about.STACK.groups %}<h4>{{ group.title }}</h4><ul class="tags tech-chip-list">{% for item in group['items'] %}{{ tech_chip(item, iconography) }}{% endfor %}</ul>{% endfor %}<a href="#tecnologias" data-page-shortcut>Ver mapa técnico y evidencias →</a></div>
       </div>
     </div>
   </div>

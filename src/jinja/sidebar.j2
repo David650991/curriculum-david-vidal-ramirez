@@ -7,7 +7,8 @@
     <p class="profile-kicker">Portafolio profesional</p>
     <h1>{{ profile.USER.name }}</h1>
     <p class="profile-role"><strong>{{ profile.USER.role }}</strong><span>{{ profile.USER.role_stack }}</span></p>
-    <small class="academic-status">{{ profile.USER.academic_status }}</small>
+    <span class="profile-role-logos">{% for name in profile.USER.role_highlights %}{% set technology = iconography.TECHNOLOGIES[name] %}{% if technology.get('image') %}{{ image_icon(technology.icon, name, "profile-role-logo") }}{% else %}{{ icon(technology.icon, name, "profile-role-logo", technology.color) }}{% endif %}{% endfor %}</span>
+    <small class="academic-status">{{ icon(iconography.FUNCTIONAL.education.icon, None, "academic-icon") }}{{ profile.USER.academic_status }}</small>
   </div>
   <button class="profile-toggle" type="button" data-profile-toggle aria-expanded="false" aria-controls="profile-details">Mostrar datos de contacto</button>
   <div id="profile-details" class="profile-details" data-profile-details>
@@ -15,7 +16,7 @@
       {% for item in profile.INFO %}
       {% if item.get('brand_icon') %}
       {% set brand = iconography.SOCIAL[item.brand_icon] %}
-      {% set item_icon = image_icon(brand.icon, item.label, "profile-data-icon") if brand.get('raster') else icon(brand.icon, None, "profile-data-icon", brand.color) %}
+      {% set item_icon = image_icon(brand.icon, item.label, "profile-data-icon") if brand.get('image') else icon(brand.icon, None, "profile-data-icon", brand.color) %}
       {% else %}
       {% set functional = iconography.FUNCTIONAL[item.icon] %}
       {% set item_icon = icon(functional.icon, None, "profile-data-icon") %}
@@ -24,7 +25,7 @@
       {% endfor %}
     </ul>
     <div class="profile-social">{% for item in profile.SOCIAL %}{{ social_link(item, iconography, profile.USER.name) }}{% endfor %}</div>
-    <div class="profile-actions"><a class="primary-action" href="mailto:{{ profile.USER.email }}">{{ icon(iconography.FUNCTIONAL.mail.icon, None, "action-icon") }}<span>Contactarme</span></a><a href="assets/cv-david-vidal-ramirez.pdf" download>{{ icon(iconography.FUNCTIONAL.download.icon, None, "action-icon") }}<span>Descargar CV</span></a></div>
+    <div class="profile-actions"><a class="primary-action" href="mailto:{{ profile.USER.email }}">{{ image_icon(iconography.SOCIAL.gmail.icon, "Gmail", "action-icon") }}<span>Contactarme</span></a><a href="assets/cv-david-vidal-ramirez.pdf" download>{{ icon(iconography.FUNCTIONAL.download.icon, None, "action-icon") }}<span>Descargar CV</span></a></div>
     <p class="profile-availability"><span aria-hidden="true"></span>{{ profile.USER.availability }}</p>
   </div>
 </aside>

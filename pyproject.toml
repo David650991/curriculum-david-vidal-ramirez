@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "portafolio-david-vidal"
 version = "1.0.0"
-description = "Portafolio profesional y Currículum Vitae de David Vidal Ramírez - Desarrollador Python & Web."
+description = "Currículum y portafolio profesional de David Vidal Ramírez, desarrollador de software y estudiante de Ingeniería en Sistemas Computacionales."
 authors = ["David Vidal Ramírez <David650991@gmail.com>"]
 license = "MIT"
 readme = "README.md"

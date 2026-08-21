@@ -13,7 +13,7 @@
       {% for item in projects.PROJECTS | sort(attribute="priority") %}
       <article class="project-card{% if item.featured %} project-featured{% endif %}" data-project data-categories="{{ item.categories | join('|') }}">
         <div class="project-visual visual-{{ loop.index }}">
-          {% if item.image is defined %}<img src="{{ item.image }}" alt="Vista del proyecto {{ item.title }}" width="1366" height="1136" loading="lazy" decoding="async">{% else %}<span aria-hidden="true">{{ item.monogram }}</span>{% endif %}
+          {% if item.image is defined %}<img src="{{ item.image }}" alt="{% if item.image_label is defined %}{{ item.image_label }} de {{ item.title }}{% else %}Vista del proyecto {{ item.title }}{% endif %}" width="{{ item.image_width | default(1366) }}" height="{{ item.image_height | default(1136) }}" loading="lazy" decoding="async">{% if item.image_label is defined %}<small class="project-image-label">{{ item.image_label }}</small>{% endif %}{% else %}<span aria-hidden="true">{{ item.monogram }}</span>{% endif %}
         </div>
         <div class="project-content">
           <div class="project-meta"><span>{{ item.category }}</span><strong data-status="{{ item.status_kind }}">{{ item.status }}</strong></div>

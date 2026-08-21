@@ -5,7 +5,10 @@ from typing import Any
 
 import yaml
 
-CONFIG_FILES = ("profile", "about", "resume", "projects", "technologies", "iconography", "career", "contact", "navbar")
+CONFIG_FILES = (
+    "profile", "about", "resume", "projects", "technologies", "certifications",
+    "iconography", "career", "contact", "navbar",
+)
 
 
 def load_yaml(config_dir: Path, name: str) -> dict[str, Any]:

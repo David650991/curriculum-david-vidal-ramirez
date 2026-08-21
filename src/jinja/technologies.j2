@@ -27,9 +27,21 @@
       <div class="integration-list">{% for item in iconography.INTEGRATIONS %}<article><h4>{{ technology_icon(item.name, iconography, "integration-icon") }}<span>{{ item.name }}</span></h4><p>{{ item.context }}</p></article>{% endfor %}</div>
     </section>
 
+    <section class="integration-section" aria-labelledby="evidence-title">
+      <header><h3 id="evidence-title">Nivel y evidencia por proyecto</h3><p>No uso porcentajes subjetivos: cada nivel indica el contexto en que he trabajado con la tecnología.</p></header>
+      <div class="career-grid">{% for level in technologies.LEVELS %}<article class="career-block"><h3>{{ level.level }}</h3><p>{{ level.description }}</p><ul class="check-list">{% for item in level['items'] %}<li><strong>{{ item.name }}:</strong> {{ item.evidence }}</li>{% endfor %}</ul></article>{% endfor %}</div>
+    </section>
+
+    <section class="integration-section" aria-labelledby="inventory-title">
+      <header><h3 id="inventory-title">Inventario técnico completo</h3><p>Tecnologías y herramientas agrupadas por su función dentro de los proyectos documentados.</p></header>
+      <div class="career-grid">{% for group in technologies.GROUPS %}<article class="career-block"><h3>{{ group.title }}</h3><ul class="tags tech-chip-list">{% for item in group['items'] %}{{ tech_chip(item, iconography) }}{% endfor %}</ul></article>{% endfor %}</div>
+    </section>
+
     <div class="career-grid technology-context-grid">
       <article class="career-block"><h3>{{ career.INTERESTS.label }}</h3><ul class="tags tech-chip-list">{% for item in career.INTERESTS['items'] %}{{ tech_chip(item, iconography) }}{% endfor %}</ul></article>
       <article class="career-block"><h3>{{ career.DELIVERY.label }}</h3><p>{{ career.DELIVERY.text }}</p><ul class="tags tech-chip-list">{% for item in career.DELIVERY['items'] %}{{ tech_chip(item, iconography) }}{% endfor %}</ul></article>
+      <article class="career-block"><h3>{{ career.DATABASES.label }}</h3><ul class="check-list">{% for item in career.DATABASES['items'] %}<li><strong>{{ item.name }}:</strong> {{ item.use }}</li>{% endfor %}</ul></article>
+      <article class="career-block"><h3>{{ career.CONCEPTS.label }}</h3><ul class="tags">{% for item in career.CONCEPTS['items'] %}<li>{{ item }}</li>{% endfor %}</ul></article>
     </div>
   </div>
 </section>

@@ -83,7 +83,7 @@ export function initNeuralNetwork(canvas, reducedMotion) {
       context.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
       context.fillStyle = node.white ? 'rgba(255,255,255,.8)'
         : node.violet ? 'rgba(237,112,255,.95)' : 'rgba(200,107,211,.92)';
-      context.shadowColor = node.white ? '#fff' : node.violet ? '#ed70ff' : '#751182';
+      context.shadowColor = node.white ? '#fff' : node.violet ? '#38bdf8' : '#2563eb';
       context.shadowBlur = 8 + pulse * 4;
       context.fill();
       context.shadowBlur = 0;

@@ -5,6 +5,14 @@ export function initNavigation() {
   const links = [...document.querySelectorAll('[data-page-link]')];
   const profileButton = document.querySelector('[data-profile-toggle]');
   const profileDetails = document.querySelector('[data-profile-details]');
+  const map = document.querySelector('[data-map-source]');
+
+  const loadMap = () => {
+    if (!map || map.hasAttribute('src')) return;
+    map.loading = 'eager';
+    map.addEventListener('load', () => map.closest('.contact-map')?.classList.add('is-loaded'), { once: true });
+    map.src = map.dataset.mapSource;
+  };
 
   const pageFromHash = () => {
     const candidate = window.location.hash.slice(1);
@@ -20,16 +28,13 @@ export function initNavigation() {
       else link.removeAttribute('aria-current');
     });
     window.scrollTo(0, 0);
-    if (id === 'contacto') {
-      const map = document.querySelector('[data-map-source]');
-      if (map && !map.src) map.src = map.dataset.mapSource;
-    }
     if (moveFocus) document.querySelector('#contenido')?.focus({ preventScroll: true });
   };
 
   links.forEach((link) => link.addEventListener('click', () => {
     showPage(link.getAttribute('href').slice(1), true);
   }));
+  document.querySelector('[data-map-load]')?.addEventListener('click', loadMap, { once: true });
   window.addEventListener('hashchange', () => showPage(pageFromHash()));
 
   profileButton?.addEventListener('click', () => {
@@ -40,4 +45,5 @@ export function initNavigation() {
   });
 
   showPage(pageFromHash());
+
 }

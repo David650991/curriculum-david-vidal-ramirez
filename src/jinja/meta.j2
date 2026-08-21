@@ -1,9 +1,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#751182">
+<meta name="theme-color" content="#0f3b60">
 <title>{{ profile.SITE.name }}</title>
 <meta name="description" content="{{ profile.SITE.description }}">
 <meta name="author" content="{{ profile.USER.name }}">
+<meta name="creator" content="{{ profile.SITE.creator }}">
+<meta name="copyright" content="{{ profile.SITE.copyright }}">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="canonical" href="{{ profile.SITE.url }}/">
 <meta property="og:locale" content="es_MX">
@@ -27,10 +29,11 @@
   "url": profile.SITE.url,
   "image": profile.SITE.url ~ "/" ~ profile.USER.avatar,
   "jobTitle": "Desarrollador de software",
+  "description": profile.SITE.description,
   "email": "mailto:" ~ profile.USER.email,
   "address": {"@type": "PostalAddress", "addressLocality": "Tres Valles", "addressRegion": "Veracruz", "addressCountry": "MX"},
   "sameAs": profile.SOCIAL | map(attribute="url") | list,
-  "alumniOf": {"@type": "CollegeOrUniversity", "name": "Instituto Tecnológico de Tuxtepec · Tecnológico Nacional de México"},
+  "affiliation": {"@type": "CollegeOrUniversity", "name": "Instituto Tecnológico de Tuxtepec · Tecnológico Nacional de México"},
   "knowsAbout": ["Python", "JavaScript", "Flask", "Node.js", "Cloudflare", "aplicaciones web", "automatización de procesos", "visión computacional", "sistemas en tiempo real"]
 } | json | safe }}
 </script>

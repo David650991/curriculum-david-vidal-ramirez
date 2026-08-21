@@ -2,10 +2,12 @@ HEADER:
   eyebrow: "Perfil profesional"
   title: "Aprendo construyendo soluciones para problemas que conozco de cerca"
 PRESENTATION:
-  lead: "Soy David Vidal. Estudio Ingeniería en Sistemas Computacionales y desarrollo aplicaciones web para resolver necesidades concretas."
+  lead: "Soy David Vidal Ramírez, desarrollador de software y estudiante de Ingeniería en Sistemas Computacionales. Actualmente curso el 3.er semestre en modalidad en línea dentro del Tecnológico Nacional de México."
   paragraphs:
-    - "Antes de dedicarme al código trabajé en logística, ventas, operación y atención al cliente. Esa etapa me enseñó a escuchar, ordenar procesos y buscar soluciones que funcionen fuera de la pantalla."
-    - "Una parte importante de mi trabajo nació en La Luz y La Esperanza Que Necesito. Primero desarrollé su sitio público y después una herramienta privada para preparar expedientes, recopilar firmas y conservar un historial de cada cambio."
+    - "Mi trabajo se ha enfocado en soluciones web y herramientas digitales aplicadas a necesidades reales: sistemas documentales, comunicación en tiempo real, autenticación multifactor experimental, visión computacional, sitios institucionales, automatización y despliegue."
+    - "Trabajo principalmente con Python, JavaScript, HTML, CSS, Flask, Node.js, Express, SQLite, Cloudflare, GitHub Actions y tecnologías web modernas. También he desarrollado proyectos con OpenCV, procesamiento de imágenes, WebSockets, PWA y bases de datos."
+    - "Antes de concentrarme en tecnología trabajé en logística, ventas, operación y atención al cliente. Esa trayectoria influye en mi forma de desarrollar software: primero procuro entender el problema y ordenar el proceso; después construyo una solución que pueda mantenerse y evolucionar."
+    - "Una parte importante de mi trabajo nació en La Luz y La Esperanza Que Necesito: desarrollé su sitio público y después una herramienta privada para preparar expedientes, recopilar firmas y conservar la trazabilidad de cada cambio."
 METRICS:
   - {value: "7", label: "proyectos documentados"}
   - {value: "25", label: "documentos en el sistema de expedientes"}
@@ -20,7 +22,7 @@ FOCUS:
     - {title: "Seguridad aplicada", description: "He practicado autenticación, permisos y protección de rutas; sigo fortaleciendo esta área en cada proyecto."}
 STRENGTHS:
   label: "Fortalezas profesionales"
-  items: ["Resolución pragmática de problemas", "Disciplina autodidacta", "Documentación técnica clara", "Adaptabilidad entre dominios", "Enfoque en necesidades reales", "Uso responsable de IA como herramienta de desarrollo"]
+  items: ["Resolución pragmática de problemas", "Disciplina autodidacta", "Documentación técnica clara", "Adaptabilidad entre dominios", "Enfoque en necesidades reales", "Criterio para revisar y validar resultados"]
 STACK:
   label: "Tecnologías con experiencia práctica"
   groups:

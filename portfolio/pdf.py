@@ -8,13 +8,13 @@ from typing import Any
 
 PAGE_WIDTH, PAGE_HEIGHT = 595, 842
 LEFT, RIGHT = 42, 42
-PURPLE = "0.459 0.067 0.510"
-PURPLE_DARK = "0.278 0.039 0.322"
+PRIMARY = "0.145 0.388 0.922"
+PRIMARY_DARK = "0.059 0.231 0.376"
 TEXT = "0.075 0.086 0.110"
 MUTED = "0.310 0.349 0.416"
-LINE = "0.851 0.804 0.867"
-WATERMARK = "0.920 0.864 0.929"
-WATERMARK_NODE = "0.784 0.420 0.827"
+LINE = "0.800 0.855 0.925"
+WATERMARK = "0.855 0.918 0.980"
+WATERMARK_NODE = "0.220 0.740 0.973"
 
 
 def _escape(text: str) -> bytes:
@@ -32,19 +32,19 @@ class PdfPage:
         self.y = 700
         self._neural_watermark()
         self._line(28, 48, 28, 756, "0.902 0.843 0.914", .55)
-        self._text("CV // 2026", PAGE_WIDTH - 91, 806, 7, bold=True, color=PURPLE, technical=True)
+        self._text("CV // 2026", PAGE_WIDTH - 91, 806, 7, bold=True, color=PRIMARY, technical=True)
         if number == 1:
             self.commands.append(b"q 62 0 0 69 42 742 cm /Im1 Do Q")
-            self.commands.append(f"q {PURPLE} RG 1.2 w 42 742 62 69 re S Q".encode())
-            self.commands.append(f"q {PURPLE_DARK} RG .45 w 38 738 70 77 re S Q".encode())
+            self.commands.append(f"q {PRIMARY} RG 1.2 w 42 742 62 69 re S Q".encode())
+            self.commands.append(f"q {PRIMARY_DARK} RG .45 w 38 738 70 77 re S Q".encode())
             title_x = LEFT + 78
         else:
-            self._rectangle(LEFT, 753, 46, 46, PURPLE)
+            self._rectangle(LEFT, 753, 46, 46, PRIMARY)
             self._text(f"{number:02d}", LEFT + 13, 769, 13, bold=True, color="1 1 1")
             title_x = LEFT + 62
         self._text(title, title_x, 791, 21, bold=True, color=TEXT)
-        self._text(subtitle, title_x, 768, 8, bold=True, color=PURPLE_DARK, technical=True)
-        self._line(LEFT, 728, LEFT + 68, 728, PURPLE, 1.6)
+        self._text(subtitle, title_x, 768, 8, bold=True, color=PRIMARY_DARK, technical=True)
+        self._line(LEFT, 728, LEFT + 68, 728, PRIMARY, 1.6)
         self._line(LEFT + 72, 728, PAGE_WIDTH - RIGHT, 728, LINE, .55)
 
     def _text(
@@ -105,14 +105,14 @@ class PdfPage:
     def heading(self, text: str) -> None:
         self.section_number += 1
         self.space(5)
-        self._text(f"{self.section_number:02d} /", LEFT, self.y, 8, bold=True, color=PURPLE, technical=True)
-        self._text(text.upper(), LEFT + 35, self.y, 9, bold=True, color=PURPLE_DARK)
-        self._line(LEFT, self.y - 6, LEFT + 30, self.y - 6, PURPLE, 1.2)
+        self._text(f"{self.section_number:02d} /", LEFT, self.y, 8, bold=True, color=PRIMARY, technical=True)
+        self._text(text.upper(), LEFT + 35, self.y, 9, bold=True, color=PRIMARY_DARK)
+        self._line(LEFT, self.y - 6, LEFT + 30, self.y - 6, PRIMARY, 1.2)
         self._line(LEFT + 35, self.y - 6, PAGE_WIDTH - RIGHT, self.y - 6, LINE, .45)
         self.y -= 19
 
     def role(self, title: str, meta: str) -> None:
-        self._line(LEFT, self.y + 3, LEFT, self.y - 18, PURPLE, 1.4)
+        self._line(LEFT, self.y + 3, LEFT, self.y - 18, PRIMARY, 1.4)
         self._text(title, LEFT + 10, self.y, 9, bold=True)
         self._text(meta, LEFT + 10, self.y - 13, 8, color=MUTED)
         self.y -= 27
@@ -129,7 +129,7 @@ class PdfPage:
         lines = wrap(text, width=101, break_long_words=False, break_on_hyphens=False)
         for index, line in enumerate(lines):
             if index == 0:
-                self._text("•", LEFT + 5, self.y, 8, bold=True, color=PURPLE_DARK)
+                self._text("•", LEFT + 5, self.y, 8, bold=True, color=PRIMARY_DARK)
             self._text(line, LEFT + 17, self.y, 8, color=MUTED)
             self.y -= 11
         self.y -= 2
@@ -138,12 +138,22 @@ class PdfPage:
         self, title: str, description: str, detail: str | None = None,
         *, detail_after: int = 5,
     ) -> None:
-        self._line(LEFT, self.y + 3, LEFT, self.y - 10, PURPLE, 1.2)
+        self._line(LEFT, self.y + 3, LEFT, self.y - 10, PRIMARY, 1.2)
         self._text(title, LEFT + 9, self.y, 8, bold=True)
         self.y -= 12
         self.paragraph(description, size=8, indent=9, after=2)
         if detail:
             self.paragraph(detail, size=7, color=MUTED, indent=9, after=detail_after)
+
+    def history_item(self, employer: str, period: str, location: str, role: str | None = None) -> None:
+        """Añade un registro laboral compacto sin inventar un cargo."""
+        self._line(LEFT, self.y + 2, LEFT, self.y - 7, PRIMARY, 1.1)
+        self._text(employer, LEFT + 8, self.y, 7, bold=True)
+        self.y -= 10
+        detail = f"{period} · {location}"
+        if role:
+            detail += f" · {role}"
+        self.paragraph(detail, size=6, color=MUTED, indent=8, after=2)
 
     def finish(self) -> bytes:
         self._line(LEFT, 38, PAGE_WIDTH - RIGHT, 38, LINE, .6)
@@ -151,7 +161,7 @@ class PdfPage:
             "David Vidal Ramírez · Currículum profesional", 24, 7,
             bold=True, color=MUTED,
         )
-        self._text(f"{self.number:02d} / 03", PAGE_WIDTH - 78, 24, 7, bold=True, color=PURPLE, technical=True)
+        self._text(f"{self.number:02d} / 03", PAGE_WIDTH - 78, 24, 7, bold=True, color=PRIMARY, technical=True)
         if self.y < 44:
             raise ValueError(f"El contenido del CV desborda la página {self.number}")
         return b"\n".join(self.commands)
@@ -184,19 +194,17 @@ def _build_first_page(context: dict[str, Any]) -> bytes:
 
 def _build_second_page(context: dict[str, Any]) -> bytes:
     resume = context["resume"]
-    page = PdfPage(2, "Trayectoria y formación", "Experiencia verificable · Competencias · Desarrollo continuo")
-    page.heading("Trayectoria profesional anterior")
-    for item in resume["EARLIER_EXPERIENCE"]["groups"]:
-        page.compact_item(item["title"], item["period"], item["location"], detail_after=3)
-    page.heading("Formación complementaria")
-    for item in resume["TRAINING"]["items"]:
+    certifications = context["certifications"]
+    page = PdfPage(2, "Trayectoria y formación", "Periodos registrados · Certificaciones seleccionadas")
+    page.heading("Historial laboral registrado ante el IMSS")
+    for item in resume["EARLIER_EXPERIENCE"]["records"]:
+        page.history_item(item["employer"], item["period"], item["location"], item.get("role"))
+    page.heading("Certificaciones seleccionadas")
+    for item in certifications["FEATURED"][:2]:
         page.compact_item(
-            f"{item['institution']} · {item['period']}", item["description"], item["credential"],
+            f"{item['title']} · {item['date']}", item["institution"], item["credential"],
             detail_after=3,
         )
-    page.heading("Competencias técnicas")
-    for item in resume["COMPETENCIES"]["items"]:
-        page.compact_item(item["name"], item["level"], item["evidence"], detail_after=3)
     return page.finish()
 
 
@@ -221,7 +229,7 @@ def _build_third_page(context: dict[str, Any]) -> bytes:
     languages = " · ".join(f"{item['language']}: {item['level']}" for item in resume["LANGUAGES"]["items"])
     page.paragraph(languages, size=8, color=TEXT)
     page.heading("Enlaces profesionales")
-    page.paragraph(profile["SITE"]["url"], size=8, color=PURPLE_DARK, after=1)
+    page.paragraph(profile["SITE"]["url"], size=8, color=PRIMARY_DARK, after=1)
     page.paragraph(" · ".join(f"{item['label']}: {item['url']}" for item in profile["SOCIAL"]), size=7, after=1)
     return page.finish()
 
@@ -317,7 +325,7 @@ def create_cv_pdf(context: dict[str, Any], destination: Path) -> None:
         _png_rgb_xobject(avatar),
         b"<< /Type /Font /Subtype /Type1 /BaseFont /Courier /Encoding /WinAnsiEncoding >>",
         b"<< /Type /Font /Subtype /Type1 /BaseFont /Courier-Bold /Encoding /WinAnsiEncoding >>",
-        b"<< /Title (Curriculum profesional - David Vidal Ramirez) /Author (David Vidal Ramirez) /Subject (Desarrollo de software, proyectos y experiencia profesional) /Keywords (Python, JavaScript, Flask, aplicaciones web, automatizacion) >>",
+        b"<< /Title (Curriculum profesional - David Vidal Ramirez) /Author (David Vidal Ramirez) /Creator (David Vidal Ramirez) /Subject (Desarrollo de software, proyectos y experiencia profesional) /Keywords (Python, JavaScript, Flask, aplicaciones web, automatizacion) >>",
     ]
     pdf = bytearray(b"%PDF-1.4\n%\xe2\xe3\xcf\xd3\n")
     offsets = [0]

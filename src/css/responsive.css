@@ -25,6 +25,7 @@
   .main-nav a { padding-inline: 7px; font-size: .73rem; }
   .career-grid { grid-template-columns: 1fr; }
   .ecosystem-grid { grid-template-columns: 1fr; }
+  .learning-paths { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 760px) {
@@ -47,7 +48,7 @@
   .main-nav a { flex: 0 0 auto; padding: 18px 10px 16px; white-space: nowrap; }
   .section { padding: 34px 22px 42px; }
   #contenido { min-height: 600px; }
-  .profile-grid, .two-column-block { grid-template-columns: 1fr; }
+  .profile-grid, .two-column-block, .certification-grid { grid-template-columns: 1fr; }
   .focus-grid, .technology-groups, .stack-groups, .career-grid { grid-template-columns: repeat(2, 1fr); }
   .site-footer { padding: 20px 22px; }
   .contact-map { min-height: 320px; }
@@ -66,6 +67,9 @@
   .project-content { padding: 20px; }
   .site-footer { align-items: flex-start; flex-direction: column; }
   .integration-list, .technology-context-grid { grid-template-columns: 1fr; }
+  .map-controls { flex-wrap: wrap; }
+  .map-location { margin-left: 0; }
+  .map-location, .map-directions { flex: 1 1 145px; }
 }
 
 @media (max-width: 480px) {
@@ -85,6 +89,8 @@
   .contact-quick-actions { grid-template-columns: 1fr; }
   .profile-social .social-link span { display: none; }
   .profile-social .social-link { padding: 8px; }
+  .contact-map { min-height: 420px; }
+  .map-controls { bottom: 44px; }
 }
 
 @media (max-width: 360px) {

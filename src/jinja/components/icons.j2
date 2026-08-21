@@ -8,7 +8,7 @@
 
 {% macro technology_icon(name, iconography, class_name="") -%}
 {% set technology = iconography.TECHNOLOGIES.get(name) %}
-{% if technology %}{{ icon(technology.icon, None, "technology-icon " ~ class_name, technology.color) }}{% endif %}
+{% if technology %}{% if technology.get('image') %}{{ image_icon(technology.icon, name, "technology-icon " ~ class_name) }}{% else %}{{ icon(technology.icon, None, "technology-icon " ~ class_name, technology.color) }}{% endif %}{% endif %}
 {%- endmacro %}
 
 {% macro tech_chip(name, iconography) -%}
@@ -18,6 +18,6 @@
 {% macro social_link(item, iconography, owner) -%}
 {% set social = iconography.SOCIAL.get(item.icon) %}
 <a class="social-link" href="{{ item.url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ item.label }} de {{ owner }}">
-  {{ icon(social.icon, None, "social-link__icon", social.color) }}<span>{{ item.label }}</span>
+  {% if social.get('image') %}{{ image_icon(social.icon, item.label, "social-link__icon") }}{% else %}{{ icon(social.icon, None, "social-link__icon", social.color) }}{% endif %}<span>{{ item.label }}</span>
 </a>
 {%- endmacro %}

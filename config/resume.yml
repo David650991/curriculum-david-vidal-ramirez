@@ -8,11 +8,6 @@ EDUCATION:
       institution: "Instituto Tecnológico de Tuxtepec · Tecnológico Nacional de México"
       description: "Ingeniería en Sistemas Computacionales, modalidad en línea."
       detail: "Correo institucional: L25350801@tuxtepec.tecnm.mx"
-TRAINING:
-  label: "Formación complementaria"
-  items:
-    - {period: "2025", institution: "MIT Professional Education / Santander", type: "Formación complementaria", description: "Internet de las Cosas, transformación digital e inteligencia artificial generativa.", credential: "Constancia disponible bajo solicitud."}
-    - {period: "2025", institution: "Santander Open Academy", type: "Cursos", description: "Python, ciencia de datos, prompt engineering y Microsoft Copilot.", credential: "Constancias disponibles bajo solicitud."}
 OBJECTIVE:
   label: "Objetivo profesional"
   text: "Continuar desarrollándome dentro de un equipo de tecnología donde pueda participar en aplicaciones, automatización de procesos y soluciones web, mientras profundizo mis conocimientos de ingeniería de software y aporto la experiencia práctica obtenida en proyectos propios."
@@ -27,39 +22,27 @@ EXPERIENCE:
         - "Construcción de una aplicación privada para expedientes de entrevistas con reglas documentales, firmas, auditoría y almacenamiento remoto."
         - "Desarrollo de prototipos con Flask, WebSockets, autenticación multifactor y visión computacional."
         - "Automatización de generación y despliegue de sitios mediante Python, Jinja y GitHub Actions."
-    - period: "Julio 2021 — Agosto 2021"
-      position: "Asesor comercial B2B"
-      organization: "Mexicana de Lubricantes"
-      bullets: ["Gestión de cartera, atención en campo, negociación y seguimiento comercial."]
-    - period: "Diciembre 2020 — Junio 2021"
-      position: "Logística y operaciones"
-      organization: "Mercado Libre / Portos"
-      bullets: ["Coordinación de rutas de última milla y cumplimiento de indicadores de entrega."]
 EARLIER_EXPERIENCE:
-  label: "Trayectoria anterior"
-  introduction: "Antes de dedicarme al desarrollo de software trabajé en distintas empresas y ciudades. Esa etapa me dio experiencia práctica en operación, servicio, trabajo de campo y adaptación a equipos muy diferentes. Para mantener este currículum legible, presento la trayectoria por periodos y sin atribuirme cargos que no aparecen en mis constancias."
-  groups:
-    - period: "Abril — Mayo 2022"
-      title: "Daeyeong México"
-      location: "Querétaro"
-    - period: "Junio — Agosto 2021"
-      title: "Consultoría Empresarial de Playa del Carmen"
-      location: "Oaxaca"
-    - period: "Enero — Abril 2020"
-      title: "Promo Conceptos"
-      location: "Ciudad de México"
-    - period: "Octubre 2015 — Diciembre 2016"
-      title: "AG999 y Corporativo Mayorista Peninsular"
-      location: "Estado de México y Yucatán"
-    - period: "Diciembre 2012 — Mayo 2013"
-      title: "Banco Forjadores, Fomento Dragón y Serfincor"
-      location: "Oaxaca"
-    - period: "Enero — Noviembre 2012"
-      title: "Agroloma, Parador del Viajero y Mercadotecnia Tezontle"
-      location: "Oaxaca y Estado de México"
-    - period: "Diciembre 2009 — Septiembre 2011"
-      title: "Eulen México, Super Smart de Veracruz y Operadora Gigante"
-      location: "Oaxaca y Veracruz"
+  label: "Historial laboral registrado ante el IMSS"
+  introduction: "Antes de concentrarme en desarrollo de software trabajé en operaciones, logística, ventas, servicio y trabajo de campo. Los siguientes periodos corresponden a altas y bajas del reporte de semanas cotizadas emitido por el IMSS el 15 de marzo de 2025; no se publican salarios, registros patronales ni identificadores personales."
+  records:
+    - {period: "4 abr 2022 — 19 may 2022", employer: "Daeyeong México", location: "Querétaro"}
+    - {period: "1 jul 2021 — 19 ago 2021", employer: "Mexicana de Lubricantes", location: "Estado de México", role: "Asesor comercial B2B"}
+    - {period: "21 jun 2021 — 16 ago 2021", employer: "Consultoría Empresarial de Playa del Carmen", location: "Oaxaca"}
+    - {period: "12 dic 2020 — 1 jun 2021", employer: "Logística y Transporte Portos", location: "Veracruz", role: "Logística y operaciones de última milla"}
+    - {period: "28 ene 2020 — 9 abr 2020", employer: "Promo Conceptos", location: "Ciudad de México"}
+    - {period: "31 may 2016 — 26 dic 2016", employer: "Corporativo Mayorista Peninsular", location: "Yucatán"}
+    - {period: "15 oct 2015 — 31 jul 2016", employer: "AG999", location: "Estado de México"}
+    - {period: "22 mar 2013 — 15 abr 2013", employer: "Fomento Dragón", location: "Oaxaca"}
+    - {period: "13 dic 2012 — 10 abr 2013", employer: "Banco Forjadores", location: "Oaxaca"}
+    - {period: "7 dic 2012 — 21 may 2013", employer: "Serfincor", location: "Oaxaca"}
+    - {period: "15 oct 2012 — 29 nov 2012", employer: "Mercadotecnia Tezontle", location: "Estado de México"}
+    - {period: "7 mar 2012 — 4 jun 2012", employer: "Parador del Viajero", location: "Oaxaca"}
+    - {period: "20 ene 2012 — 24 abr 2012", employer: "Agroloma", location: "Oaxaca"}
+    - {period: "6 jun 2011 — 2 sep 2011", employer: "Operadora Gigante", location: "Oaxaca"}
+    - {period: "20 sep 2010 — 7 mar 2011", employer: "Super Smart de Veracruz", location: "Veracruz"}
+    - {period: "20 may 2010 — 22 jun 2010", employer: "Eulen México", location: "Oaxaca"}
+    - {period: "1 dic 2009 — 23 abr 2010", employer: "Eulen México", location: "Oaxaca"}
 COMPETENCIES:
   label: "Competencias demostradas"
   items:

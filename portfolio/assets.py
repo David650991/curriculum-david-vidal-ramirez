@@ -4,14 +4,41 @@ import shutil
 from pathlib import Path
 
 PUBLIC_IMAGES = (
-    ("config/assets/avatars/Foto_Infantil_David_Vidal_Ramirez.png", "assets/avatars/Foto_Infantil_David_Vidal_Ramirez.png"),
-    ("config/assets/projects/project-1.jpg", "assets/projects/project-1.jpg"),
-    ("src/images/logo.png", "assets/logo.png"),
+    ("src/assets/images/profile/david-vidal-ramirez.png", "assets/images/profile/david-vidal-ramirez.png"),
+    (
+        "src/assets/images/projects/generador-expedientes-entrevista-conceptual.jpg",
+        "assets/images/projects/generador-expedientes-entrevista-conceptual.jpg",
+    ),
+    (
+        "src/assets/images/projects/auth-practice-seguridad-conceptual.jpg",
+        "assets/images/projects/auth-practice-seguridad-conceptual.jpg",
+    ),
+    (
+        "src/assets/images/projects/visionlab-vision-computacional-conceptual.jpg",
+        "assets/images/projects/visionlab-vision-computacional-conceptual.jpg",
+    ),
+    (
+        "src/assets/images/projects/grid-chat-tiempo-real-conceptual.jpg",
+        "assets/images/projects/grid-chat-tiempo-real-conceptual.jpg",
+    ),
+    (
+        "src/assets/images/projects/david-vidal-it-server-arm64-conceptual.jpg",
+        "assets/images/projects/david-vidal-it-server-arm64-conceptual.jpg",
+    ),
+    (
+        "src/assets/images/projects/curriculum-portafolio-ci-cd-conceptual.jpg",
+        "assets/images/projects/curriculum-portafolio-ci-cd-conceptual.jpg",
+    ),
+    (
+        "src/assets/images/projects/centro-rehabilitacion-la-luz-esperanza.jpg",
+        "assets/images/projects/centro-rehabilitacion-la-luz-esperanza.jpg",
+    ),
+    ("src/assets/images/branding/app-icon.png", "assets/images/branding/app-icon.png"),
 )
 
 STYLE_MODULES = (
     "base.css", "navigation.css", "profile.css", "projects.css",
-    "resume-contact.css", "responsive.css",
+    "certifications.css", "resume-contact.css", "responsive.css",
 )
 
 
@@ -35,4 +62,10 @@ def copy_public_assets(root: Path, output: Path) -> None:
 
     icon_source = root / "src/assets/icons"
     icon_target = output / "assets/icons"
-    shutil.copytree(icon_source, icon_target, dirs_exist_ok=True)
+    shutil.copytree(
+        icon_source,
+        icon_target,
+        dirs_exist_ok=True,
+        ignore=shutil.ignore_patterns("*.md"),
+    )
+    shutil.copy2(root / "LICENSE", output / "LICENSE.txt")

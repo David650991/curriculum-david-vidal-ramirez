@@ -11,4 +11,8 @@ LOCATION:
   label: "Base profesional"
   value: "Tres Valles, Veracruz, México"
   href: "https://www.google.com/maps/search/?api=1&query=Tres+Valles%2C+Veracruz%2C+México"
-  embed: "https://maps.google.com/maps?q=18.242750,-96.145015&hl=es&z=14&output=embed"
+  latitude: 18.242750
+  longitude: -96.145015
+  zoom: 17
+  embed: "https://www.openstreetmap.org/export/embed.html?bbox=-96.155015%2C18.232750%2C-96.135015%2C18.252750&layer=mapnik&marker=18.242750%2C-96.145015"
+  directions: "https://www.google.com/maps/dir/?api=1&destination=18.242750,-96.145015&travelmode=driving"

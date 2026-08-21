@@ -3,4 +3,5 @@ NAVBAR:
   - {label: "Currículum", href: "#trayectoria"}
   - {label: "Proyectos", href: "#proyectos"}
   - {label: "Tecnologías", href: "#tecnologias"}
+  - {label: "Certificaciones", href: "#certificaciones"}
   - {label: "Contacto", href: "#contacto"}
