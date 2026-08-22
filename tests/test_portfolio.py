@@ -129,6 +129,7 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
         "images/projects/grid-chat-tiempo-real-conceptual.jpg",
         "images/projects/david-vidal-it-server-arm64-conceptual.jpg",
         "images/projects/curriculum-portafolio-ci-cd-conceptual.jpg",
+        "images/branding/project-logos/grid-chat-logo.png",
         "icons/brands/microsoft-outlook.png",
         "icons/brands/google-maps.webp",
         "icons/brands/gmail.webp",
@@ -185,8 +186,10 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
     assert "navigator.geolocation.getCurrentPosition" in map_controls_js
     assert "travelmode" in map_controls_js
     responsive_css = (project_root / "src/css/responsive.css").read_text(encoding="utf-8")
-    for breakpoint in ("1180px", "1020px", "840px", "760px", "600px", "480px", "360px"):
+    for breakpoint in ("1180px", "1020px", "840px", "760px", "600px", "480px", "360px", "320px"):
         assert f"max-width: {breakpoint}" in responsive_css
+    assert "html { min-width: 0" in (project_root / "src/css/base.css").read_text(encoding="utf-8")
+    assert "overflow-wrap: anywhere" in (project_root / "src/css/base.css").read_text(encoding="utf-8")
 
 
 def test_all_professional_content_is_published(project_root: Path, tmp_path: Path) -> None:

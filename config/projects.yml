@@ -88,6 +88,9 @@ PROJECTS:
     image_label: "Representación conceptual anonimizada"
     image_width: 1586
     image_height: 992
+    logo: "assets/images/branding/project-logos/grid-chat-logo.png"
+    logo_width: 192
+    logo_height: 192
     summary: "Chat por salas con mensajes en tiempo real, presencia, historial, reacciones y administración básica."
     problem: "El objetivo era comprender comunicación bidireccional, presencia e historial persistente más allá del ciclo tradicional de petición y respuesta."
     contribution: "Desarrollé el servidor, los eventos en tiempo real, la persistencia y la interfaz para practicar comunicación bidireccional más allá de las peticiones HTTP tradicionales."

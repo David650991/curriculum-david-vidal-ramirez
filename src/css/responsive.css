@@ -3,6 +3,8 @@
   .section { padding-inline: 30px; }
   .main-nav a { padding-inline: 11px; font-size: .84rem; }
   .project-grid { gap: 16px; }
+  .profile-grid { grid-template-columns: 1fr; }
+  .metrics { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
 @media (max-width: 1020px) {
@@ -11,6 +13,7 @@
   .main-nav a { padding-inline: 9px; font-size: .79rem; }
   .section { padding-inline: 28px; }
   .project-grid, .resume-grid { grid-template-columns: 1fr; }
+  .two-column-block { grid-template-columns: 1fr; }
   .contact-workspace { grid-template-columns: 1fr; }
   .contact-map { min-height: 300px; }
 }
@@ -26,12 +29,13 @@
   .career-grid { grid-template-columns: 1fr; }
   .ecosystem-grid { grid-template-columns: 1fr; }
   .learning-paths { grid-template-columns: 1fr; }
+  .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 760px) {
   .portfolio-shell { display: block; width: min(680px, calc(100% - 24px)); margin: 12px auto 28px; }
-  .profile-card { position: static; display: grid; grid-template-columns: 96px 1fr; gap: 16px; align-items: center; margin-bottom: 14px; border-radius: 18px; }
-  .profile-portrait { width: 104px; height: 104px; margin: 0; }
+  .profile-card { position: static; display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 16px; align-items: center; margin-bottom: 14px; border-radius: 18px; }
+  .profile-portrait { width: 96px; height: 96px; margin: 0; }
   .profile-identity { text-align: left; }
   .profile-identity h1 { font-size: 1.3rem; }
   .profile-toggle { display: block; grid-column: 1 / -1; }
@@ -43,9 +47,9 @@
   .compact-brand { display: block; }
   .menu-button { display: none; }
   .panel-header { overflow: hidden; }
-  .main-nav { min-width: 0; overflow-x: auto; scrollbar-width: none; }
+  .main-nav { min-width: 0; overflow-x: auto; overscroll-behavior-inline: contain; scroll-snap-type: inline proximity; scrollbar-width: none; }
   .main-nav::-webkit-scrollbar { display: none; }
-  .main-nav a { flex: 0 0 auto; padding: 18px 10px 16px; white-space: nowrap; }
+  .main-nav a { flex: 0 0 auto; padding: 18px 10px 16px; scroll-snap-align: start; white-space: nowrap; }
   .section { padding: 34px 22px 42px; }
   #contenido { min-height: 600px; }
   .profile-grid, .two-column-block, .certification-grid { grid-template-columns: 1fr; }
@@ -56,8 +60,8 @@
 
 @media (max-width: 600px) {
   .portfolio-shell { width: min(100% - 16px, 560px); margin-top: 8px; }
-  .profile-card { grid-template-columns: 88px minmax(0, 1fr); padding: 18px; }
-  .profile-portrait { width: 90px; height: 90px; }
+  .profile-card { grid-template-columns: 82px minmax(0, 1fr); padding: 18px; }
+  .profile-portrait { width: 82px; height: 82px; }
   .profile-identity h1 { font-size: 1.22rem; }
   .profile-data, .focus-grid, .technology-groups, .stack-groups, .career-grid { grid-template-columns: 1fr; }
   .panel-header { min-height: 64px; }
@@ -70,18 +74,19 @@
   .map-controls { flex-wrap: wrap; }
   .map-location { margin-left: 0; }
   .map-location, .map-directions { flex: 1 1 145px; }
+  .project-links { flex-wrap: wrap; gap: 10px 16px; }
 }
 
 @media (max-width: 480px) {
   body { font-size: 16px; }
-  .profile-card { grid-template-columns: 78px 1fr; padding: 16px; }
-  .profile-portrait { width: 82px; height: 82px; }
+  .profile-card { grid-template-columns: 72px minmax(0, 1fr); padding: 16px; }
+  .profile-portrait { width: 72px; height: 72px; }
   .profile-identity > p:last-child, .profile-kicker { display: none; }
   .profile-data, .metrics, .focus-grid, .technology-groups, .stack-groups, .career-grid { grid-template-columns: 1fr; }
   .concept-list { columns: 1; }
   .section { padding-inline: 17px; }
   .section-heading h2, .contact-section h2 { font-size: 2.2rem; }
-  .project-card { grid-template-rows: 170px 1fr; }
+  .project-card { grid-template-rows: clamp(155px, 52vw, 190px) 1fr; }
   .project-meta { display: grid; }
   .project-meta strong { text-align: left; }
   .earlier-experience li { grid-template-columns: 1fr; grid-template-areas: "period" "company" "location"; gap: 6px; padding: 13px; }
@@ -91,12 +96,15 @@
   .profile-social .social-link { padding: 8px; }
   .contact-map { min-height: 420px; }
   .map-controls { bottom: 44px; }
+  .architecture-flow { align-items: stretch; flex-direction: column; }
+  .architecture-flow b { display: none; }
+  .architecture-flow span { width: 100%; padding: 6px 8px; border-radius: 7px; background: rgba(255,255,255,.035); }
 }
 
 @media (max-width: 360px) {
   .portfolio-shell { width: calc(100% - 10px); }
-  .profile-card { grid-template-columns: 66px minmax(0, 1fr); gap: 11px; padding: 13px; }
-  .profile-portrait { width: 68px; height: 68px; }
+  .profile-card { grid-template-columns: 60px minmax(0, 1fr); gap: 11px; padding: 13px; }
+  .profile-portrait { width: 60px; height: 60px; }
   .profile-identity h1 { font-size: 1.05rem; }
   .profile-role strong { font-size: .76rem; }
   .section { padding: 30px 14px 38px; }
@@ -105,6 +113,28 @@
   .project-filters button { min-height: 40px; }
   .profile-actions { grid-template-columns: 1fr; }
   .contact-map { min-height: 240px; }
+}
+
+@media (max-width: 320px) {
+  body { font-size: 15px; }
+  .portfolio-shell { width: calc(100% - 6px); margin-top: 3px; }
+  .profile-card { grid-template-columns: 52px minmax(0, 1fr); gap: 9px; padding: 11px; }
+  .profile-portrait { width: 52px; height: 52px; }
+  .profile-identity h1 { font-size: .98rem; }
+  .profile-role span, .academic-status { display: none; }
+  .content-panel, .profile-card { border-radius: 14px; }
+  .panel-header { min-height: 56px; padding-inline: 8px; }
+  .compact-brand span { width: 32px; height: 32px; font-size: .8rem; }
+  .main-nav a { padding: 12px 8px 10px; font-size: .68rem; }
+  .section { padding: 26px 12px 34px; }
+  .section-heading h2, .contact-section h2 { font-size: clamp(1.75rem, 11vw, 2rem); }
+  .project-content, .certification-card, .resume-card { padding: 16px; }
+  .project-filters { margin-top: -6px; }
+  .project-filters button { padding-inline: 9px; font-size: .78rem; }
+  .tags li { max-width: 100%; white-space: normal; }
+  .contact-map { min-height: 220px; }
+  .map-controls { right: 8px; bottom: 36px; left: 8px; }
+  .map-location, .map-directions { flex-basis: 100%; min-height: 40px; }
 }
 
 @media (max-height: 760px) and (min-width: 761px) {

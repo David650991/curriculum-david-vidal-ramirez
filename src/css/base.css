@@ -45,8 +45,9 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { min-width: 320px; scroll-behavior: auto; }
+html { min-width: 0; overflow-x: hidden; scroll-behavior: auto; }
 body {
+  min-width: 0;
   min-height: 100vh;
   margin: 0;
   background:
@@ -85,7 +86,8 @@ h1, h2, h3, h4, p { margin-top: 0; }
 h1, h2, h3, h4 { text-wrap: balance; }
 h3 { margin-bottom: 12px; font-size: var(--text-section-title); line-height: 1.25; }
 h4 { margin-bottom: 8px; font-size: var(--text-card-title); line-height: 1.32; }
-p, li, dd { overflow-wrap: break-word; }
+p, li, dd { overflow-wrap: anywhere; }
+.portfolio-shell > *, .section *, .profile-card * { min-width: 0; }
 .portfolio-shell { position: relative; z-index: 1; display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: var(--space-5); width: min(1240px, calc(100% - 40px)); margin: 48px auto; align-items: start; }
 .content-panel, .profile-card { border: 1px solid rgba(148,163,184,.16); border-radius: var(--radius-xl); background: rgba(8,17,29,.58); box-shadow: var(--shadow), inset 0 1px rgba(255,255,255,.03); }
 .content-panel { position: relative; min-width: 0; overflow: clip; }

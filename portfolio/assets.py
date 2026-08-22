@@ -6,6 +6,10 @@ from pathlib import Path
 PUBLIC_IMAGES = (
     ("src/assets/images/profile/david-vidal-ramirez.png", "assets/images/profile/david-vidal-ramirez.png"),
     (
+        "src/assets/images/branding/project-logos/grid-chat-logo.png",
+        "assets/images/branding/project-logos/grid-chat-logo.png",
+    ),
+    (
         "src/assets/images/projects/generador-expedientes-entrevista-conceptual.jpg",
         "assets/images/projects/generador-expedientes-entrevista-conceptual.jpg",
     ),

@@ -32,11 +32,25 @@
 
 .project-image-label { position: absolute; right: 10px; bottom: 9px; padding: 5px 8px; border: 1px solid rgba(148,163,184,.35); border-radius: 7px; background: rgba(2,6,23,.86); color: #cbd5e1; font: 700 .6rem/1.25 var(--font-code); letter-spacing: .02em; }
 
-.project-visual img {
+.project-visual > img:not(.project-logo) {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: top;
+}
+
+.project-visual .project-logo {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 44px;
+    height: 44px;
+    padding: 4px;
+    border: 1px solid rgba(255,255,255,.28);
+    border-radius: 11px;
+    background: rgba(2,6,23,.82);
+    object-fit: contain;
+    box-shadow: 0 8px 22px rgba(2,6,23,.45);
 }
 
 .project-visual span {

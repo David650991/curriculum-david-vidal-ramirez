@@ -10,6 +10,8 @@ PAGE_WIDTH, PAGE_HEIGHT = 595, 842
 LEFT, RIGHT = 42, 42
 PRIMARY = "0.145 0.388 0.922"
 PRIMARY_DARK = "0.059 0.231 0.376"
+NAVY = "0.027 0.067 0.122"
+CYAN = "0.133 0.827 0.933"
 TEXT = "0.075 0.086 0.110"
 MUTED = "0.310 0.349 0.416"
 LINE = "0.800 0.855 0.925"
@@ -29,23 +31,23 @@ class PdfPage:
         self.number = number
         self.section_number = 0
         self.commands: list[bytes] = []
-        self.y = 700
+        self.y = 698
         self._neural_watermark()
-        self._line(28, 48, 28, 756, "0.902 0.843 0.914", .55)
-        self._text("CV // 2026", PAGE_WIDTH - 91, 806, 7, bold=True, color=PRIMARY, technical=True)
+        self._line(28, 48, 28, 724, "0.902 0.843 0.914", .55)
+        self._rectangle(28, 730, PAGE_WIDTH - 56, 88, NAVY)
+        self._text("CV // 2026", PAGE_WIDTH - 91, 802, 7, bold=True, color=CYAN, technical=True)
         if number == 1:
-            self.commands.append(b"q 62 0 0 69 42 742 cm /Im1 Do Q")
-            self.commands.append(f"q {PRIMARY} RG 1.2 w 42 742 62 69 re S Q".encode())
-            self.commands.append(f"q {PRIMARY_DARK} RG .45 w 38 738 70 77 re S Q".encode())
+            self.commands.append(b"q 58 0 0 64 44 742 cm /Im1 Do Q")
+            self.commands.append(b"q 1 1 1 RG 1.2 w 44 742 58 64 re S Q")
             title_x = LEFT + 78
         else:
-            self._rectangle(LEFT, 753, 46, 46, PRIMARY)
-            self._text(f"{number:02d}", LEFT + 13, 769, 13, bold=True, color="1 1 1")
+            self._rectangle(LEFT, 748, 48, 48, PRIMARY)
+            self._text(f"{number:02d}", LEFT + 13, 765, 14, bold=True, color="1 1 1")
             title_x = LEFT + 62
-        self._text(title, title_x, 791, 21, bold=True, color=TEXT)
-        self._text(subtitle, title_x, 768, 8, bold=True, color=PRIMARY_DARK, technical=True)
-        self._line(LEFT, 728, LEFT + 68, 728, PRIMARY, 1.6)
-        self._line(LEFT + 72, 728, PAGE_WIDTH - RIGHT, 728, LINE, .55)
+        self._text(title, title_x, 785, 20, bold=True, color="1 1 1")
+        self._text(subtitle, title_x, 760, 8, bold=True, color=CYAN, technical=True)
+        self._line(LEFT, 718, LEFT + 76, 718, PRIMARY, 1.8)
+        self._line(LEFT + 80, 718, PAGE_WIDTH - RIGHT, 718, LINE, .55)
 
     def _text(
         self, text: str, x: float, y: float, size: int, *, bold: bool = False,
@@ -172,10 +174,8 @@ def _build_first_page(context: dict[str, Any]) -> bytes:
     resume = context["resume"]
     about = context["about"]
     page = PdfPage(1, profile["name"], "Desarrollador de Software · Python · JavaScript · Aplicaciones Web")
-    page.paragraph(f"{profile['location']}  |  {profile['phone_display']}", size=8, color=TEXT, after=1)
-    page.paragraph(
-        f"{profile['email']}  |  {profile['institutional_email']}", size=8, color=MUTED, after=7,
-    )
+    page._text(f"{profile['location']}  |  {profile['phone_display']}", LEFT + 78, 744, 7, color="0.835 0.882 0.945")
+    page._text(profile["email"], PAGE_WIDTH - RIGHT - 154, 744, 7, color="0.835 0.882 0.945")
     page.heading("Perfil profesional")
     page.paragraph(about["PRESENTATION"]["lead"] + " " + " ".join(about["PRESENTATION"]["paragraphs"]), size=8)
     page.heading("Objetivo profesional")
@@ -189,6 +189,12 @@ def _build_first_page(context: dict[str, Any]) -> bytes:
     page.heading("Formación académica")
     for item in resume["EDUCATION"]["items"]:
         page.compact_item(item["institution"], f"{item['period']} · {item['description']}", item["detail"])
+    page.heading("Competencias centrales")
+    for group in about["STACK"]["groups"]:
+        page.paragraph(
+            f"{group['title']}: {', '.join(group['items'][:6])}",
+            size=7, color=TEXT, after=3,
+        )
     return page.finish()
 
 
