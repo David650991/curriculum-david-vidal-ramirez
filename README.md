@@ -11,7 +11,7 @@ Presentar de forma coherente mi transición desde áreas operativas y comerciale
 1. Generador de Expedientes de Entrevista — aplicación institucional privada.
 2. La Luz y La Esperanza Que Necesito — sitio institucional en producción.
 3. Auth Practice — laboratorio experimental de autenticación multifactor.
-4. GRID-Chat — prototipo funcional de comunicación en tiempo real.
+4. [GRID-Chat](https://grid-chat-lknf.onrender.com/) — prototipo funcional de comunicación en tiempo real.
 5. VisionLab — laboratorio de visión computacional en navegador.
 6. Currículum y portafolio automatizado — este repositorio.
 7. David Vidal IT Tuxtepec Server — demostrador Node.js sobre ARM64.
@@ -31,9 +31,9 @@ main.py             Generador estático
 dist/               Resultado local; no se versiona
 ```
 
-El sitio publicado no necesita servidor, base de datos ni framework del lado cliente. Durante la compilación, los módulos CSS se unen en un solo archivo para mantener el código ordenado sin aumentar las solicitudes del navegador. La publicación incluye únicamente cuatro recursos rasterizados optimizados y aplica carga diferida a la captura de proyecto.
+El sitio publicado no necesita servidor, base de datos ni framework del lado cliente. Durante la compilación, los módulos CSS se unen en un solo archivo para mantener el código ordenado sin aumentar las solicitudes del navegador. Solo se copian recursos incluidos expresamente en el manifiesto público; las imágenes de proyectos cargan de forma diferida y el mapa interactivo espera una acción del visitante.
 
-La compilación también genera `cv.html` y un PDF de tres páginas con texto seleccionable, estructura lineal y nombres explícitos de tecnologías para facilitar su lectura por sistemas ATS. El PDF conserva los 17 periodos laborales; evita repetir la sección de competencias porque la tercera página ya organiza las tecnologías por nivel de experiencia.
+La compilación también genera `cv.html` y un PDF profesional de tres páginas con texto seleccionable, estructura lineal y nombres explícitos de tecnologías para facilitar su lectura por sistemas ATS. El PDF conserva los 17 periodos laborales, resume las competencias centrales en la primera página y organiza las tecnologías por nivel de experiencia en la tercera.
 
 El historial laboral usa nombres y fechas tomados de una constancia IMSS emitida el 15 de marzo de 2025. El documento fuente no se versiona y sus identificadores, salarios, registros patronales y sellos no se publican.
 
@@ -75,7 +75,13 @@ El flujo de GitHub Actions valida código y pruebas en cada `push` o `pull reque
 
 ## Imágenes
 
-La fotografía profesional actual es utilizable. El diseño emplea monogramas cuando no existe una captura representativa, de modo que ninguna imagen genérica se presenta como evidencia de un proyecto. Para enriquecer el portafolio pueden incorporarse después capturas reales, sin datos privados, de los proyectos que aún no las tienen.
+La fotografía profesional, las representaciones conceptuales y la captura institucional se almacenan con nombres semánticos. Las ilustraciones conceptuales están identificadas como tales y no se presentan como capturas reales. GRID-Chat incorpora además su logotipo original como distintivo de marca.
+
+## Responsividad y archivos públicos
+
+El diseño se prueba desde 280 hasta 1440 píxeles, con puntos de ruptura para móviles estrechos, teléfonos, tabletas y escritorio. La navegación mantiene desplazamiento táctil y los controles sociales conservan logotipo y nombre.
+
+Durante cada build se generan `robots.txt`, `sitemap.xml`, `site.webmanifest`, `humans.txt`, `404.html`, `cv.html`, `LICENSE.txt` y el PDF descargable. `robots.txt` es el nombre estándar; no se mantiene una copia redundante llamada `robot.txt`.
 
 La selección, organización y licencia de los iconos se documentan en `docs/ICONOGRAFIA-Y-LICENCIAS.md`.
 

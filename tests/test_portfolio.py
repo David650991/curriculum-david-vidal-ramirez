@@ -150,6 +150,11 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
     assert '<img class="image-icon technology-icon tech-chip__icon" src="assets/icons/technologies/firebase.svg"' in html
     assert '<img class="image-icon profile-role-logo" src="assets/icons/technologies/opencv.svg"' in html
     assert '<img class="image-icon action-icon" src="assets/icons/brands/gmail.webp"' in html
+    assert 'class="ui-icon social-link__icon"' in html
+    assert 'class="social-link__label">LinkedIn</span>' in html
+    assert 'class="social-link__label">GitHub</span>' in html
+    assert 'class="social-link__label">GitLab</span>' in html
+    assert "https://grid-chat-lknf.onrender.com/" in html
     assert "assets/icons/functional/mail.svg" in html
     assert html.count('class="ecosystem-card"') == 8
     assert 'class="logo-grid"' not in html
@@ -190,6 +195,7 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
         assert f"max-width: {breakpoint}" in responsive_css
     assert "html { min-width: 0" in (project_root / "src/css/base.css").read_text(encoding="utf-8")
     assert "overflow-wrap: anywhere" in (project_root / "src/css/base.css").read_text(encoding="utf-8")
+    assert ".profile-social .social-link span { display: none; }" not in responsive_css
 
 
 def test_all_professional_content_is_published(project_root: Path, tmp_path: Path) -> None:

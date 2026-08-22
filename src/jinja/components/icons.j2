@@ -18,6 +18,6 @@
 {% macro social_link(item, iconography, owner) -%}
 {% set social = iconography.SOCIAL.get(item.icon) %}
 <a class="social-link" href="{{ item.url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ item.label }} de {{ owner }}">
-  {% if social.get('image') %}{{ image_icon(social.icon, item.label, "social-link__icon") }}{% else %}{{ icon(social.icon, None, "social-link__icon", social.color) }}{% endif %}<span>{{ item.label }}</span>
+  {% if social.get('image') %}{{ image_icon(social.icon, item.label, "social-link__icon") }}{% else %}{{ icon(social.icon, None, "social-link__icon", social.color) }}{% endif %}<span class="social-link__label">{{ item.label }}</span>
 </a>
 {%- endmacro %}

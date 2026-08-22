@@ -92,8 +92,7 @@
   .earlier-experience li { grid-template-columns: 1fr; grid-template-areas: "period" "company" "location"; gap: 6px; padding: 13px; }
   .earlier-experience span { align-self: auto; }
   .contact-quick-actions { grid-template-columns: 1fr; }
-  .profile-social .social-link span { display: none; }
-  .profile-social .social-link { padding: 8px; }
+  .profile-social .social-link { padding: 8px 5px; }
   .contact-map { min-height: 420px; }
   .map-controls { bottom: 44px; }
   .architecture-flow { align-items: stretch; flex-direction: column; }
@@ -132,6 +131,8 @@
   .project-filters { margin-top: -6px; }
   .project-filters button { padding-inline: 9px; font-size: .78rem; }
   .tags li { max-width: 100%; white-space: normal; }
+  .profile-social .social-link { flex-direction: column; gap: 3px; padding-inline: 3px; }
+  .profile-social .social-link__label { max-width: 100%; font-size: .56rem; }
   .contact-map { min-height: 220px; }
   .map-controls { right: 8px; bottom: 36px; left: 8px; }
   .map-location, .map-directions { flex-basis: 100%; min-height: 40px; }
