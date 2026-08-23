@@ -26,7 +26,7 @@
   .section { padding: 36px 22px 48px; }
   .panel-header { padding-inline: 12px; }
   .main-nav a { padding-inline: 7px; font-size: .73rem; }
-  .career-grid { grid-template-columns: 1fr; }
+  .career-grid, .learning-paths .career-grid { grid-template-columns: 1fr; }
   .ecosystem-grid { grid-template-columns: 1fr; }
   .learning-paths { grid-template-columns: 1fr; }
   .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }

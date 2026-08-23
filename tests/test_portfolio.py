@@ -196,6 +196,7 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
     assert "html { min-width: 0" in (project_root / "src/css/base.css").read_text(encoding="utf-8")
     assert "overflow-wrap: anywhere" in (project_root / "src/css/base.css").read_text(encoding="utf-8")
     assert ".profile-social .social-link span { display: none; }" not in responsive_css
+    assert ".career-grid, .learning-paths .career-grid { grid-template-columns: 1fr; }" in responsive_css
 
 
 def test_all_professional_content_is_published(project_root: Path, tmp_path: Path) -> None:
