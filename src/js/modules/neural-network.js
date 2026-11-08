@@ -13,17 +13,24 @@ export function initNeuralNetwork(canvas, reducedMotion) {
   let height = 0;
 
   const createNodes = () => {
-    const density = width < 600 ? 68000 : 47000;
-    const minimum = width < 600 ? 12 : 20;
-    const maximum = width < 600 ? 20 : 34;
+    const density = width < 600 ? 92000 : 72000;
+    const minimum = width < 600 ? 9 : 15;
+    const maximum = width < 600 ? 14 : 25;
     const count = Math.min(maximum, Math.max(minimum, Math.round((width * height) / density)));
+    const columns = Math.ceil(Math.sqrt(count * (width / Math.max(height, 1))));
+    const rows = Math.ceil(count / columns);
+    const cellWidth = width / columns;
+    const cellHeight = height / rows;
     nodes.length = 0;
     for (let index = 0; index < count; index += 1) {
+      const column = index % columns;
+      const row = Math.floor(index / columns);
       nodes.push({
-        x: Math.random() * width, y: Math.random() * height,
-        vx: (Math.random() - .5) * .13, vy: (Math.random() - .5) * .13,
+        x: (column + .22 + Math.random() * .56) * cellWidth,
+        y: (row + .22 + Math.random() * .56) * cellHeight,
+        vx: (Math.random() - .5) * .09, vy: (Math.random() - .5) * .09,
         radius: Math.random() * 1.6 + 1, phase: Math.random() * Math.PI * 2,
-        white: index % 5 === 0, violet: index % 7 === 0,
+        tone: index % 3,
       });
     }
   };
@@ -53,13 +60,13 @@ export function initNeuralNetwork(canvas, reducedMotion) {
       for (let next = index + 1; next < nodes.length; next += 1) {
         const other = nodes[next];
         const distance = Math.hypot(node.x - other.x, node.y - other.y);
-        if (distance > 185) continue;
-        const alpha = (1 - distance / 185) * .3;
+        if (distance > 210) continue;
+        const alpha = (1 - distance / 210) * .22;
         context.beginPath();
         context.moveTo(node.x, node.y);
         context.lineTo(other.x, other.y);
-        context.strokeStyle = node.violet || other.violet
-          ? `rgba(200,107,211,${alpha * .82})` : `rgba(117,17,130,${alpha * 1.15})`;
+        context.strokeStyle = node.tone === 1 || other.tone === 1
+          ? `rgba(139,92,246,${alpha})` : `rgba(34,211,238,${alpha * .85})`;
         context.lineWidth = .75;
         context.stroke();
       }
@@ -68,23 +75,24 @@ export function initNeuralNetwork(canvas, reducedMotion) {
         context.beginPath();
         context.moveTo(node.x, node.y);
         context.lineTo(pointer.x, pointer.y);
-        context.strokeStyle = `rgba(237,112,255,${(1 - pointerDistance / 220) * .5})`;
+        context.strokeStyle = `rgba(103,232,249,${(1 - pointerDistance / 220) * .38})`;
         context.stroke();
       }
       const pulse = (Math.sin(time + node.phase) + 1) * .5;
       if (pulse > .72) {
         context.beginPath();
         context.arc(node.x, node.y, node.radius + 3 + pulse * 3, 0, Math.PI * 2);
-        context.strokeStyle = node.violet
-          ? `rgba(237,112,255,${pulse * .2})` : `rgba(117,17,130,${pulse * .22})`;
+        context.strokeStyle = node.tone === 1
+          ? `rgba(167,139,250,${pulse * .18})` : `rgba(37,99,235,${pulse * .18})`;
         context.stroke();
       }
       context.beginPath();
       context.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-      context.fillStyle = node.white ? 'rgba(255,255,255,.8)'
-        : node.violet ? 'rgba(237,112,255,.95)' : 'rgba(200,107,211,.92)';
-      context.shadowColor = node.white ? '#fff' : node.violet ? '#38bdf8' : '#2563eb';
-      context.shadowBlur = 8 + pulse * 4;
+      const colors = ['rgba(34,211,238,.88)', 'rgba(167,139,250,.9)', 'rgba(37,99,235,.9)'];
+      const glows = ['#22d3ee', '#8b5cf6', '#2563eb'];
+      context.fillStyle = colors[node.tone];
+      context.shadowColor = glows[node.tone];
+      context.shadowBlur = 6 + pulse * 3;
       context.fill();
       context.shadowBlur = 0;
     });

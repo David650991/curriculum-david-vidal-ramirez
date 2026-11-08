@@ -7,7 +7,7 @@ LEVELS:
     description: "Uso frecuente y capacidad para explicar decisiones y código."
     items:
       - {name: "Python", evidence: "Auth Practice, GRID-Chat y generador del currículum"}
-      - {name: "JavaScript", evidence: "Los siete proyectos web"}
+      - {name: "JavaScript", evidence: "Aplicaciones web, sitios institucionales y laboratorios documentados"}
       - {name: "HTML5 y CSS3", evidence: "Interfaces institucionales, laboratorios y portafolio"}
       - {name: "Flask", evidence: "Auth Practice y GRID-Chat"}
       - {name: "SQLite", evidence: "Auth Practice y GRID-Chat"}
@@ -45,3 +45,23 @@ GROUPS:
     items: ["Google Tag Manager", "Google Consent Mode", "Schema.org"]
   - title: "Herramientas de trabajo"
     items: ["Git", "GitHub", "GitLab", "Poetry", "PyYAML", "Ruff", "pytest", "Wrangler", "npm", "PM2", "Termux", "Visual Studio Code", "Google Search Console", "Morgan", "Compression", "AdminLTE"]
+WORKFLOW_TOOLS:
+  label: "Herramientas de trabajo, creación y operación"
+  description: "Las utilizo como apoyo en tareas concretas; su presencia no implica certificación, dominio avanzado ni desarrollo de los productos que las proveen."
+  groups:
+    - title: "Programación y asistencia digital"
+      items:
+        - {name: "ChatGPT", use: "Apoyo en investigación, aprendizaje, redacción y revisión."}
+        - {name: "Gemini", use: "Apoyo en investigación, aprendizaje y contraste de información."}
+        - {name: "Codex", use: "Programación asistida, revisión y trabajo sobre repositorios."}
+        - {name: "GitHub Copilot", use: "Programación asistida y revisión dentro del editor."}
+        - {name: "Google Antigravity", use: "Contraste visual y apoyo en el flujo de trabajo."}
+    - title: "Diseño, edición y difusión"
+      items:
+        - {name: "Canva", use: "Flyers y piezas gráficas para comunicación institucional."}
+        - {name: "CapCut", use: "Edición de video, clips, reels y shorts."}
+        - {name: "PRISM Live Studio", use: "Preparación y coordinación operativa de transmisiones en vivo."}
+    - title: "Soporte e infraestructura operativa"
+      items:
+        - {name: "DMSS y Dahua", use: "Operación y revisión del sistema CCTV declarado por el titular."}
+        - {name: "Telmex y Megacable", use: "Gestión operativa de conectividad y acceso a dispositivos."}

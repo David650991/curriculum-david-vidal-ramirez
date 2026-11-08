@@ -20,6 +20,7 @@
           <h3>{{ item.title }}</h3>
           <p>{{ item.summary }}</p>
           <ul class="tags project-stack-preview tech-chip-list">{% for technology in item.stack[:5] %}{{ tech_chip(technology, iconography) }}{% endfor %}</ul>
+          {% if item.demo_url or item.repository_url %}<div class="project-links project-links-primary">{% if item.demo_url %}<a href="{{ item.demo_url }}" target="_blank" rel="noopener noreferrer">Ver demo ↗</a>{% endif %}{% if item.repository_url %}<a href="{{ item.repository_url }}" target="_blank" rel="noopener noreferrer">Repositorio ↗</a>{% endif %}</div>{% endif %}
           <details class="project-case">
             <summary>Ver caso técnico <span aria-hidden="true">＋</span></summary>
             <div class="project-case-content">
@@ -41,5 +42,11 @@
       </article>
       {% endfor %}
     </div>
+    <section class="media-evidence" aria-labelledby="media-evidence-title">
+      <header><p class="eyebrow"><span aria-hidden="true">//</span> evidencia autorizada</p><h3 id="media-evidence-title">{{ projects.MEDIA_EVIDENCE.label }}</h3><p>{{ projects.MEDIA_EVIDENCE.description }}</p></header>
+      <p class="media-contribution">{{ projects.MEDIA_EVIDENCE.contribution }}</p>
+      <div class="media-channel-grid">{% for channel in projects.MEDIA_EVIDENCE.channels %}<a href="{{ channel.url }}" target="_blank" rel="noopener noreferrer"><strong>{{ channel.platform }}</strong><span>{{ channel.access }}</span><b aria-hidden="true">↗</b></a>{% endfor %}</div>
+      <p class="media-pending">{{ projects.MEDIA_EVIDENCE.pending }}</p>
+    </section>
   </div>
 </section>

@@ -21,6 +21,10 @@
     <div class="card-grid focus-grid">
       {% set focus_icons = ["canvas", "database", "realtime", "security"] %}{% for item in about.FOCUS["items"] %}{% set focus_icon = iconography.FUNCTIONAL[focus_icons[loop.index0]] %}<article class="info-card"><span class="card-number">0{{ loop.index }}</span>{{ icon(focus_icon.icon, None, "focus-icon") }}<h4>{{ item.title }}</h4><p>{{ item.description }}</p></article>{% endfor %}
     </div>
+    <section class="practice-overview" aria-labelledby="practice-overview-title">
+      <header><p class="eyebrow"><span aria-hidden="true">//</span> experiencia aplicada</p><h3 id="practice-overview-title">Ámbitos que conectan tecnología y operación</h3><p>{{ resume.INSTITUTIONAL_EXPERIENCE.introduction }}</p></header>
+      <div class="practice-grid">{% for area in resume.INSTITUTIONAL_EXPERIENCE.areas %}<article><span class="card-number">0{{ loop.index }}</span><h4>{{ area.title }}</h4><p>{{ area['items'][0] }}</p><a href="#trayectoria" data-page-shortcut>Ver experiencia completa →</a></article>{% endfor %}</div>
+    </section>
     <div class="two-column-block">
       <div>
         <h3 class="subheading">{{ about.STRENGTHS.label }}</h3>

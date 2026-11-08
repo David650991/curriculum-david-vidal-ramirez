@@ -6,6 +6,10 @@
       <div>
         <h3 class="subheading heading-with-icon">{{ icon(iconography.FUNCTIONAL.briefcase.icon, None, "heading-icon") }}{{ resume.EXPERIENCE.label }}</h3>
         <ol class="timeline">{% for item in resume.EXPERIENCE['items'] %}<li><p class="timeline-period">{{ item.period }}</p><h4>{{ item.position }}</h4><p class="timeline-org">{{ item.organization }}</p><ul>{% for bullet in item.bullets %}<li>{{ bullet }}</li>{% endfor %}</ul></li>{% endfor %}</ol>
+        <section class="institutional-experience" aria-labelledby="institutional-experience-title">
+          <header><h3 id="institutional-experience-title">{{ resume.INSTITUTIONAL_EXPERIENCE.label }}</h3><p>{{ resume.INSTITUTIONAL_EXPERIENCE.introduction }}</p></header>
+          <div class="institutional-grid">{% for area in resume.INSTITUTIONAL_EXPERIENCE.areas %}<article><p class="eyebrow"><span aria-hidden="true">0{{ loop.index }}</span> ámbito</p><h4>{{ area.title }}</h4><ul>{% for item in area['items'] %}<li>{{ item }}</li>{% endfor %}</ul>{% if area.get('note') %}<small>{{ area.note }}</small>{% endif %}</article>{% endfor %}</div>
+        </section>
         <section class="earlier-experience">
           <h3>{{ resume.EARLIER_EXPERIENCE.label }}</h3>
           <p>{{ resume.EARLIER_EXPERIENCE.introduction }}</p>

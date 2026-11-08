@@ -58,6 +58,13 @@ def test_professional_content_is_complete(project_root: Path) -> None:
     )
     assert project_metric["value"] == str(len(projects))
     assert len(context["resume"]["EXPERIENCE"]["items"][0]["bullets"]) == 6
+    institutional = context["resume"]["INSTITUTIONAL_EXPERIENCE"]
+    assert len(institutional["areas"]) == 4
+    institutional_text = " ".join(
+        item for area in institutional["areas"] for item in area["items"]
+    )
+    for value in ("48 cámaras", "DMSS", "Dahua", "Telmex", "Megacable", "PRISM Live Studio", "CapCut", "Canva", "cuarto y quinto paso"):
+        assert value in institutional_text
     assert len(context["certifications"]["FEATURED"]) == 6
     assert sum(len(path["items"]) for path in context["certifications"]["PATHS"]) == 12
     assert context["profile"]["USER"]["institutional_email"] == "L25350801@tuxtepec.tecnm.mx"
@@ -71,6 +78,12 @@ def test_professional_content_is_complete(project_root: Path) -> None:
     }
     assert {"Python", "JavaScript", "Flask", "Cloudflare D1", "OpenCV"} <= technology_names
     assert {"Flask-Login", "Socket.IO", "Service Worker", "face_recognition", "Morgan"} <= technology_names
+    workflow_tools = {
+        item["name"]
+        for group in context["technologies"]["WORKFLOW_TOOLS"]["groups"]
+        for item in group["items"]
+    }
+    assert {"ChatGPT", "Gemini", "Codex", "GitHub Copilot", "Google Antigravity", "Canva", "CapCut", "PRISM Live Studio", "DMSS y Dahua", "Telmex y Megacable"} <= workflow_tools
     assert len(context["iconography"]["ECOSYSTEMS"]) == 8
     employment_records = context["resume"]["EARLIER_EXPERIENCE"]["records"]
     assert len(employment_records) == 17
@@ -85,6 +98,9 @@ def test_professional_content_is_complete(project_root: Path) -> None:
     auth_practice = next(project for project in projects if project["slug"] == "auth-practice")
     assert auth_practice["repository_url"] is None
     assert "no publicado" in auth_practice["note"].lower()
+    public_repositories = [project["repository_url"] for project in projects if project.get("repository_url")]
+    assert len(public_repositories) == 6
+    assert sum(project.get("repository_url") is None for project in projects) == 4
 
 
 def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -> None:
@@ -196,6 +212,12 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
     assert 'class="social-link__label">GitHub</span>' in html
     assert 'class="social-link__label">GitLab</span>' in html
     assert "https://grid-chat-lknf.onrender.com/" in html
+    assert html.count('class="project-links project-links-primary"') == sum(
+        bool(project.get("demo_url") or project.get("repository_url")) for project in projects
+    )
+    assert "Producción audiovisual y redes institucionales" in html
+    assert "Telegram: canal utilizado según declaración del titular; enlace público exacto pendiente de confirmar." in html
+    assert html.count('class="media-channel-grid"') == 1
     assert "assets/icons/functional/mail.svg" in html
     assert html.count('class="ecosystem-card"') == 8
     assert 'class="logo-grid"' not in html
@@ -209,14 +231,17 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
     assert pdf.stat().st_size > 50_000
     pdf_content = pdf.read_bytes()
     page_count = assert_pdf_pages_are_consistent(pdf_content)
-    assert page_count == 10
+    assert page_count == 11
     assert cv_html.count("assets/images/branding/neural-network.svg") == page_count
+    assert "padding: 16pt 36pt 92pt" in cv_html
+    assert "grid-template-columns: repeat(3, 1fr)" in cv_html
+    assert 'class="groups-grid workflow-grid"' in cv_html
     assert b"/Author (David Vidal Ramirez)" in pdf_content
     assert b"/Creator (David Vidal Ramirez)" in pdf_content
     pages_text = extract_pdf_pages_text(pdf_content)
     full_pdf_text = "\n".join(pages_text)
     normalized_pdf_text = " ".join(full_pdf_text.split())
-    projects_pdf_text = "\n".join(pages_text[5:])
+    projects_pdf_text = "\n".join(pages_text[6:])
     project_titles = sorted(context["projects"]["PROJECTS"], key=lambda item: item["priority"])
     project_positions = [projects_pdf_text.index(item["title"]) for item in project_titles]
     assert project_positions == sorted(project_positions)
@@ -225,9 +250,15 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
         assert item["status"] in normalized_pdf_text
         assert cv_html.find(item["title"]) != -1
     assert "Fortalezas e idiomas" in normalized_pdf_text
+    assert "Experiencia institucional complementaria" in normalized_pdf_text
+    assert "48 cámaras" in normalized_pdf_text
+    assert "PRISM Live Studio" in normalized_pdf_text
+    assert "Producción audiovisual y redes institucionales" in normalized_pdf_text
     assert "Sitio profesional" in normalized_pdf_text
     assert context["profile"]["SITE"]["url"].encode("ascii") in pdf_content
     assert context["certifications"]["PUBLIC_PROFILE"]["url"].encode("ascii") in pdf_content
+    for channel in context["projects"]["MEDIA_EVIDENCE"]["channels"]:
+        assert channel["url"].encode("ascii") in pdf_content
     for bullet in context["resume"]["EXPERIENCE"]["items"][0]["bullets"]:
         assert bullet in normalized_pdf_text
     for record in context["resume"]["EARLIER_EXPERIENCE"]["records"]:
@@ -264,6 +295,9 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
     assert "overflow-wrap: anywhere" in (project_root / "src/css/base.css").read_text(encoding="utf-8")
     assert ".profile-social .social-link span { display: none; }" not in responsive_css
     assert ".career-grid, .learning-paths .career-grid { grid-template-columns: 1fr; }" in responsive_css
+    base_css = (project_root / "src/css/base.css").read_text(encoding="utf-8")
+    assert ".project-card, .ecosystem-card, .resume-card" not in base_css
+    assert ".page:not([hidden]) .project-card" not in base_css
 
 
 def test_pdf_paginates_a_tenth_project_without_losing_sections(project_root: Path, tmp_path: Path) -> None:
@@ -294,10 +328,10 @@ def test_pdf_paginates_a_tenth_project_without_losing_sections(project_root: Pat
     destination = tmp_path / "synthetic" / "assets" / "cv.pdf"
     create_cv_pdf(context, destination)
     pdf = destination.read_bytes()
-    assert assert_pdf_pages_are_consistent(pdf) == 11
+    assert assert_pdf_pages_are_consistent(pdf) == 12
     pages_text = extract_pdf_pages_text(pdf)
     full_pdf_text = "\n".join(pages_text)
-    projects_pdf_text = "\n".join(pages_text[5:])
+    projects_pdf_text = "\n".join(pages_text[6:])
     sorted_projects = sorted(context["projects"]["PROJECTS"], key=lambda item: item["priority"])
     positions = [projects_pdf_text.index(item["title"]) for item in sorted_projects]
     assert positions == sorted(positions)
@@ -365,6 +399,20 @@ def test_all_professional_content_is_published(project_root: Path, tmp_path: Pat
     for group in technologies["GROUPS"]:
         assert group["title"] in rendered
         assert all(item in rendered for item in group["items"])
+    for group in technologies["WORKFLOW_TOOLS"]["groups"]:
+        assert group["title"] in rendered
+        for item in group["items"]:
+            assert item["name"] in rendered
+            assert item["use"] in rendered
+
+    media = context["projects"]["MEDIA_EVIDENCE"]
+    assert media["label"] in rendered
+    assert media["description"] in rendered
+    assert media["contribution"] in rendered
+    assert media["pending"] in rendered
+    for channel in media["channels"]:
+        assert channel["platform"] in rendered
+        assert channel["url"] in rendered
 
     career = context["career"]
     assert all(item in rendered for item in career["INTERESTS"]["items"])

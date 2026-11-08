@@ -1,6 +1,5 @@
 # Custom
 *.ipynb
-*.html
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -53,6 +52,7 @@ coverage.xml
 *.py,cover
 .hypothesis/
 .pytest_cache/
+.ruff_cache/
 cover/
 
 # Translations

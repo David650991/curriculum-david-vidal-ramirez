@@ -33,6 +33,15 @@
 .timeline h4 { margin: 5px 0 4px; font-size: 1.08rem; }
 .timeline-org { margin-bottom: 10px; font-size: .9rem; }
 .timeline ul { font-size: .9rem; line-height: 1.55; }
+.institutional-experience { margin: 4px 0 28px; }
+.institutional-experience > header { margin-bottom: 16px; }
+.institutional-experience > header p { color: var(--muted); font-size: .9rem; }
+.institutional-grid { display: grid; gap: 12px; }
+.institutional-grid article { padding: 18px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: linear-gradient(145deg, rgba(19,34,56,.68), rgba(8,17,29,.55)); }
+.institutional-grid article h4 { margin-bottom: 10px; }
+.institutional-grid article ul { margin: 0; padding-left: 18px; color: #cbd5e1; font-size: .88rem; }
+.institutional-grid article li + li { margin-top: 7px; }
+.institutional-grid article small { display: block; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line); color: var(--muted); font-size: .72rem; }
 
 .resume-aside {
     display: grid;

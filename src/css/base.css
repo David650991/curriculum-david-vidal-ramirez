@@ -105,16 +105,14 @@ p, li, dd { overflow-wrap: anywhere; }
 .section { padding: var(--space-7) var(--space-6) var(--space-8); }
 .section, .section-heading, .section article, .section aside, .section dl, .section ul { text-align: left; }
 .page:not([hidden]) { animation: page-in .28s ease-out both; }
-.project-card, .ecosystem-card, .resume-card, .earlier-experience { content-visibility: auto; contain-intrinsic-size: auto 360px; }
+.resume-card, .earlier-experience { content-visibility: auto; contain-intrinsic-size: auto 360px; }
 @keyframes page-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-.page:not([hidden]) .metrics > *, .page:not([hidden]) .info-card, .page:not([hidden]) .project-card, .page:not([hidden]) .ecosystem-card, .page:not([hidden]) .resume-card { animation: module-in .42s ease-out both; animation-delay: calc(var(--module-index, 0) * 55ms); }
+.page:not([hidden]) .metrics > *, .page:not([hidden]) .info-card, .page:not([hidden]) .resume-card { animation: module-in .42s ease-out both; animation-delay: calc(var(--module-index, 0) * 55ms); }
 @keyframes module-in { from { opacity: 0; transform: translateY(11px); } to { opacity: 1; transform: none; } }
-.metrics > *:nth-child(2), .info-card:nth-child(2), .project-card:nth-child(2), .ecosystem-card:nth-child(2), .resume-card:nth-child(2) { --module-index: 1; }
-.metrics > *:nth-child(3), .info-card:nth-child(3), .project-card:nth-child(3), .ecosystem-card:nth-child(3), .resume-card:nth-child(3) { --module-index: 2; }
+.metrics > *:nth-child(2), .info-card:nth-child(2), .resume-card:nth-child(2) { --module-index: 1; }
+.metrics > *:nth-child(3), .info-card:nth-child(3), .resume-card:nth-child(3) { --module-index: 2; }
 .metrics > *:nth-child(4), .info-card:nth-child(4), .project-card:nth-child(4), .resume-card:nth-child(4) { --module-index: 3; }
-.project-card:nth-child(5), .resume-card:nth-child(5) { --module-index: 4; }
-.project-card:nth-child(6) { --module-index: 5; }
-.project-card:nth-child(7) { --module-index: 6; }
+.resume-card:nth-child(5) { --module-index: 4; }
 .section-heading { max-width: 780px; margin-bottom: 34px; }
 .section-heading::after { content: ""; display: block; width: 84px; height: 3px; margin-top: 18px; border-radius: 99px; background: linear-gradient(90deg, var(--blue), var(--cyan), transparent); box-shadow: 0 0 18px rgba(34,211,238,.2); }
 .section-heading h2, .contact-section h2 { max-width: 18ch; margin-bottom: 14px; font-size: clamp(2.35rem, 4.5vw, 3.75rem); line-height: 1.02; letter-spacing: -.045em; }

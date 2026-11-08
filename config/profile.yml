@@ -25,7 +25,7 @@ INFO:
   - {label: "Correo profesional", value: "David650991@gmail.com", href: "mailto:David650991@gmail.com", brand_icon: "gmail"}
   - {label: "Correo institucional", value: "L25350801@tuxtepec.tecnm.mx", href: "mailto:L25350801@tuxtepec.tecnm.mx", brand_icon: "outlook", badge: "TecNM"}
   - {label: "WhatsApp", value: "+52 287 124 6128", href: "https://wa.me/522871246128", brand_icon: "whatsapp"}
-  - {label: "Ubicación", value: "Tres Valles, Veracruz, México", href: "https://www.google.com/maps/search/?api=1&query=Tres+Valles%2C+Veracruz%2C+México", brand_icon: "google-maps"}
+  - {label: "Ubicación", value: "Tres Valles, Veracruz, México", href: "https://www.google.com/maps/search/?api=1&query=Tres+Valles%2C+Veracruz%2C+M%C3%A9xico", brand_icon: "google-maps"}
 SOCIAL:
   - {label: "LinkedIn", icon: "linkedin", url: "https://www.linkedin.com/in/david-vidal-ramirez-3ba01b147/"}
   - {label: "GitHub", icon: "github", url: "https://github.com/David650991"}

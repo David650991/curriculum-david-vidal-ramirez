@@ -37,6 +37,11 @@
       <div class="career-grid">{% for group in technologies.GROUPS %}<article class="career-block"><h3>{{ group.title }}</h3><ul class="tags tech-chip-list">{% for item in group['items'] %}{{ tech_chip(item, iconography) }}{% endfor %}</ul></article>{% endfor %}</div>
     </section>
 
+    <section class="integration-section workflow-tools" aria-labelledby="workflow-tools-title">
+      <header><h3 id="workflow-tools-title">{{ technologies.WORKFLOW_TOOLS.label }}</h3><p>{{ technologies.WORKFLOW_TOOLS.description }}</p></header>
+      <div class="career-grid">{% for group in technologies.WORKFLOW_TOOLS.groups %}<article class="career-block"><h3>{{ group.title }}</h3><ul class="tool-use-list">{% for item in group['items'] %}<li><strong>{{ item.name }}</strong><span>{{ item.use }}</span></li>{% endfor %}</ul></article>{% endfor %}</div>
+    </section>
+
     <div class="career-grid technology-context-grid">
       <article class="career-block"><h3>{{ career.INTERESTS.label }}</h3><ul class="tags tech-chip-list">{% for item in career.INTERESTS['items'] %}{{ tech_chip(item, iconography) }}{% endfor %}</ul></article>
       <article class="career-block"><h3>{{ career.DELIVERY.label }}</h3><p>{{ career.DELIVERY.text }}</p><ul class="tags tech-chip-list">{% for item in career.DELIVERY['items'] %}{{ tech_chip(item, iconography) }}{% endfor %}</ul></article>

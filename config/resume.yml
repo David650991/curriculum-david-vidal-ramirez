@@ -24,6 +24,32 @@ EXPERIENCE:
         - "Automatización de generación y despliegue de sitios mediante Python, Jinja y GitHub Actions."
         - "Soporte técnico a computadoras y dispositivos móviles; instalación y mantenimiento de videovigilancia CCTV y atención operativa a incidencias de conectividad de Internet."
         - "Producción y difusión de pódcast y transmisiones en vivo mediante PRISM Live Studio; edición de clips con CapCut y gestión de contenidos en Facebook, Instagram, YouTube, TikTok, X, WhatsApp y Telegram."
+INSTITUTIONAL_EXPERIENCE:
+  label: "Experiencia institucional complementaria"
+  introduction: "En La Luz y La Esperanza Que Necesito combino desarrollo de software con soporte, comunicación y acompañamiento. Estas funciones son operativas y entre pares; no corresponden a atención clínica ni a profesiones reguladas."
+  areas:
+    - title: "Desarrollo y procesos digitales"
+      items:
+        - "Desarrollo y mantenimiento del sitio institucional y de herramientas documentales privadas."
+        - "Organización de flujos, formularios, firmas manuscritas, permisos y trazabilidad de cambios."
+    - title: "Infraestructura, CCTV y soporte"
+      items:
+        - "Instalación desde cero, mantenimiento, monitoreo y revisión de un sistema de 48 cámaras, con DVR, DMSS y equipos Dahua; recuperación de grabaciones cuando procede."
+        - "Diagnóstico y soporte operativo en computadoras y teléfonos."
+        - "Gestión de conectividad desde interfaces de equipos Telmex y Megacable, incluida la autorización o el bloqueo de dispositivos no autorizados y la resolución de incidencias."
+      note: "La cifra de 48 cámaras y el alcance operativo fueron comunicados por el titular; no se publican ubicaciones, direcciones IP, credenciales ni configuraciones internas."
+    - title: "Producción multimedia y comunicación"
+      items:
+        - "Creación de canales institucionales en X, Telegram, TikTok, YouTube e Instagram, y mantenimiento de Facebook."
+        - "Preparación de textos, flyers en Canva y piezas audiovisuales; entrevista directa a invitados especiales del pódcast."
+        - "Organización de transmisiones con PRISM Live Studio, gestión de preguntas y comentarios durante el directo y adaptación del flujo según cada plataforma."
+        - "Selección y edición de momentos destacados en CapCut para clips, reels y shorts posteriores."
+      note: "No se atribuyen campañas pagadas, presupuestos, audiencias ni resultados numéricos sin evidencia específica."
+    - title: "Continuidad educativa y apoyo entre pares"
+      items:
+        - "Orientación, inscripciones, uso de plataformas y seguimiento para continuar o retomar primaria, secundaria, preparatoria en línea y universidad."
+        - "Participación como padrino en AA y en actividades de cuarto y quinto paso mediante escucha, orientación y acompañamiento entre pares."
+      note: "Este acompañamiento no constituye docencia titulada, trabajo social acreditado, psicoterapia, atención médica ni consejería profesional regulada."
 EARLIER_EXPERIENCE:
   label: "Historial laboral registrado ante el IMSS"
   introduction: "Antes de concentrarme en desarrollo de software trabajé en operaciones, logística, ventas, servicio y trabajo de campo. Los siguientes periodos corresponden a altas y bajas del reporte de semanas cotizadas emitido por el IMSS el 15 de marzo de 2025; no se publican salarios, registros patronales ni identificadores personales."

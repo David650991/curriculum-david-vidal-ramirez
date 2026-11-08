@@ -16,6 +16,7 @@
   .two-column-block { grid-template-columns: 1fr; }
   .contact-workspace { grid-template-columns: 1fr; }
   .contact-map { min-height: 300px; }
+  .media-channel-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 840px) {
@@ -75,6 +76,8 @@
   .map-location { margin-left: 0; }
   .map-location, .map-directions { flex: 1 1 145px; }
   .project-links { flex-wrap: wrap; gap: 10px 16px; }
+  .practice-grid, .media-channel-grid { grid-template-columns: 1fr; }
+  .media-evidence { padding: 20px; }
 }
 
 @media (max-width: 480px) {

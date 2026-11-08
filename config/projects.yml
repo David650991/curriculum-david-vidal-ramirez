@@ -2,6 +2,17 @@ HEADER:
   eyebrow: "Trabajo seleccionado"
   title: "Lo que he construido hasta ahora"
   description: "Aquí conviven herramientas que ya se utilizan y proyectos con los que practico. En cada caso indico su estado para no confundir un laboratorio con un producto terminado."
+MEDIA_EVIDENCE:
+  label: "Producción audiovisual y redes institucionales"
+  description: "Canales públicos del centro donde se distribuyen contenidos institucionales. Los enlaces acreditan la existencia de los canales, no la autoría personal de cada publicación."
+  contribution: "Mi participación declarada comprende preparación de entrevistas y flyers, operación de directos, atención de comentarios y edición de clips, reels y shorts. Las muestras individuales requieren URL exacta y autorización institucional antes de incorporarse."
+  channels:
+    - {platform: "Facebook", url: "https://www.facebook.com/CENTRODEREHABILITACIONLALUZYLAESPERANZAQUENECESITO", access: "Perfil institucional público"}
+    - {platform: "Instagram", url: "https://www.instagram.com/laluzylaesperanzaquenecesito/", access: "Perfil institucional público"}
+    - {platform: "YouTube", url: "https://www.youtube.com/@laluzylaesperanzaquenecesito", access: "Canal institucional público"}
+    - {platform: "TikTok", url: "https://www.tiktok.com/@laluzylaesperanza", access: "Perfil institucional público"}
+    - {platform: "X", url: "https://x.com/LaLuzYLaEsperan", access: "Perfil institucional público"}
+  pending: "Telegram: canal utilizado según declaración del titular; enlace público exacto pendiente de confirmar."
 PROJECTS:
   - slug: "generador-expedientes"
     priority: 1
