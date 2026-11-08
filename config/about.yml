@@ -8,8 +8,10 @@ PRESENTATION:
     - "Trabajo principalmente con Python, JavaScript, HTML, CSS, Flask, Node.js, Express, SQLite, Cloudflare, GitHub Actions y tecnologías web modernas. También he desarrollado proyectos con OpenCV, procesamiento de imágenes, WebSockets, PWA y bases de datos."
     - "Antes de concentrarme en tecnología trabajé en logística, ventas, operación y atención al cliente. Esa trayectoria influye en mi forma de desarrollar software: primero procuro entender el problema y ordenar el proceso; después construyo una solución que pueda mantenerse y evolucionar."
     - "Una parte importante de mi trabajo nació en La Luz y La Esperanza Que Necesito: desarrollé su sitio público y después una herramienta privada para preparar expedientes, recopilar firmas y conservar la trazabilidad de cada cambio."
+    - "Además de desarrollar software, doy soporte a computadoras y teléfonos, atiendo problemas de conectividad y mantengo sistemas de videovigilancia. También preparo transmisiones en vivo, publicaciones y clips para redes sociales."
+    - "Apoyo a personas que buscan retomar sus estudios y participo como padrino en actividades de apoyo entre pares de AA. Es una labor de orientación y acompañamiento, distinta de la atención psicológica o clínica."
 METRICS:
-  - {value: "7", label: "proyectos documentados"}
+  - {value: "10", label: "proyectos documentados"}
   - {value: "25", label: "documentos en el sistema de expedientes"}
   - {value: "3.er", label: "semestre de Ingeniería en Sistemas"}
   - {value: "10+", label: "años de experiencia profesional previa"}

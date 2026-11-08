@@ -19,7 +19,7 @@
     transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
 }
 
-.project-card:hover { transform: translateY(-3px); border-color: rgba(200,107,211,.5); box-shadow: 0 20px 48px rgba(0,0,0,.26), 0 0 22px rgba(117,17,130,.13); }
+.project-card:hover { transform: translateY(-3px); border-color: rgba(167,139,250,.62); box-shadow: 0 20px 48px rgba(0,0,0,.26), 0 0 22px rgba(139,92,246,.16); }
 
 .project-visual {
     position: relative;
@@ -100,7 +100,7 @@
 .project-card h3 { margin-bottom: 10px; font-size: 1.22rem; line-height: 1.25; text-align: left; }
 .project-content > p:not(.project-note) { font-size: .94rem; line-height: 1.58; }
 .project-content > p:not(.project-note) { margin-bottom: 18px; }
-.architecture-flow { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; margin: 0 0 18px; padding: 12px; border: 1px solid rgba(200,107,211,.22); border-radius: 12px; background: rgba(117,17,130,.08); }
+.architecture-flow { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; margin: 0 0 18px; padding: 12px; border: 1px solid rgba(167,139,250,.28); border-radius: 12px; background: rgba(139,92,246,.1); }
 .architecture-flow span { color: #dbeafe; font-size: .72rem; font-weight: 750; }
 .architecture-flow b { color: var(--violet); }
 .project-aspects { padding: 11px 12px; border-radius: 10px; background: rgba(255,255,255,.025); font-size: .8rem !important; }

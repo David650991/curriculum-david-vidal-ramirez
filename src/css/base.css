@@ -14,11 +14,12 @@
   --border-active: #38bdf8;
   --cyan: #22d3ee;
   --blue: #2563eb;
+  --purple: #8b5cf6;
   --violet-deep: #071a2c;
   --violet-dark: #0c2a45;
-  --violet: #2563eb;
-  --violet-light: #38bdf8;
-  --violet-neon: #22d3ee;
+  --violet: #8b5cf6;
+  --violet-light: #a78bfa;
+  --violet-neon: #a78bfa;
   --gold: #f59e0b;
   --neon-white: #ffffff;
   --available: #39ff9c;
@@ -32,11 +33,18 @@
   --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px; --space-9: 96px;
   --radius-sm: 8px; --radius-md: 12px; --radius-lg: 18px; --radius-xl: 24px;
   --radius: var(--radius-lg);
-  --gradient-ai: linear-gradient(135deg, var(--violet-dark), var(--violet) 46%, var(--violet-light));
-  --gradient-action: linear-gradient(135deg, #2563eb, #155e75 58%, #0f3b60);
+  --gradient-ai: linear-gradient(135deg, var(--violet-dark), var(--purple) 46%, var(--violet-light));
+  --gradient-action: linear-gradient(135deg, var(--blue), var(--purple) 72%, #6d28d9);
   --shadow: 0 20px 50px rgba(0, 0, 0, .28);
-  --font-main: Inter, Manrope, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-main: Inter, "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: Manrope, Inter, "Segoe UI", ui-sans-serif, sans-serif;
   --font-code: "Cascadia Code", "JetBrains Mono", "Fira Code", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --syntax-keyword: #c4b5fd;
+  --syntax-function: #67e8f9;
+  --syntax-property: #93c5fd;
+  --syntax-string: #86efac;
+  --syntax-number: #fbbf24;
+  --syntax-comment: #94a3b8;
   --text-xs: .76rem;
   --text-sm: .86rem;
   --text-body: 1rem;
@@ -83,7 +91,7 @@ button { font: inherit; }
 [hidden] { display: none !important; }
 :focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
 h1, h2, h3, h4, p { margin-top: 0; }
-h1, h2, h3, h4 { text-wrap: balance; }
+h1, h2, h3, h4 { font-family: var(--font-heading); text-wrap: balance; }
 h3 { margin-bottom: 12px; font-size: var(--text-section-title); line-height: 1.25; }
 h4 { margin-bottom: 8px; font-size: var(--text-card-title); line-height: 1.32; }
 p, li, dd { overflow-wrap: anywhere; }
@@ -124,3 +132,9 @@ p, li, dd { overflow-wrap: anywhere; }
 .skip-link { position: fixed; top: 12px; left: 12px; z-index: 100; transform: translateY(-180%); padding: 9px 14px; background: white; color: #070a10; }
 .skip-link:focus { transform: none; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+.syntax-keyword { color: var(--syntax-keyword); }
+.syntax-function { color: var(--syntax-function); }
+.syntax-property { color: var(--syntax-property); }
+.syntax-string { color: var(--syntax-string); }
+.syntax-number { color: var(--syntax-number); }
+.syntax-comment { color: var(--syntax-comment); }

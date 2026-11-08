@@ -6,7 +6,7 @@ Este documento distingue datos confirmados, enlaces comprobados y límites de ve
 
 ## Fuente de contenido
 
-La fuente recibida describe la identidad profesional, formación, trayectoria, siete proyectos, tecnologías, límites técnicos, privacidad, SEO y estructura esperada del currículum. Los datos públicos se centralizan en los archivos YAML de `config/`; las plantillas de `src/jinja/` los convierten en el sitio y el generador produce HTML y PDF.
+La fuente recibida describe la identidad profesional, formación, trayectoria, diez proyectos, tecnologías, límites técnicos, privacidad, SEO y estructura esperada del currículum. Los datos públicos se centralizan en los archivos YAML de `config/`; las plantillas de `src/jinja/` los convierten en el sitio y el generador produce HTML y PDF.
 
 ## Datos personales y académicos publicados
 
@@ -39,6 +39,9 @@ El reporte se utilizó solo para corregir nombres y fechas. No se copiaron al re
 | VisionLab | Laboratorio experimental | Repositorio público comprobable; sin demostración pública confirmada |
 | Currículum y portafolio automatizado | Proyecto activo | Implementación, pruebas, CI/CD y repositorio actual |
 | David Vidal IT Tuxtepec Server | Demostrador técnico | Repositorio público comprobable; alcance limitado explícitamente |
+| VUMARI STUDIOS | En desarrollo | Repositorio público comprobable; herramientas experimentales de conversión de subtítulos SRT/VTT |
+| Asistente Python | En desarrollo | Proyecto privado local con Flask y SQLite; no se publica código ni conversaciones |
+| Generador de Expedientes de Personas Usuarias y Consejeros | Prototipo en desarrollo | Proyecto sin repositorio público; descripción basada en la documentación del autor |
 
 Las categorías “producción”, “privado”, “experimental”, “prototipo”, “laboratorio” y “demostrador” evitan presentar todos los repositorios como productos terminados.
 
@@ -57,6 +60,6 @@ Se revisaron los 18 certificados PDF y el documento con el perfil público propo
 
 ## Controles automáticos
 
-Las pruebas comprueban identidad, semestre, siete proyectos únicos, tecnologías mínimas, contenido sensible ausente, HTML en español, SEO, Schema.org, autoría, licencia pública, PDF, inventario de imágenes y publicación aislada en `dist/`.
+Las pruebas comprueban identidad, semestre, diez proyectos únicos, tecnologías mínimas, contenido sensible ausente, HTML en español, SEO, Schema.org, autoría, licencia pública, PDF completo tamaño carta, inventario de imágenes y publicación aislada en `dist/`.
 
 Una prueba automatizada demuestra consistencia interna; no sustituye documentos académicos, constancias laborales, certificados ni la revisión humana de datos personales. Esos documentos deben conservarse fuera del repositorio público y presentarse únicamente cuando corresponda.

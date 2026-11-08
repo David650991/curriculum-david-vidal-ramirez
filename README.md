@@ -1,6 +1,6 @@
 # Currículum y portafolio de David Vidal Ramírez
 
-Sitio profesional en español que reúne mi perfil, formación, experiencia y siete proyectos de software. El contenido se administra en YAML y un generador en Python/Jinja lo convierte en un sitio estático ligero para GitHub Pages.
+Sitio profesional en español que reúne mi perfil, formación, experiencia y diez proyectos de software. El contenido se administra en YAML y un generador en Python/Jinja lo convierte en un sitio estático ligero para GitHub Pages.
 
 ## Objetivo
 
@@ -9,12 +9,15 @@ Presentar de forma coherente mi transición desde áreas operativas y comerciale
 ## Proyectos documentados
 
 1. Generador de Expedientes de Entrevista — aplicación institucional privada.
-2. La Luz y La Esperanza Que Necesito — sitio institucional en producción.
-3. Auth Practice — laboratorio experimental de autenticación multifactor.
-4. [GRID-Chat](https://grid-chat-lknf.onrender.com/) — prototipo funcional de comunicación en tiempo real.
-5. VisionLab — laboratorio de visión computacional en navegador.
+2. Auth Practice — laboratorio experimental de autenticación multifactor.
+3. [GRID-Chat](https://grid-chat-lknf.onrender.com/) — prototipo funcional de comunicación en tiempo real.
+4. VisionLab — laboratorio de visión computacional en navegador.
+5. La Luz y La Esperanza Que Necesito — sitio institucional en producción.
 6. Currículum y portafolio automatizado — este repositorio.
 7. David Vidal IT Tuxtepec Server — demostrador Node.js sobre ARM64.
+8. VUMARI STUDIOS — sitio web modular y herramientas locales de conversión de subtítulos.
+9. Asistente Python — aplicación local de conocimiento supervisado con Python y Flask.
+10. Generador de Expedientes de Personas Usuarias y Consejeros — prototipo web modular de documentación institucional.
 
 Las tarjetas diferencian explícitamente productos en producción, proyectos privados, prototipos y laboratorios. No se presentan experimentos como sistemas terminados.
 
@@ -33,7 +36,7 @@ dist/               Resultado local; no se versiona
 
 El sitio publicado no necesita servidor, base de datos ni framework del lado cliente. Durante la compilación, los módulos CSS se unen en un solo archivo para mantener el código ordenado sin aumentar las solicitudes del navegador. Solo se copian recursos incluidos expresamente en el manifiesto público; las imágenes de proyectos cargan de forma diferida y el mapa interactivo espera una acción del visitante.
 
-La compilación también genera `cv.html` y un PDF profesional de tres páginas con texto seleccionable, estructura lineal y nombres explícitos de tecnologías para facilitar su lectura por sistemas ATS. El PDF conserva los 17 periodos laborales, resume las competencias centrales en la primera página y organiza las tecnologías por nivel de experiencia en la tercera.
+La compilación también genera `cv.html` y el PDF profesional completo (`dist/assets/cv-david-vidal-ramirez.pdf`) en formato carta con texto seleccionable, numeración física consecutiva, enlaces navegables, ilustración vectorial de red neuronal y cobertura íntegra de las secciones del currículum: perfil, objetivo, competencias, experiencia reciente, formación académica, historial laboral de 17 periodos ante el IMSS, tecnologías por nivel y grupo, seis credenciales destacadas, 12 cursos complementarios y las 10 fichas técnicas de proyectos.
 
 El historial laboral usa nombres y fechas tomados de una constancia IMSS emitida el 15 de marzo de 2025. El documento fuente no se versiona y sus identificadores, salarios, registros patronales y sellos no se publican.
 
@@ -67,7 +70,7 @@ python -m http.server 8000 --directory dist
 - Contacto: `config/contact.yml`
 - Navegación: `config/navbar.yml`
 
-Antes de publicar, hay que ejecutar las pruebas. Estas comprueban que existan los siete proyectos, que los datos académicos esenciales estén presentes y que el artefacto no arrastre imágenes o dependencias externas innecesarias.
+Antes de publicar, hay que ejecutar las pruebas. Estas comprueban que existan los diez proyectos, que los datos académicos esenciales estén presentes y que el artefacto no arrastre imágenes o dependencias externas innecesarias.
 
 ## Publicación
 

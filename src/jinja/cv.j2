@@ -1,1 +1,725 @@
-<!doctype html><html lang="es-MX"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>CV de {{ profile.USER.name }}</title><style>body{max-width:850px;margin:32px auto;padding:0 24px;font:15px/1.45 Arial,sans-serif;color:#111}h1{margin-bottom:4px}h2{margin-top:28px;border-bottom:1px solid #999;font-size:18px}h3{margin-bottom:2px;font-size:15px}p,ul{margin-top:5px}.meta{color:#333}.project{break-inside:avoid}@media print{body{margin:0;max-width:none}a{color:#111;text-decoration:none}}</style></head><body><header><h1>{{ profile.USER.name }}</h1><strong>Desarrollador de Software</strong><p class="meta">{{ profile.USER.academic_status }}<br>{{ profile.USER.location }} · {{ profile.USER.email }} · {{ profile.USER.phone_display }}</p></header><main><h2>Perfil profesional</h2><p>{{ about.PRESENTATION.lead }} {{ about.PRESENTATION.paragraphs | join(' ') }}</p><h2>Formación</h2>{% for item in resume.EDUCATION['items'] %}<h3>{{ item.institution }}</h3><p>{{ item.period }} · {{ item.description }}</p>{% endfor %}<h2>Experiencia reciente</h2>{% for item in resume.EXPERIENCE['items'] %}<article><h3>{{ item.position }} — {{ item.organization }}</h3><p>{{ item.period }}</p><ul>{% for bullet in item.bullets %}<li>{{ bullet }}</li>{% endfor %}</ul></article>{% endfor %}<h2>Proyectos destacados</h2>{% for item in (projects.PROJECTS | sort(attribute='priority'))[:5] %}<article class="project"><h3>{{ item.title }} — {{ item.status }}</h3><p>{{ item.summary }}</p><p><strong>Tecnologías:</strong> {{ item.stack | join(', ') }}</p></article>{% endfor %}<h2>Competencias técnicas</h2>{% for group in about.STACK.groups %}<p><strong>{{ group.title }}:</strong> {{ group['items'] | join(', ') }}</p>{% endfor %}<h2>Idiomas</h2>{% for item in resume.LANGUAGES['items'] %}<p>{{ item.language }} — {{ item.level }}</p>{% endfor %}</main></body></html>
+{%- set sorted_projects = projects.PROJECTS | sort(attribute='priority') -%}
+{%- set project_batches = sorted_projects | batch(2) | list -%}
+{%- set total_pages = 5 + (project_batches | length) -%}
+{%- set prefix = asset_prefix | default('') -%}
+{%- set neural_src = prefix ~ 'assets/images/branding/neural-network.svg' -%}
+{%- set photo_src = prefix ~ profile.USER.avatar -%}
+{%- macro render_page(number, title, subtitle) -%}
+  <article class="page" id="page-{{ '%02d' | format(number) }}">
+    <header class="inner-header">
+      <span>{{ '%02d' | format(number) }} / {{ '%02d' | format(total_pages) }} · CURRÍCULUM PROFESIONAL</span>
+      <strong>{{ title }}</strong>
+      <small>{{ subtitle }}</small>
+    </header>
+    <div class="page-body">
+      {{ caller() }}
+    </div>
+    <img src="{{ neural_src }}" class="page-neural" width="132" height="66" alt="" aria-hidden="true">
+    <footer>
+      <div>{{ profile.USER.name }} · Currículum profesional</div>
+      <div class="footer-page">{{ '%02d' | format(number) }} / {{ '%02d' | format(total_pages) }}</div>
+    </footer>
+  </article>
+{%- endmacro -%}
+<!doctype html>
+<html lang="{{ profile.SITE.language }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ profile.USER.name }} | Currículum profesional</title>
+  <meta name="author" content="{{ profile.USER.name }}">
+  <meta name="creator" content="{{ profile.SITE.creator }}">
+  <style>
+    @page { size: Letter; margin: 0; }
+    :root {
+      --ink: #111827;
+      --navy: #08111D;
+      --purple: #8B5CF6;
+      --violet: #A78BFA;
+      --blue: #2563EB;
+      --cyan: #0891B2;
+      --cyan-light: #22D3EE;
+      --muted: #475569;
+      --line: #CBD5E1;
+      --soft: #F8FAFC;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #E2E8F0;
+      color: var(--ink);
+      font-family: Inter, "Segoe UI", "Liberation Sans", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    body { font-size: 9.5pt; line-height: 1.38; }
+    .page {
+      width: 612pt;
+      height: 792pt;
+      padding: 16pt 36pt 52pt;
+      margin: 18pt auto;
+      background: #FFFFFF;
+      position: relative;
+      page-break-after: always;
+      break-after: page;
+      overflow: hidden;
+    }
+    .page:last-child {
+      page-break-after: auto;
+      break-after: auto;
+    }
+    .page-body {
+      position: relative;
+      z-index: 1;
+    }
+    .inner-header {
+      border-bottom: 1pt solid var(--line);
+      padding-bottom: 4pt;
+      margin-bottom: 7pt;
+    }
+    .inner-header span, .eyebrow, .section-kicker, .project-number {
+      color: var(--blue);
+      font: 700 7.8pt "JetBrains Mono", Consolas, "Liberation Mono", monospace;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .inner-header strong {
+      display: block;
+      margin-top: 2pt;
+      color: var(--navy);
+      font-size: 13.5pt;
+      line-height: 1.15;
+    }
+    .inner-header small {
+      display: block;
+      margin-top: 1.5pt;
+      color: var(--muted);
+      font-size: 8.6pt;
+    }
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 86pt;
+      gap: 16pt;
+      align-items: center;
+    }
+    h1 {
+      margin: 4pt 0 3pt;
+      color: var(--navy);
+      font-size: 28pt;
+      line-height: 1.04;
+      letter-spacing: -.035em;
+    }
+    .role {
+      margin: 0;
+      color: var(--purple);
+      font-weight: 700;
+      font-size: 12.5pt;
+      line-height: 1.2;
+    }
+    .stack {
+      color: var(--muted);
+      font-size: 8.6pt;
+      line-height: 1.32;
+    }
+    .hero .stack {
+      margin-top: 5pt;
+      font-size: 9.6pt;
+      line-height: 1.35;
+    }
+    .photo {
+      width: 86pt;
+      height: 86pt;
+      object-fit: cover;
+      border-radius: 12pt;
+      border: 2.5pt solid #FFFFFF;
+      box-shadow: 0 3pt 10pt rgba(32, 54, 83, 0.18);
+    }
+    .contact {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4pt 10pt;
+      padding: 6.5pt 0;
+      margin: 10pt 0 12pt;
+      border-top: 1pt solid var(--line);
+      border-bottom: 1pt solid var(--line);
+      color: var(--muted);
+      font-size: 8.8pt;
+      line-height: 1.35;
+    }
+    a { color: var(--blue); text-decoration: none; }
+    .section { margin: 0 0 11pt; }
+    .section:last-child { margin-bottom: 0; }
+    .section-kicker { margin-bottom: 2pt; color: var(--cyan); }
+    h2 {
+      margin: 0 0 5pt;
+      color: var(--navy);
+      font-size: 12.5pt;
+      line-height: 1.18;
+    }
+    h3 {
+      margin: 0 0 2.5pt;
+      color: var(--navy);
+      font-size: 10.2pt;
+      line-height: 1.22;
+    }
+    h4 {
+      margin: 4pt 0 1.5pt;
+      color: var(--blue);
+      font-size: 8pt;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    p {
+      margin: 0 0 5.5pt;
+      font-size: 9pt;
+      line-height: 1.38;
+    }
+    p:last-child { margin-bottom: 0; }
+    .lead {
+      font-size: 10pt;
+      color: var(--navy);
+      font-weight: 500;
+      line-height: 1.42;
+      margin-bottom: 6.5pt;
+    }
+    .narrative {
+      font-size: 9.2pt;
+      line-height: 1.42;
+      margin-bottom: 6.5pt;
+      color: var(--ink);
+    }
+    .muted {
+      color: var(--muted);
+      font-size: 8.6pt;
+      line-height: 1.36;
+    }
+    ul { margin: 2pt 0 3pt 12pt; padding: 0; }
+    li {
+      margin: 2.5pt 0;
+      font-size: 8.8pt;
+      line-height: 1.36;
+    }
+    .chips {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5.5pt;
+    }
+    .chips span, .tech-grid span {
+      display: flex;
+      flex-direction: column;
+      padding: 4.5pt 6.5pt;
+      border: 1pt solid var(--line);
+      border-radius: 4pt;
+      background: var(--soft);
+      font-size: 8.9pt;
+      line-height: 1.28;
+    }
+    .chips small, .tech-grid small {
+      color: var(--muted);
+      font-size: 7.9pt;
+      margin-top: 1.5pt;
+      line-height: 1.25;
+    }
+    .role-card, .credential, .course-path, .level, .group, .objective-card {
+      padding: 6.5pt 8.5pt;
+      margin-bottom: 5.5pt;
+      border-left: 2.2pt solid var(--cyan);
+      background: var(--soft);
+      border-radius: 0 4pt 4pt 0;
+    }
+    .objective-card {
+      border-left-color: var(--purple);
+      margin-bottom: 0;
+    }
+    .role-line, .history-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8pt;
+      align-items: baseline;
+    }
+    .role-line span, .history-row span {
+      color: var(--blue);
+      font: 700 8.5pt "JetBrains Mono", Consolas, "Liberation Mono", monospace;
+    }
+    .role-card ul li {
+      margin: 4pt 0;
+      font-size: 9pt;
+      line-height: 1.4;
+    }
+    .two-col, .project-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9pt;
+    }
+    .education {
+      padding: 6.5pt 8.5pt;
+      border-left: 2.2pt solid var(--purple);
+      background: var(--soft);
+      border-radius: 0 4pt 4pt 0;
+      margin-bottom: 5pt;
+    }
+    .education strong, .education span, .education small { display: block; }
+    .education span {
+      color: var(--blue);
+      font: 700 8.4pt "JetBrains Mono", Consolas, "Liberation Mono", monospace;
+      margin: 1.5pt 0 3pt;
+    }
+    .education p { margin-bottom: 2.5pt; }
+    .education small { color: var(--muted); font-size: 8.4pt; }
+    .history {
+      margin-top: 6pt;
+      border-top: 1pt solid var(--line);
+    }
+    .history-row {
+      grid-template-columns: 1.15fr 1.35fr 1fr;
+      padding: 4pt 0;
+      border-bottom: 1pt solid var(--line);
+      font-size: 8.7pt;
+      line-height: 1.3;
+    }
+    .history-row em {
+      color: var(--muted);
+      font-style: normal;
+    }
+    .level { padding: 4.5pt 7pt; margin-bottom: 3.5pt; }
+    .level p.muted { margin-bottom: 2.5pt; font-size: 8.2pt; line-height: 1.28; }
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3.2pt;
+      margin-top: 2pt;
+    }
+    .tech-grid span {
+      background: #FFFFFF;
+      font-size: 8.4pt;
+      padding: 3pt 5pt;
+      line-height: 1.22;
+    }
+    .groups-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4pt;
+    }
+    .group {
+      border-left-color: var(--purple);
+      padding: 4.2pt 7pt;
+      margin-bottom: 0;
+    }
+    .group h3 { font-size: 9pt; margin-bottom: 1pt; }
+    .group .stack { font-size: 8pt; color: var(--muted); margin: 0; line-height: 1.28; }
+    .credentials {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6pt;
+    }
+    .credential {
+      margin: 0;
+      border-left-color: var(--purple);
+      padding: 6pt 8pt;
+    }
+    .credential h3 { font-size: 9.8pt; margin-bottom: 1.5pt; }
+    .credential strong { display: block; font-size: 8.5pt; color: var(--ink); }
+    .credential span {
+      display: block;
+      margin-top: 1pt;
+      font-size: 8pt;
+      color: var(--blue);
+      font-family: "JetBrains Mono", Consolas, "Liberation Mono", monospace;
+    }
+    .credential p {
+      margin: 3pt 0 2.5pt;
+      font-size: 8.5pt;
+      line-height: 1.35;
+      color: var(--muted);
+    }
+    .credential small {
+      display: block;
+      font-size: 7.6pt;
+      color: var(--muted);
+      font-family: "JetBrains Mono", Consolas, "Liberation Mono", monospace;
+    }
+    .profile-link { margin: 5pt 0 7pt; font-size: 8.6pt; }
+    .courses-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 5.5pt;
+    }
+    .course-path { margin: 0; padding: 6pt 8pt; }
+    .course-path h3 { font-size: 9.5pt; margin-bottom: 1.5pt; }
+    .course-path p { font-size: 8.4pt; color: var(--muted); margin-bottom: 3pt; line-height: 1.34; }
+    .inline-list { columns: 2; column-gap: 8pt; margin-bottom: 0; }
+    .inline-list li {
+      break-inside: avoid;
+      margin: 1.5pt 0;
+      font-size: 8.4pt;
+      line-height: 1.3;
+    }
+    .cards-container {
+      display: flex;
+      flex-direction: column;
+      gap: 5.5pt;
+    }
+    .project-card {
+      padding: 5.5pt 8.5pt;
+      border: 1pt solid var(--line);
+      border-left: 3pt solid var(--purple);
+      border-radius: 4pt;
+      background: #FFFFFF;
+      break-inside: avoid;
+    }
+    .project-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8pt;
+    }
+    .project-card h3 {
+      margin: 0 0 1pt;
+      font-size: 10.8pt;
+      color: var(--navy);
+      line-height: 1.15;
+    }
+    .project-meta, .links, .note {
+      color: var(--muted);
+      font-size: 8.3pt;
+    }
+    .links { white-space: nowrap; font-weight: 600; }
+    .project-summary {
+      margin: 2.5pt 0 4pt;
+      font-size: 8.8pt;
+      line-height: 1.34;
+      color: var(--ink);
+      font-weight: 500;
+    }
+    .project-grid {
+      grid-template-columns: 0.92fr 1.08fr;
+      gap: 8.5pt;
+    }
+    .project-card .project-grid p {
+      margin: 0 0 4.2pt;
+      font-size: 8.3pt;
+      line-height: 1.34;
+      color: var(--ink);
+    }
+    .project-card .project-grid p:last-child { margin-bottom: 0; }
+    .project-card .project-grid p.stack {
+      color: var(--muted);
+      font-size: 7.9pt;
+      line-height: 1.28;
+    }
+    .project-card h4 {
+      margin: 3.5pt 0 1.4pt;
+      font-size: 7.6pt;
+    }
+    .project-card h4:first-child { margin-top: 0; }
+    .compact-list { margin: 1pt 0 0 11pt; }
+    .compact-list li {
+      margin: 1.4pt 0;
+      font-size: 8.1pt;
+      line-height: 1.28;
+    }
+    .project-card .inline-list li {
+      font-size: 8pt;
+      line-height: 1.24;
+      margin: 1pt 0;
+    }
+    .note {
+      margin-top: 3pt;
+      padding-top: 2pt;
+      border-top: 1pt solid var(--line);
+      font-style: italic;
+      font-size: 7.8pt;
+      line-height: 1.25;
+    }
+    footer {
+      position: absolute;
+      bottom: 12pt;
+      left: 36pt;
+      right: 166pt;
+      padding-top: 4pt;
+      border-top: 1pt solid var(--line);
+      color: var(--muted);
+      font: 8.2pt "JetBrains Mono", Consolas, "Liberation Mono", monospace;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 2;
+    }
+    .footer-page {
+      color: var(--navy);
+      font-weight: 700;
+    }
+    .page-neural {
+      position: absolute;
+      right: 22pt;
+      bottom: 4pt;
+      width: 132pt;
+      height: 66pt;
+      pointer-events: none;
+      opacity: 0.88;
+      z-index: 0;
+    }
+    @media print {
+      html, body { background: #FFFFFF; }
+      .page { margin: 0; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  {% call render_page(1, "Presentación profesional", "Desarrollo de software · Python · JavaScript · Automatización") %}
+    <div class="hero">
+      <div>
+        <div class="eyebrow">Currículum profesional · {{ profile.USER.name }}</div>
+        <h1>{{ profile.USER.name }}</h1>
+        <p class="role">{{ profile.USER.role }}</p>
+        <p class="stack">{{ profile.USER.role_stack }}</p>
+      </div>
+      <img class="photo" src="{{ photo_src }}" alt="Fotografía de {{ profile.USER.name }}">
+    </div>
+    <div class="contact">
+      <a href="mailto:{{ profile.USER.email }}">{{ profile.USER.email }}</a> ·
+      <a href="tel:{{ profile.USER.phone_href }}">{{ profile.USER.phone_display }}</a> ·
+      <a href="{{ profile.SITE.url }}">Sitio profesional</a>
+      {%- for item in profile.SOCIAL %} · <a href="{{ item.url }}">{{ item.label }}</a>{% endfor %}
+      <span>{{ profile.USER.location }}</span>
+    </div>
+    <section class="section">
+      <div class="section-kicker">01 / PRESENTACIÓN</div>
+      <h2>Perfil profesional</h2>
+      <p class="lead">{{ about.PRESENTATION.lead }}</p>
+      {%- for text in about.PRESENTATION.paragraphs %}
+      <p class="narrative">{{ text }}</p>
+      {%- endfor %}
+    </section>
+    <section class="section">
+      <div class="section-kicker">02 / OBJETIVO</div>
+      <h2>{{ resume.OBJECTIVE.label }}</h2>
+      <div class="objective-card">
+        <p class="narrative">{{ resume.OBJECTIVE.text }}</p>
+      </div>
+    </section>
+    <section class="section">
+      <div class="section-kicker">03 / ENFOQUE</div>
+      <h2>Competencias principales</h2>
+      <div class="chips">
+        {%- for item in resume.COMPETENCIES['items'] %}
+        <span>
+          <strong>{{ item.name }}</strong>
+          <small>{{ item.level }} · {{ item.evidence }}</small>
+        </span>
+        {%- endfor %}
+      </div>
+    </section>
+  {% endcall %}
+
+  {% call render_page(2, "Experiencia y formación", "Experiencia técnica reciente · Formación académica · Fortalezas") %}
+    <section class="section">
+      <div class="section-kicker">04 / EXPERIENCIA</div>
+      <h2>Experiencia técnica reciente</h2>
+      {%- for recent in resume.EXPERIENCE['items'] %}
+      <div class="role-card">
+        <div class="role-line">
+          <strong>{{ recent.position }}</strong>
+          <span>{{ recent.period }}</span>
+        </div>
+        <div class="muted">{{ recent.organization }}</div>
+        <ul>
+          {%- for bullet in recent.bullets %}
+          <li>{{ bullet }}</li>
+          {%- endfor %}
+        </ul>
+      </div>
+      {%- endfor %}
+    </section>
+    <section class="section">
+      <div class="section-kicker">05 / FORMACIÓN</div>
+      <h2>Formación académica</h2>
+      {%- for item in resume.EDUCATION['items'] %}
+      <div class="education">
+        <strong>{{ item.institution }}</strong>
+        <span>{{ item.period }}</span>
+        <p>{{ item.description }}</p>
+        <small>{{ item.detail }}</small>
+      </div>
+      {%- endfor %}
+    </section>
+    <section class="section">
+      <div class="section-kicker">06 / PERFIL</div>
+      <h2>Fortalezas e idiomas</h2>
+      <div class="two-col">
+        <div class="role-card">
+          <h3>Fortalezas</h3>
+          <ul>
+            {%- for item in about.STRENGTHS['items'] %}
+            <li>{{ item }}</li>
+            {%- endfor %}
+          </ul>
+        </div>
+        <div class="role-card">
+          <h3>Idiomas</h3>
+          <ul>
+            {%- for item in resume.LANGUAGES['items'] %}
+            <li>{{ item.language }}: {{ item.level }}</li>
+            {%- endfor %}
+          </ul>
+        </div>
+      </div>
+    </section>
+  {% endcall %}
+
+  {% call render_page(3, "Historial profesional", "Periodos laborales registrados ante el IMSS") %}
+    <section class="section">
+      <div class="section-kicker">07 / TRAYECTORIA</div>
+      <h2>Historial laboral registrado ante el IMSS</h2>
+      <p class="muted">{{ resume.EARLIER_EXPERIENCE.introduction }}</p>
+      <div class="history">
+        {%- for item in resume.EARLIER_EXPERIENCE.records %}
+        <div class="history-row">
+          <strong>{{ item.employer }}</strong>
+          <span>{{ item.period }}</span>
+          <em>{{ item.location }}{% if item.get('role') %} · {{ item.role }}{% endif %}</em>
+        </div>
+        {%- endfor %}
+      </div>
+    </section>
+  {% endcall %}
+
+  {% call render_page(4, "Tecnologías y herramientas", "Niveles reales de dominio · Inventario tecnológico agrupado") %}
+    <section class="section">
+      <div class="section-kicker">08 / TECNOLOGÍAS</div>
+      <h2>Competencias técnicas por nivel</h2>
+      {%- for item in technologies.LEVELS %}
+      <div class="level">
+        <h3>{{ item.level }}</h3>
+        <p class="muted">{{ item.description }}</p>
+        <div class="tech-grid">
+          {%- for tech in item['items'] %}
+          <span>
+            <strong>{{ tech.name }}</strong>
+            <small>{{ tech.evidence }}</small>
+          </span>
+          {%- endfor %}
+        </div>
+      </div>
+      {%- endfor %}
+    </section>
+    <section class="section">
+      <div class="section-kicker">09 / ECOSISTEMA</div>
+      <h2>Inventario técnico agrupado</h2>
+      <div class="groups-grid">
+        {%- for item in technologies.GROUPS %}
+        <div class="group">
+          <h3>{{ item.title }}</h3>
+          <p class="stack">{{ item['items'] | join(' · ') }}</p>
+        </div>
+        {%- endfor %}
+      </div>
+    </section>
+  {% endcall %}
+
+  {% call render_page(5, "Certificaciones y cursos", "Credenciales destacadas · Rutas formativas especializadas") %}
+    <section class="section">
+      <div class="section-kicker">10 / FORMACIÓN COMPLEMENTARIA</div>
+      <h2>Credenciales destacadas</h2>
+      <div class="credentials">
+        {%- for item in certifications.FEATURED %}
+        <div class="credential">
+          <h3>{{ item.title }}</h3>
+          <strong>{{ item.institution }}</strong>
+          <span>{{ item.date }}{% if item.get('duration') %} · {{ item.duration }}{% endif %}</span>
+          <p>{{ item.focus }}</p>
+          <small>{{ item.credential }}</small>
+        </div>
+        {%- endfor %}
+      </div>
+      <p class="muted profile-link">
+        Perfil público: <a href="{{ certifications.PUBLIC_PROFILE.url }}">{{ certifications.PUBLIC_PROFILE.label }}</a>
+      </p>
+    </section>
+    <section class="section">
+      <div class="section-kicker">11 / CURSOS</div>
+      <h2>Cursos complementarios</h2>
+      <div class="courses-grid">
+        {%- for path in certifications.PATHS %}
+        <div class="course-path">
+          <h3>{{ path.title }}</h3>
+          <p>{{ path.summary }}</p>
+          <ul class="inline-list">
+            {%- for course in path['items'] %}
+            <li>{{ course }}</li>
+            {%- endfor %}
+          </ul>
+        </div>
+        {%- endfor %}
+      </div>
+    </section>
+  {% endcall %}
+
+  {%- for batch in project_batches %}
+  {%- set page_num = 5 + loop.index %}
+  {%- if batch | length == 2 %}
+  {%- set page_title = "Fichas técnicas · Proyectos " ~ ('%02d' | format(batch[0].priority)) ~ " y " ~ ('%02d' | format(batch[1].priority)) %}
+  {%- set page_subtitle = batch[0].title ~ " · " ~ batch[1].title %}
+  {%- else %}
+  {%- set page_title = "Fichas técnicas · Proyecto " ~ ('%02d' | format(batch[0].priority)) %}
+  {%- set page_subtitle = batch[0].title %}
+  {%- endif %}
+  {% call render_page(page_num, page_title, page_subtitle) %}
+    <div class="cards-container">
+      {%- for item in batch %}
+      <article class="project-card">
+        <div class="project-head">
+          <div>
+            <div class="project-number">{{ '%02d' | format(item.priority) }} · {{ item.monogram }}</div>
+            <h3>{{ item.title }}</h3>
+            <div class="project-meta">{{ item.category }} · {{ item.status }}</div>
+          </div>
+          {%- if item.get('demo_url') or item.get('repository_url') %}
+          <div class="links">
+            {%- if item.get('demo_url') %}<a href="{{ item.demo_url }}">Demo</a>{% endif -%}
+            {%- if item.get('demo_url') and item.get('repository_url') %} · {% endif -%}
+            {%- if item.get('repository_url') %}<a href="{{ item.repository_url }}">Repositorio</a>{% endif -%}
+          </div>
+          {%- endif %}
+        </div>
+        <p class="project-summary">{{ item.summary }}</p>
+        <div class="project-grid">
+          <div>
+            <h4>Problema y aportación</h4>
+            <p>{{ item.problem }}</p>
+            <p>{{ item.contribution }}</p>
+            <h4>Aspectos técnicos</h4>
+            <p>{{ item.aspects }}</p>
+            <h4>Arquitectura</h4>
+            <ul class="inline-list">
+              {%- for arch in item.architecture %}
+              <li>{{ arch }}</li>
+              {%- endfor %}
+            </ul>
+            <h4>Tecnologías</h4>
+            <p class="stack">{{ item.stack | join(' · ') }}</p>
+          </div>
+          <div>
+            <h4>Funcionamiento y alcance</h4>
+            <p>{{ item.operation }}</p>
+            <p>{{ item.scope }}</p>
+            <h4>Funciones destacadas</h4>
+            <ul class="compact-list">
+              {%- for hl in item.highlights %}
+              <li>{{ hl }}</li>
+              {%- endfor %}
+            </ul>
+          </div>
+        </div>
+        {%- if item.get('note') %}
+        <div class="note">{{ item.note }}</div>
+        {%- endif %}
+      </article>
+      {%- endfor %}
+    </div>
+  {% endcall %}
+  {%- endfor %}
+</body>
+</html>

@@ -1,5 +1,6 @@
 import json
 import re
+from copy import deepcopy
 from html import unescape
 from pathlib import Path
 from urllib.parse import urlsplit
@@ -7,6 +8,7 @@ from urllib.parse import urlsplit
 import pytest
 
 from main import Portfolio
+from portfolio.pdf import create_cv_pdf, extract_pdf_pages_text
 
 
 @pytest.fixture
@@ -14,12 +16,50 @@ def project_root() -> Path:
     return Path(__file__).parents[1]
 
 
+def assert_pdf_pages_are_consistent(pdf: bytes) -> int:
+    count_matches = [int(val) for val in re.findall(rb"/Type\s*/Pages\b[^>]*/Count\s+(\d+)", pdf, re.S)]
+    assert count_matches
+    count = max(count_matches)
+    page_objects = re.findall(rb"/Type\s*/Page\b", pdf)
+    assert len(page_objects) == count
+    media_boxes = re.findall(rb"/MediaBox \[0 0 (\d+) (\d+)\]", pdf)
+    assert len(media_boxes) == count
+    assert all(width == b"612" and height == b"792" for width, height in media_boxes)
+    pages_text = extract_pdf_pages_text(pdf)
+    assert len(pages_text) == count
+    for index, page_text in enumerate(pages_text, start=1):
+        folio = f"{index:02d} / {count:02d}"
+        assert page_text.count(folio) >= 2, f"Folio consecutivo ausente en página {index}: {folio}"
+        assert "David Vidal Ramírez · Currículum profesional" in page_text
+    return count
+
+
 def test_professional_content_is_complete(project_root: Path) -> None:
     context = Portfolio(root=project_root).context()
     projects = context["projects"]["PROJECTS"]
 
-    assert len(projects) == 7
-    assert len({project["slug"] for project in projects}) == 7
+    assert len(projects) == 10
+    project_slugs = {project["slug"] for project in projects}
+    assert len(project_slugs) == len(projects)
+    assert {
+        "generador-expedientes",
+        "la-luz-esperanza",
+        "auth-practice",
+        "grid-chat",
+        "visionlab",
+        "curriculum",
+        "tuxtepec-server",
+        "vumari-studios",
+        "asistente-python",
+        "generador-expedientes-usuarios-consejeros",
+    } == project_slugs
+    project_metric = next(
+        item for item in context["about"]["METRICS"] if item["label"] == "proyectos documentados"
+    )
+    assert project_metric["value"] == str(len(projects))
+    assert len(context["resume"]["EXPERIENCE"]["items"][0]["bullets"]) == 6
+    assert len(context["certifications"]["FEATURED"]) == 6
+    assert sum(len(path["items"]) for path in context["certifications"]["PATHS"]) == 12
     assert context["profile"]["USER"]["institutional_email"] == "L25350801@tuxtepec.tecnm.mx"
     assert context["profile"]["SITE"]["creator"] == "David Vidal Ramírez"
     education = context["resume"]["EDUCATION"]["items"][0]
@@ -69,8 +109,9 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
     assert "Mi aportación" in html
     assert "Problema" in html
     assert "Solución" in html
-    assert html.count('class="project-case"') == 7
-    assert html.count('data-status=') == 7
+    projects = Portfolio(root=project_root).context()["projects"]["PROJECTS"]
+    assert html.count('class="project-case"') == len(projects)
+    assert html.count('data-status=') == len(projects)
     assert "Retos y alcance actual" in html
     assert "David Vidal Ramírez" in html
     assert "Diseñado, desarrollado y mantenido por David Vidal Ramírez" in html
@@ -160,17 +201,43 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
     assert 'class="logo-grid"' not in html
     assert "Representación conceptual anonimizada" in html
     context = Portfolio(root=project_root).context()
+    cv_html = (output / "cv.html").read_text(encoding="utf-8")
+    assert (output / "assets/images/branding/neural-network.svg").is_file()
+    assert 'href="assets/cv-david-vidal-ramirez.pdf"' in html
     pdf = output / "assets" / "cv-david-vidal-ramirez.pdf"
     assert pdf.read_bytes().startswith(b"%PDF-1.4")
-    assert pdf.stat().st_size > 5_000
+    assert pdf.stat().st_size > 50_000
     pdf_content = pdf.read_bytes()
-    assert b"/Count 3" in pdf_content
+    page_count = assert_pdf_pages_are_consistent(pdf_content)
+    assert page_count == 10
+    assert cv_html.count("assets/images/branding/neural-network.svg") == page_count
     assert b"/Author (David Vidal Ramirez)" in pdf_content
     assert b"/Creator (David Vidal Ramirez)" in pdf_content
+    pages_text = extract_pdf_pages_text(pdf_content)
+    full_pdf_text = "\n".join(pages_text)
+    normalized_pdf_text = " ".join(full_pdf_text.split())
+    projects_pdf_text = "\n".join(pages_text[5:])
+    project_titles = sorted(context["projects"]["PROJECTS"], key=lambda item: item["priority"])
+    project_positions = [projects_pdf_text.index(item["title"]) for item in project_titles]
+    assert project_positions == sorted(project_positions)
+    for item in project_titles:
+        assert item["summary"] in normalized_pdf_text
+        assert item["status"] in normalized_pdf_text
+        assert cv_html.find(item["title"]) != -1
+    assert "Fortalezas e idiomas" in normalized_pdf_text
+    assert "Sitio profesional" in normalized_pdf_text
+    assert context["profile"]["SITE"]["url"].encode("ascii") in pdf_content
+    assert context["certifications"]["PUBLIC_PROFILE"]["url"].encode("ascii") in pdf_content
+    for bullet in context["resume"]["EXPERIENCE"]["items"][0]["bullets"]:
+        assert bullet in normalized_pdf_text
     for record in context["resume"]["EARLIER_EXPERIENCE"]["records"]:
-        assert record["employer"].encode("cp1252") in pdf_content
-    for certificate in context["certifications"]["FEATURED"][:2]:
-        assert certificate["title"].encode("cp1252") in pdf_content
+        assert record["employer"] in normalized_pdf_text
+        assert record["period"] in normalized_pdf_text
+    for certificate in context["certifications"]["FEATURED"]:
+        assert certificate["title"] in normalized_pdf_text
+    for path in context["certifications"]["PATHS"]:
+        for course in path["items"]:
+            assert course in normalized_pdf_text
     expected_javascript = {
         "script.js",
         "modules/navigation.js",
@@ -197,6 +264,46 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
     assert "overflow-wrap: anywhere" in (project_root / "src/css/base.css").read_text(encoding="utf-8")
     assert ".profile-social .social-link span { display: none; }" not in responsive_css
     assert ".career-grid, .learning-paths .career-grid { grid-template-columns: 1fr; }" in responsive_css
+
+
+def test_pdf_paginates_a_tenth_project_without_losing_sections(project_root: Path, tmp_path: Path) -> None:
+    context = deepcopy(Portfolio(root=project_root).context())
+    context["projects"]["PROJECTS"].append({
+        "slug": "synthetic-project",
+        "priority": 11,
+        "categories": ["Aplicaciones web"],
+        "title": "Synthetic Project",
+        "category": "Proyecto sintético",
+        "status": "Experimental",
+        "status_kind": "experimental",
+        "featured": False,
+        "monogram": "SP",
+        "summary": "Proyecto sintético para comprobar la paginación extensible del documento.",
+        "problem": "Validar que un proyecto adicional no se pierda al cambiar de página.",
+        "contribution": "Se utiliza únicamente durante esta prueba aislada.",
+        "operation": "La prueba genera el PDF en una carpeta temporal.",
+        "scope": "No forma parte del catálogo publicado.",
+        "highlights": ["Paginación extensible"],
+        "aspects": "Prueba de paginación.",
+        "architecture": ["Datos de prueba"],
+        "stack": ["Python"],
+        "demo_url": None,
+        "repository_url": None,
+        "note": "Proyecto sintético de prueba.",
+    })
+    destination = tmp_path / "synthetic" / "assets" / "cv.pdf"
+    create_cv_pdf(context, destination)
+    pdf = destination.read_bytes()
+    assert assert_pdf_pages_are_consistent(pdf) == 11
+    pages_text = extract_pdf_pages_text(pdf)
+    full_pdf_text = "\n".join(pages_text)
+    projects_pdf_text = "\n".join(pages_text[5:])
+    sorted_projects = sorted(context["projects"]["PROJECTS"], key=lambda item: item["priority"])
+    positions = [projects_pdf_text.index(item["title"]) for item in sorted_projects]
+    assert positions == sorted(positions)
+    assert "Tecnologías y herramientas" in full_pdf_text
+    assert "Fortalezas e idiomas" in full_pdf_text
+    assert "Sitio profesional" in full_pdf_text
 
 
 def test_all_professional_content_is_published(project_root: Path, tmp_path: Path) -> None:

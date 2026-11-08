@@ -1,348 +1,263 @@
-"""Generación de un CV PDF A4, seleccionable y compatible con ATS."""
+"""Generación del CV en PDF tamaño carta a partir de la plantilla HTML/CSS e ilustración vectorial."""
 
-import struct
+from __future__ import annotations
+
+import hashlib
+import os
+import re
+import shutil
+import subprocess
+import tempfile
 import zlib
 from pathlib import Path
-from textwrap import wrap
 from typing import Any
 
-PAGE_WIDTH, PAGE_HEIGHT = 595, 842
-LEFT, RIGHT = 42, 42
-PRIMARY = "0.145 0.388 0.922"
-PRIMARY_DARK = "0.059 0.231 0.376"
-NAVY = "0.027 0.067 0.122"
-CYAN = "0.133 0.827 0.933"
-TEXT = "0.075 0.086 0.110"
-MUTED = "0.310 0.349 0.416"
-LINE = "0.800 0.855 0.925"
-WATERMARK = "0.855 0.918 0.980"
-WATERMARK_NODE = "0.220 0.740 0.973"
+from jinja2 import Environment, FileSystemLoader, select_autoescape
+
+ROOT = Path(__file__).resolve().parents[1]
+PAGE_WIDTH, PAGE_HEIGHT = 612, 792
+_PDF_CACHE: dict[str, bytes] = {}
 
 
-def _escape(text: str) -> bytes:
-    safe = text.replace("\\", "\\\\").replace("(", "\\(").replace(")", "\\)")
-    return safe.encode("cp1252", errors="replace")
+def find_browser_executable() -> Path:
+    """Localiza un binario de Chrome o Chromium compatible en Windows o Linux CI."""
+    env_candidates = (
+        os.environ.get("CHROME_BIN"),
+        os.environ.get("CHROMIUM_BIN"),
+        os.environ.get("GOOGLE_CHROME_SHIM"),
+    )
+    for candidate in env_candidates:
+        if candidate and Path(candidate).is_file():
+            return Path(candidate)
+
+    for binary_name in (
+        "google-chrome",
+        "google-chrome-stable",
+        "chromium",
+        "chromium-browser",
+        "chrome",
+    ):
+        found = shutil.which(binary_name)
+        if found:
+            return Path(found)
+
+    platform_paths = (
+        Path(r"C:\Program Files\Google\Chrome\Application\chrome.exe"),
+        Path(r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"),
+        Path.home() / "AppData/Local/Google/Chrome/Application/chrome.exe",
+        Path("/usr/bin/google-chrome"),
+        Path("/usr/bin/google-chrome-stable"),
+        Path("/usr/bin/chromium"),
+        Path("/usr/bin/chromium-browser"),
+    )
+    for path in platform_paths:
+        if path.is_file():
+            return path
+
+    raise RuntimeError(
+        "No se encontró Google Chrome o Chromium para exportar el CV a PDF."
+    )
 
 
-class PdfPage:
-    """Compone una página mediante primitivas PDF y texto WinAnsi."""
-
-    def __init__(self, number: int, title: str, subtitle: str) -> None:
-        self.number = number
-        self.section_number = 0
-        self.commands: list[bytes] = []
-        self.y = 698
-        self._neural_watermark()
-        self._line(28, 48, 28, 724, "0.902 0.843 0.914", .55)
-        self._rectangle(28, 730, PAGE_WIDTH - 56, 88, NAVY)
-        self._text("CV // 2026", PAGE_WIDTH - 91, 802, 7, bold=True, color=CYAN, technical=True)
-        if number == 1:
-            self.commands.append(b"q 58 0 0 64 44 742 cm /Im1 Do Q")
-            self.commands.append(b"q 1 1 1 RG 1.2 w 44 742 58 64 re S Q")
-            title_x = LEFT + 78
-        else:
-            self._rectangle(LEFT, 748, 48, 48, PRIMARY)
-            self._text(f"{number:02d}", LEFT + 13, 765, 14, bold=True, color="1 1 1")
-            title_x = LEFT + 62
-        self._text(title, title_x, 785, 20, bold=True, color="1 1 1")
-        self._text(subtitle, title_x, 760, 8, bold=True, color=CYAN, technical=True)
-        self._line(LEFT, 718, LEFT + 76, 718, PRIMARY, 1.8)
-        self._line(LEFT + 80, 718, PAGE_WIDTH - RIGHT, 718, LINE, .55)
-
-    def _text(
-        self, text: str, x: float, y: float, size: int, *, bold: bool = False,
-        color: str = TEXT, technical: bool = False,
-    ) -> None:
-        font = (4 if bold else 3) if technical else (2 if bold else 1)
-        self.commands.extend((
-            b"BT",
-            f"{color} rg /F{font} {size} Tf 1 0 0 1 {x:.1f} {y:.1f} Tm".encode(),
-            b"(" + _escape(text) + b") Tj",
-            b"ET",
-        ))
-
-    def _center_text(
-        self, text: str, y: float, size: int, *, bold: bool = False,
-        color: str = TEXT, technical: bool = False,
-    ) -> None:
-        average_width = .54 if technical else .5
-        estimated_width = len(text) * size * average_width
-        self._text(
-            text, (PAGE_WIDTH - estimated_width) / 2, y, size,
-            bold=bold, color=color, technical=technical,
-        )
-
-    def _line(self, x1: float, y1: float, x2: float, y2: float, color: str, width: float) -> None:
-        self.commands.append(f"q {color} RG {width} w {x1} {y1} m {x2} {y2} l S Q".encode())
-
-    def _rectangle(self, x: float, y: float, width: float, height: float, color: str) -> None:
-        self.commands.append(f"q {color} rg {x} {y} {width} {height} re f Q".encode())
-
-    def _circle(self, x: float, y: float, radius: float, color: str, *, fill: bool = True) -> None:
-        factor = radius * .5522848
-        operation = "f" if fill else "S"
-        mode = "rg" if fill else "RG"
-        self.commands.append(
-            f"q {color} {mode} {x + radius:.2f} {y:.2f} m "
-            f"{x + radius:.2f} {y + factor:.2f} {x + factor:.2f} {y + radius:.2f} {x:.2f} {y + radius:.2f} c "
-            f"{x - factor:.2f} {y + radius:.2f} {x - radius:.2f} {y + factor:.2f} {x - radius:.2f} {y:.2f} c "
-            f"{x - radius:.2f} {y - factor:.2f} {x - factor:.2f} {y - radius:.2f} {x:.2f} {y - radius:.2f} c "
-            f"{x + factor:.2f} {y - radius:.2f} {x + radius:.2f} {y - factor:.2f} {x + radius:.2f} {y:.2f} c {operation} Q".encode()
-        )
-
-    def _neural_watermark(self) -> None:
-        nodes = ((407, 61), (449, 91), (492, 58), (526, 111), (558, 76), (475, 142), (548, 157))
-        links = ((0, 1), (0, 2), (1, 2), (1, 5), (2, 3), (2, 4), (3, 4), (3, 5), (3, 6), (5, 6))
-        for first, second in links:
-            x1, y1 = nodes[first]
-            x2, y2 = nodes[second]
-            self._line(x1, y1, x2, y2, WATERMARK, .65)
-        for index, (x, y) in enumerate(nodes):
-            self._circle(x, y, 2.4 if index in (1, 3, 5) else 1.7, WATERMARK_NODE, fill=False)
-            self._circle(x, y, .8, WATERMARK_NODE)
-
-    def space(self, points: int = 6) -> None:
-        self.y -= points
-
-    def heading(self, text: str) -> None:
-        self.section_number += 1
-        self.space(5)
-        self._text(f"{self.section_number:02d} /", LEFT, self.y, 8, bold=True, color=PRIMARY, technical=True)
-        self._text(text.upper(), LEFT + 35, self.y, 9, bold=True, color=PRIMARY_DARK)
-        self._line(LEFT, self.y - 6, LEFT + 30, self.y - 6, PRIMARY, 1.2)
-        self._line(LEFT + 35, self.y - 6, PAGE_WIDTH - RIGHT, self.y - 6, LINE, .45)
-        self.y -= 19
-
-    def role(self, title: str, meta: str) -> None:
-        self._line(LEFT, self.y + 3, LEFT, self.y - 18, PRIMARY, 1.4)
-        self._text(title, LEFT + 10, self.y, 9, bold=True)
-        self._text(meta, LEFT + 10, self.y - 13, 8, color=MUTED)
-        self.y -= 27
-
-    def paragraph(self, text: str, *, size: int = 8, color: str = MUTED, indent: int = 0, width: int | None = None, after: int = 7) -> None:
-        available = PAGE_WIDTH - LEFT - RIGHT - indent
-        line_width = width or max(50, int(available / size * 1.75))
-        for line in wrap(text, width=line_width, break_long_words=False, break_on_hyphens=False):
-            self._text(line, LEFT + indent, self.y, size, color=color)
-            self.y -= size + 4
-        self.y -= after
-
-    def bullet(self, text: str) -> None:
-        lines = wrap(text, width=101, break_long_words=False, break_on_hyphens=False)
-        for index, line in enumerate(lines):
-            if index == 0:
-                self._text("•", LEFT + 5, self.y, 8, bold=True, color=PRIMARY_DARK)
-            self._text(line, LEFT + 17, self.y, 8, color=MUTED)
-            self.y -= 11
-        self.y -= 2
-
-    def compact_item(
-        self, title: str, description: str, detail: str | None = None,
-        *, detail_after: int = 5,
-    ) -> None:
-        self._line(LEFT, self.y + 3, LEFT, self.y - 10, PRIMARY, 1.2)
-        self._text(title, LEFT + 9, self.y, 8, bold=True)
-        self.y -= 12
-        self.paragraph(description, size=8, indent=9, after=2)
-        if detail:
-            self.paragraph(detail, size=7, color=MUTED, indent=9, after=detail_after)
-
-    def history_item(self, employer: str, period: str, location: str, role: str | None = None) -> None:
-        """Añade un registro laboral compacto sin inventar un cargo."""
-        self._line(LEFT, self.y + 2, LEFT, self.y - 7, PRIMARY, 1.1)
-        self._text(employer, LEFT + 8, self.y, 7, bold=True)
-        self.y -= 10
-        detail = f"{period} · {location}"
-        if role:
-            detail += f" · {role}"
-        self.paragraph(detail, size=6, color=MUTED, indent=8, after=2)
-
-    def finish(self) -> bytes:
-        self._line(LEFT, 38, PAGE_WIDTH - RIGHT, 38, LINE, .6)
-        self._center_text(
-            "David Vidal Ramírez · Currículum profesional", 24, 7,
-            bold=True, color=MUTED,
-        )
-        self._text(f"{self.number:02d} / 03", PAGE_WIDTH - 78, 24, 7, bold=True, color=PRIMARY, technical=True)
-        if self.y < 44:
-            raise ValueError(f"El contenido del CV desborda la página {self.number}")
-        return b"\n".join(self.commands)
+def render_cv_html(context: dict[str, Any], *, asset_prefix: str = "") -> str:
+    """Renderiza el documento HTML imprimible del currículum completo."""
+    env = Environment(
+        loader=FileSystemLoader(str(ROOT / "src" / "jinja")),
+        autoescape=select_autoescape(("html", "xml", "j2")),
+    )
+    template = env.get_template("cv.j2")
+    render_context = {**context, "asset_prefix": asset_prefix}
+    return template.render(**render_context)
 
 
-def _build_first_page(context: dict[str, Any]) -> bytes:
-    profile = context["profile"]["USER"]
-    resume = context["resume"]
-    about = context["about"]
-    page = PdfPage(1, profile["name"], "Desarrollador de Software · Python · JavaScript · Aplicaciones Web")
-    page._text(f"{profile['location']}  |  {profile['phone_display']}", LEFT + 78, 744, 7, color="0.835 0.882 0.945")
-    page._text(profile["email"], PAGE_WIDTH - RIGHT - 154, 744, 7, color="0.835 0.882 0.945")
-    page.heading("Perfil profesional")
-    page.paragraph(about["PRESENTATION"]["lead"] + " " + " ".join(about["PRESENTATION"]["paragraphs"]), size=8)
-    page.heading("Objetivo profesional")
-    page.paragraph(resume["OBJECTIVE"]["text"], size=8)
-    page.heading("Experiencia reciente")
-    for item in resume["EXPERIENCE"]["items"]:
-        page.role(item["position"], f"{item['organization']} · {item['period']}")
-        for bullet in item["bullets"]:
-            page.bullet(bullet)
-        page.space(3)
-    page.heading("Formación académica")
-    for item in resume["EDUCATION"]["items"]:
-        page.compact_item(item["institution"], f"{item['period']} · {item['description']}", item["detail"])
-    page.heading("Competencias centrales")
-    for group in about["STACK"]["groups"]:
-        page.paragraph(
-            f"{group['title']}: {', '.join(group['items'][:6])}",
-            size=7, color=TEXT, after=3,
-        )
-    return page.finish()
+def _inject_pdf_metadata(pdf_bytes: bytes) -> bytes:
+    """Actualiza el diccionario /Info y recalcula la tabla xref conservando validez PDF 1.4."""
+    match_obj1 = re.search(rb"1 0 obj\r?\n<<(.*?)>>\r?\nendobj", pdf_bytes, re.S)
+    match_xref = re.search(
+        rb"xref\r?\n0\s+(\d+)\r?\n((?:\d{10}\s+\d{5}\s+[nf]\s*\r?\n)+)"
+        rb"trailer\r?\n(.*?)startxref\r?\n(\d+)\r?\n%%EOF",
+        pdf_bytes,
+        re.S,
+    )
+    if not match_obj1 or not match_xref:
+        return pdf_bytes
 
+    title_match = re.search(rb"/Title\s+<[0-9A-Fa-f]+>", match_obj1.group(1))
+    title_entry = (
+        title_match.group(0)
+        if title_match
+        else b"/Title (Curriculum profesional - David Vidal Ramirez)"
+    )
+    new_obj1 = (
+        b"1 0 obj\n<<"
+        + title_entry
+        + b"\n/Author (David Vidal Ramirez)"
+        + b"\n/Creator (David Vidal Ramirez)"
+        + b"\n/Subject (Curriculum profesional - Desarrollo de software, proyectos y experiencia)"
+        + b"\n/Producer (Skia/PDF)>>\nendobj"
+    )
+    old_start, old_end = match_obj1.span()
+    delta = len(new_obj1) - (old_end - old_start)
 
-def _build_second_page(context: dict[str, Any]) -> bytes:
-    resume = context["resume"]
-    certifications = context["certifications"]
-    page = PdfPage(2, "Trayectoria y formación", "Periodos registrados · Certificaciones seleccionadas")
-    page.heading("Historial laboral registrado ante el IMSS")
-    for item in resume["EARLIER_EXPERIENCE"]["records"]:
-        page.history_item(item["employer"], item["period"], item["location"], item.get("role"))
-    page.heading("Certificaciones seleccionadas")
-    for item in certifications["FEATURED"][:2]:
-        page.compact_item(
-            f"{item['title']} · {item['date']}", item["institution"], item["credential"],
-            detail_after=3,
-        )
-    return page.finish()
+    xref_start = match_xref.start()
+    obj_count = match_xref.group(1)
+    entries_raw = match_xref.group(2).splitlines()
+    trailer_body = match_xref.group(3)
 
+    updated_entries: list[bytes] = []
+    for line in entries_raw:
+        parts = line.strip().split()
+        if len(parts) != 3:
+            continue
+        offset_val, gen_val, flag_val = int(parts[0]), parts[1], parts[2]
+        if flag_val == b"n" and offset_val > old_start:
+            offset_val += delta
+        updated_entries.append(f"{offset_val:010d} ".encode() + gen_val + b" " + flag_val + b" \n")
 
-def _build_third_page(context: dict[str, Any]) -> bytes:
-    projects = sorted(context["projects"]["PROJECTS"], key=lambda item: item["priority"])
-    profile = context["profile"]
-    resume = context["resume"]
-    about = context["about"]
-    page = PdfPage(3, "Proyectos y tecnologías", "Evidencia técnica · Estado verificable · Herramientas aplicadas")
-    page.heading("Proyectos")
-    for item in projects:
-        page.compact_item(
-            f"{item['title']} · {item['status']}", item["summary"],
-            "Tecnologías: " + ", ".join(item["stack"][:8]),
-        )
-    page.heading("Tecnologías por nivel de experiencia")
-    for group in context["technologies"]["LEVELS"]:
-        names = ", ".join(item["name"] for item in group["items"])
-        page.paragraph(f"{group['level']}: {names}", size=8, color=TEXT, after=4)
-    page.heading("Fortalezas e idiomas")
-    page.paragraph(" · ".join(about["STRENGTHS"]["items"]), size=8, color=TEXT, after=4)
-    languages = " · ".join(f"{item['language']}: {item['level']}" for item in resume["LANGUAGES"]["items"])
-    page.paragraph(languages, size=8, color=TEXT)
-    page.heading("Enlaces profesionales")
-    page.paragraph(profile["SITE"]["url"], size=8, color=PRIMARY_DARK, after=1)
-    page.paragraph(" · ".join(f"{item['label']}: {item['url']}" for item in profile["SOCIAL"]), size=7, after=1)
-    return page.finish()
-
-
-def _png_rgb_xobject(path: Path) -> bytes:
-    """Convierte un PNG RGBA de 8 bits en una imagen RGB Flate para PDF."""
-    source = path.read_bytes()
-    if not source.startswith(b"\x89PNG\r\n\x1a\n"):
-        raise ValueError("La fotografía del CV debe ser un archivo PNG válido")
-    position = 8
-    width = height = color_type = 0
-    compressed = bytearray()
-    while position < len(source):
-        length = struct.unpack(">I", source[position:position + 4])[0]
-        kind = source[position + 4:position + 8]
-        data = source[position + 8:position + 8 + length]
-        position += length + 12
-        if kind == b"IHDR":
-            width, height, depth, color_type = struct.unpack(">IIBB", data[:10])
-            if depth != 8 or color_type not in (2, 6):
-                raise ValueError("La fotografía requiere PNG RGB o RGBA de 8 bits")
-        elif kind == b"IDAT":
-            compressed.extend(data)
-        elif kind == b"IEND":
-            break
-    channels = 4 if color_type == 6 else 3
-    stride = width * channels
-    decoded = zlib.decompress(bytes(compressed))
-    rows: list[bytearray] = []
-    offset = 0
-    previous = bytearray(stride)
-    for _ in range(height):
-        filter_type = decoded[offset]
-        offset += 1
-        raw = decoded[offset:offset + stride]
-        offset += stride
-        row = bytearray(stride)
-        for index, value in enumerate(raw):
-            left = row[index - channels] if index >= channels else 0
-            above = previous[index]
-            upper_left = previous[index - channels] if index >= channels else 0
-            if filter_type == 0:
-                predictor = 0
-            elif filter_type == 1:
-                predictor = left
-            elif filter_type == 2:
-                predictor = above
-            elif filter_type == 3:
-                predictor = (left + above) // 2
-            elif filter_type == 4:
-                estimate = left + above - upper_left
-                distances = (abs(estimate - left), abs(estimate - above), abs(estimate - upper_left))
-                predictor = (left, above, upper_left)[distances.index(min(distances))]
-            else:
-                raise ValueError("Filtro PNG no compatible")
-            row[index] = (value + predictor) & 255
-        rows.append(row)
-        previous = row
-    rgb = bytearray()
-    for row in rows:
-        for index in range(0, len(row), channels):
-            if channels == 3:
-                rgb.extend(row[index:index + 3])
-                continue
-            red, green, blue, alpha = row[index:index + 4]
-            rgb.extend((
-                (red * alpha + 255 * (255 - alpha)) // 255,
-                (green * alpha + 255 * (255 - alpha)) // 255,
-                (blue * alpha + 255 * (255 - alpha)) // 255,
-            ))
-    image = zlib.compress(bytes(rgb), 9)
+    new_xref_offset = xref_start + delta
+    new_xref_block = (
+        b"xref\n0 "
+        + obj_count
+        + b"\n"
+        + b"".join(updated_entries)
+        + b"trailer\n"
+        + trailer_body
+        + b"startxref\n"
+        + str(new_xref_offset).encode()
+        + b"\n%%EOF\n"
+    )
     return (
-        f"<< /Type /XObject /Subtype /Image /Width {width} /Height {height} "
-        f"/ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /FlateDecode /Length {len(image)} >>\n"
-    ).encode() + b"stream\n" + image + b"\nendstream"
+        pdf_bytes[:old_start]
+        + new_obj1
+        + pdf_bytes[old_end:xref_start]
+        + new_xref_block
+    )
+
+
+def _decompress_stream(obj_str: str) -> bytes:
+    """Extrae y descomprime el contenido de un objeto stream PDF."""
+    match = re.search(r"stream\r?\n(.*?)\r?\nendstream", obj_str, re.S)
+    if not match:
+        return b""
+    raw = match.group(1).encode("latin1")
+    if "/FlateDecode" in obj_str:
+        return zlib.decompress(raw)
+    return raw
+
+
+def extract_pdf_pages_text(pdf_bytes: bytes) -> list[str]:
+    """Extrae el texto Unicode de cada página física del PDF mediante tablas ToUnicode CMap."""
+    text = pdf_bytes.decode("latin1")
+    objects = {
+        int(match.group(1)): match.group(2)
+        for match in re.finditer(r"(\d+)\s+0\s+obj\r?\n(.*?)\r?\nendobj", text, re.S)
+    }
+
+    cmaps: dict[int, dict[int, str]] = {}
+    for obj_num, body in objects.items():
+        raw = _decompress_stream(body)
+        if b"begincmap" not in raw:
+            continue
+        cmap_str = raw.decode("latin1")
+        mapping: dict[int, str] = {}
+        for block in re.findall(r"beginbfchar(.*?)endbfchar", cmap_str, re.S):
+            for match in re.finditer(r"<([0-9A-Fa-f]+)>\s*<([0-9A-Fa-f]+)>", block):
+                code = int(match.group(1), 16)
+                char = bytes.fromhex(match.group(2)).decode("utf-16-be", errors="ignore")
+                mapping[code] = char
+        for block in re.findall(r"beginbfrange(.*?)endbfrange", cmap_str, re.S):
+            for match in re.finditer(
+                r"<([0-9A-Fa-f]+)>\s*<([0-9A-Fa-f]+)>\s*<([0-9A-Fa-f]+)>", block
+            ):
+                start = int(match.group(1), 16)
+                end = int(match.group(2), 16)
+                dst = int(match.group(3), 16)
+                for code in range(start, end + 1):
+                    mapping[code] = chr(dst + (code - start))
+        cmaps[obj_num] = mapping
+
+    font_to_cmap: dict[int, dict[int, str]] = {}
+    for obj_num, body in objects.items():
+        match = re.search(r"/ToUnicode\s+(\d+)\s+0\s+R", body)
+        if match:
+            font_to_cmap[obj_num] = cmaps.get(int(match.group(1)), {})
+
+    pages_text: list[str] = []
+    page_objects = [
+        body
+        for _, body in sorted(objects.items())
+        if re.search(r"/Type\s*/Page\b", body)
+    ]
+    for page_body in page_objects:
+        fonts = {
+            match.group(1): font_to_cmap.get(int(match.group(2)), {})
+            for match in re.finditer(r"/(F\d+)\s+(\d+)\s+0\s+R", page_body)
+        }
+        content_match = re.search(r"/Contents\s+(\d+)\s+0\s+R", page_body)
+        if not content_match:
+            pages_text.append("")
+            continue
+        stream_str = _decompress_stream(objects[int(content_match.group(1))]).decode("latin1")
+        current_cmap: dict[int, str] = {}
+        chunks: list[str] = []
+        for token in re.finditer(
+            r"/(F\d+)\s+[\d.]+\s+Tf|<([0-9A-Fa-f]+)>|\(([^)]*)\)|ET", stream_str
+        ):
+            if token.group(1):
+                current_cmap = fonts.get(token.group(1), {})
+            elif token.group(2):
+                hex_str = token.group(2)
+                chars = [
+                    current_cmap.get(int(hex_str[i : i + 4], 16), "")
+                    for i in range(0, len(hex_str), 4)
+                ]
+                chunks.append("".join(chars))
+            elif token.group(3) is not None:
+                chunks.append(token.group(3))
+            else:
+                chunks.append("\n")
+        pages_text.append("".join(chunks))
+
+    return pages_text
 
 
 def create_cv_pdf(context: dict[str, Any], destination: Path) -> None:
-    """Escribe un PDF de tres páginas sin dependencias binarias externas."""
-    streams = [_build_first_page(context), _build_second_page(context), _build_third_page(context)]
-    avatar = destination.parent / context["profile"]["USER"]["avatar"].removeprefix("assets/")
-    objects: list[bytes] = [
-        b"<< /Type /Catalog /Pages 2 0 R >>",
-        b"<< /Type /Pages /Kids [5 0 R 7 0 R 9 0 R] /Count 3 >>",
-        b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>",
-        b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>",
-        b"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 12 0 R /F4 13 0 R >> /XObject << /Im1 11 0 R >> >> /Contents 6 0 R >>",
-        b"<< /Length " + str(len(streams[0])).encode() + b" >>\nstream\n" + streams[0] + b"\nendstream",
-        b"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 12 0 R /F4 13 0 R >> /XObject << /Im1 11 0 R >> >> /Contents 8 0 R >>",
-        b"<< /Length " + str(len(streams[1])).encode() + b" >>\nstream\n" + streams[1] + b"\nendstream",
-        b"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 12 0 R /F4 13 0 R >> /XObject << /Im1 11 0 R >> >> /Contents 10 0 R >>",
-        b"<< /Length " + str(len(streams[2])).encode() + b" >>\nstream\n" + streams[2] + b"\nendstream",
-        _png_rgb_xobject(avatar),
-        b"<< /Type /Font /Subtype /Type1 /BaseFont /Courier /Encoding /WinAnsiEncoding >>",
-        b"<< /Type /Font /Subtype /Type1 /BaseFont /Courier-Bold /Encoding /WinAnsiEncoding >>",
-        b"<< /Title (Curriculum profesional - David Vidal Ramirez) /Author (David Vidal Ramirez) /Creator (David Vidal Ramirez) /Subject (Desarrollo de software, proyectos y experiencia profesional) /Keywords (Python, JavaScript, Flask, aplicaciones web, automatizacion) >>",
-    ]
-    pdf = bytearray(b"%PDF-1.4\n%\xe2\xe3\xcf\xd3\n")
-    offsets = [0]
-    for number, obj in enumerate(objects, start=1):
-        offsets.append(len(pdf))
-        pdf.extend(f"{number} 0 obj\n".encode() + obj + b"\nendobj\n")
-    xref = len(pdf)
-    pdf.extend(f"xref\n0 {len(objects) + 1}\n".encode())
-    pdf.extend(b"0000000000 65535 f \n")
-    for offset in offsets[1:]:
-        pdf.extend(f"{offset:010d} 00000 n \n".encode())
-    pdf.extend(f"trailer\n<< /Size {len(objects) + 1} /Root 1 0 R /Info 14 0 R >>\nstartxref\n{xref}\n%%EOF\n".encode())
+    """Exporta el currículum completo en PDF tamaño carta mediante Chrome/Chromium headless."""
+    asset_prefix = (ROOT / "src").as_uri() + "/"
+    html_document = render_cv_html(context, asset_prefix=asset_prefix)
+    cache_key = hashlib.sha256(html_document.encode("utf-8")).hexdigest()
+
     destination.parent.mkdir(parents=True, exist_ok=True)
-    destination.write_bytes(pdf)
+    if cache_key in _PDF_CACHE:
+        destination.write_bytes(_PDF_CACHE[cache_key])
+        return
+
+    browser = find_browser_executable()
+    with tempfile.TemporaryDirectory(
+        prefix="cv-pdf-", ignore_cleanup_errors=True
+    ) as temp_dir:
+        temp_path = Path(temp_dir)
+        html_path = temp_path / "cv.html"
+        raw_pdf_path = temp_path / "cv-raw.pdf"
+        html_path.write_text(html_document, encoding="utf-8")
+
+        subprocess.run(
+            [
+                str(browser),
+                "--headless=new",
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-gpu",
+                "--no-pdf-header-footer",
+                f"--print-to-pdf={raw_pdf_path}",
+                html_path.as_uri(),
+            ],
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=True,
+            timeout=60,
+        )
+        pdf_bytes = _inject_pdf_metadata(raw_pdf_path.read_bytes())
+        _PDF_CACHE[cache_key] = pdf_bytes
+        destination.write_bytes(pdf_bytes)

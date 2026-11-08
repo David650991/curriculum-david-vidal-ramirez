@@ -177,3 +177,66 @@ PROJECTS:
     demo_url: null
     repository_url: "https://github.com/David650991/David-Vidal-IT-Tuxtepec-Server"
     note: "Demostrador de despliegue, no plataforma de monitoreo."
+  - slug: "vumari-studios"
+    priority: 8
+    categories: ["Aplicaciones web", "Automatización"]
+    title: "VUMARI STUDIOS"
+    category: "Sitio web y herramientas digitales"
+    status: "En desarrollo"
+    status_kind: "experimental"
+    featured: false
+    monogram: "VS"
+    summary: "Sitio web modular para servicios digitales, con herramientas experimentales de conversión de subtítulos SRT y WebVTT."
+    problem: "Reunir la presentación de servicios digitales y herramientas web en una estructura que pueda ampliarse sin duplicar páginas ni lógica."
+    contribution: "Desarrollé la estructura del sitio, el generador de páginas y los módulos de conversión de subtítulos."
+    operation: "Un generador en Node.js compone páginas a partir de datos JSON. Dos utilidades convierten subtítulos SRT a VTT y VTT a SRT mediante procesamiento local en el navegador."
+    scope: "Proyecto en desarrollo. Los conversores tienen límites de compatibilidad y no se verificaron en esta auditoría las pruebas actuales ni el funcionamiento de los canales de contacto comercial."
+    highlights: ["Generación de páginas mediante Node.js y datos JSON", "Estructura HTML, CSS y JavaScript modular", "Conversores experimentales SRT a VTT y VTT a SRT", "Procesamiento local de archivos y descarga de resultados", "Pruebas automatizadas y flujos de GitHub Actions configurados"]
+    aspects: "Generación estática, modularización, validación de archivos, procesamiento de subtítulos y pruebas de software."
+    architecture: ["Datos JSON", "Generador Node.js", "Interfaz web y herramientas locales"]
+    stack: ["Node.js", "JavaScript", "HTML5", "CSS3", "GitHub Actions", "GitHub Pages"]
+    demo_url: null
+    repository_url: "https://github.com/David650991/vumari-studios"
+    note: "Laboratorio de desarrollo web y herramientas locales; sin monetización ni captación comercial verificadas."
+  - slug: "asistente-python"
+    priority: 9
+    categories: ["Aplicaciones web", "Backend", "Automatización"]
+    title: "Asistente Python"
+    category: "Aplicación local de conocimiento supervisado"
+    status: "En desarrollo"
+    status_kind: "experimental"
+    featured: false
+    monogram: "AS"
+    summary: "Aplicación local con Python y Flask para conversaciones, consulta de conocimientos y enseñanza supervisada por el usuario."
+    problem: "Organizar respuestas y conocimientos consultables desde una interfaz local, con control sobre qué información se incorpora y utiliza."
+    contribution: "Desarrollé una arquitectura modular con rutas HTTP, servicios, repositorios y almacenamiento SQLite, además de flujos de revisión de conocimientos y memoria."
+    operation: "La interfaz HTML, CSS y JavaScript se comunica con Flask. Las respuestas se recuperan por normalización y similitud de texto; el usuario puede revisar, aprobar o rechazar conocimientos propuestos."
+    scope: "Prototipo en desarrollo. Incluye componentes internos para procesar documentos PDF, pero la importación desde la interfaz no está verificada. No incorpora modelos de lenguaje, embeddings ni RAG en la versión auditada; la ejecución en Termux tampoco se comprobó en esa auditoría."
+    highlights: ["Interfaz de conversación con historial", "Conocimiento supervisado con aprobación y rechazo", "Normalización y búsqueda por similitud léxica", "Memoria basada en reglas y revisión humana", "Componentes internos de extracción documental PDF"]
+    aspects: "Arquitectura Python por capas, rutas Flask, persistencia SQLite, validación de conocimientos y procesamiento documental experimental."
+    architecture: ["Interfaz web local", "Rutas y servicios Flask", "Repositorios y SQLite"]
+    stack: ["Python", "Flask", "SQLite", "HTML5", "CSS3", "JavaScript"]
+    demo_url: null
+    repository_url: null
+    note: "Proyecto privado en evolución. No se publican conversaciones, documentos personales ni el código fuente; sin funciones generativas implementadas en la versión revisada."
+  - slug: "generador-expedientes-usuarios-consejeros"
+    priority: 10
+    categories: ["Aplicaciones web", "Automatización"]
+    title: "Generador de Expedientes de Personas Usuarias y Consejeros"
+    category: "Documentación institucional modular"
+    status: "Prototipo en desarrollo"
+    status_kind: "experimental"
+    featured: false
+    monogram: "EC"
+    summary: "Prototipo web modular para organizar documentación institucional, controlar el avance de 32 formatos y preparar contratos con captura de firmas manuscritas desde pantalla."
+    problem: "Se necesitaba organizar los formatos de un expediente y facilitar la preparación de documentos sin repetir manualmente la misma información en cada formulario."
+    contribution: "Diseñé una estructura modular para el control documental y los dos módulos de contratos descritos en el proyecto, utilizando componentes reutilizables para campos, vistas previas, firmas y preparación de impresión."
+    operation: "El catálogo permite llevar el seguimiento de 32 formatos, pero esto no significa que existan 32 formularios completos. Los dos módulos de contratos descritos utilizan captura de datos y vista previa. Las firmas manuscritas se dibujan en pantalla mediante Canvas. El avance del control documental se conserva en localStorage; los documentos pueden imprimirse o guardarse como PDF mediante el navegador."
+    scope: "Prototipo en desarrollo cuya descripción procede de la documentación facilitada por el autor. Su código todavía no ha sido auditado directamente para este currículum. No se ha verificado un servidor, base de datos, autenticación, sincronización de documentos ni firma digital criptográfica."
+    highlights: ["Catálogo y seguimiento de 32 formatos documentales", "Dos módulos de contratos descritos como implementados", "Formularios y vistas previas con componentes reutilizables", "Captura de firmas manuscritas mediante Canvas y eventos de puntero", "Preparación de documentos tamaño carta para impresión o PDF desde el navegador"]
+    aspects: "Arquitectura modular frontend, formularios, reutilización de componentes, Canvas, eventos de puntero, seguimiento documental y estilos de impresión."
+    architecture: ["Interfaz HTML y CSS", "Módulos JavaScript", "Componentes documentales y Canvas", "Impresión desde el navegador"]
+    stack: ["HTML5", "CSS3", "JavaScript", "Canvas API"]
+    demo_url: null
+    repository_url: null
+    note: "Proyecto sin repositorio público. Las funciones descritas están pendientes de contraste directo con el código y de pruebas de ejecución."

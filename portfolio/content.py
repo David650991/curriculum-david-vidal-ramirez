@@ -23,8 +23,15 @@ def load_yaml(config_dir: Path, name: str) -> dict[str, Any]:
 def load_content(config_dir: Path) -> dict[str, Any]:
     content = {name: load_yaml(config_dir, name) for name in CONFIG_FILES}
     projects = content["projects"].get("PROJECTS", [])
-    if len(projects) != 7:
-        raise ValueError("El portafolio debe documentar exactamente los siete proyectos actuales.")
+    if len(projects) < 10:
+        raise ValueError("El portafolio debe documentar al menos diez proyectos.")
     if len({project["slug"] for project in projects}) != len(projects):
         raise ValueError("Cada proyecto debe tener un identificador único.")
+    metrics = content["about"].get("METRICS", [])
+    project_metric = next(
+        (item for item in metrics if item.get("label") == "proyectos documentados"),
+        None,
+    )
+    if project_metric and str(project_metric.get("value")) != str(len(projects)):
+        raise ValueError("La métrica de proyectos documentados no coincide con len(projects).")
     return content

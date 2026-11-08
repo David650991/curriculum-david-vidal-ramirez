@@ -38,6 +38,10 @@ PUBLIC_IMAGES = (
         "assets/images/projects/centro-rehabilitacion-la-luz-esperanza.jpg",
     ),
     ("src/assets/images/branding/app-icon.png", "assets/images/branding/app-icon.png"),
+    (
+        "src/assets/images/branding/neural-network.svg",
+        "assets/images/branding/neural-network.svg",
+    ),
 )
 
 STYLE_MODULES = (

@@ -10,7 +10,7 @@ EDUCATION:
       detail: "Correo institucional: L25350801@tuxtepec.tecnm.mx"
 OBJECTIVE:
   label: "Objetivo profesional"
-  text: "Continuar desarrollándome dentro de un equipo de tecnología donde pueda participar en aplicaciones, automatización de procesos y soluciones web, mientras profundizo mis conocimientos de ingeniería de software y aporto la experiencia práctica obtenida en proyectos propios."
+  text: "Integrarme a un equipo de desarrollo de software, preferentemente en modalidad remota, para contribuir en aplicaciones web, Python, JavaScript y automatización. Busco seguir desarrollando mis conocimientos de Ingeniería en Sistemas Computacionales y aportar la experiencia práctica adquirida en proyectos independientes e institucionales. También considero oportunidades presenciales compatibles con mi perfil."
 EXPERIENCE:
   label: "Experiencia reciente"
   items:
@@ -22,6 +22,8 @@ EXPERIENCE:
         - "Construcción de una aplicación privada para expedientes de entrevistas con reglas documentales, firmas, auditoría y almacenamiento remoto."
         - "Desarrollo de prototipos con Flask, WebSockets, autenticación multifactor y visión computacional."
         - "Automatización de generación y despliegue de sitios mediante Python, Jinja y GitHub Actions."
+        - "Soporte técnico a computadoras y dispositivos móviles; instalación y mantenimiento de videovigilancia CCTV y atención operativa a incidencias de conectividad de Internet."
+        - "Producción y difusión de pódcast y transmisiones en vivo mediante PRISM Live Studio; edición de clips con CapCut y gestión de contenidos en Facebook, Instagram, YouTube, TikTok, X, WhatsApp y Telegram."
 EARLIER_EXPERIENCE:
   label: "Historial laboral registrado ante el IMSS"
   introduction: "Antes de concentrarme en desarrollo de software trabajé en operaciones, logística, ventas, servicio y trabajo de campo. Los siguientes periodos corresponden a altas y bajas del reporte de semanas cotizadas emitido por el IMSS el 15 de marzo de 2025; no se publican salarios, registros patronales ni identificadores personales."
