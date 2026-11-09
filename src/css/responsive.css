@@ -8,9 +8,11 @@
 }
 
 @media (max-width: 1020px) {
-  .portfolio-shell { grid-template-columns: 240px minmax(0, 1fr); width: min(960px, calc(100% - 28px)); margin: 28px auto; }
+  .portfolio-shell { grid-template-columns: 240px minmax(0, 1fr); gap: 20px; width: min(960px, calc(100% - 28px)); margin: 28px auto; }
   .profile-card { padding: 22px 17px; }
-  .main-nav a { padding-inline: 9px; font-size: .79rem; }
+  .panel-header { padding-inline: 14px; }
+  .main-nav { max-width: 100%; min-width: 0; gap: 4px; }
+  .main-nav a { flex: 0 0 auto; padding-inline: 7px; font-size: .74rem; white-space: nowrap; }
   .section { padding-inline: 28px; }
   .project-grid, .resume-grid { grid-template-columns: 1fr; }
   .two-column-block { grid-template-columns: 1fr; }
@@ -25,8 +27,9 @@
   .profile-portrait { width: 142px; height: 142px; }
   .profile-actions { grid-template-columns: 1fr; }
   .section { padding: 36px 22px 48px; }
-  .panel-header { padding-inline: 12px; }
-  .main-nav a { padding-inline: 7px; font-size: .73rem; }
+  .panel-header { padding-inline: 10px; }
+  .main-nav { gap: 2px; }
+  .main-nav a { padding-inline: 6px; font-size: .71rem; }
   .career-grid, .learning-paths .career-grid { grid-template-columns: 1fr; }
   .ecosystem-grid { grid-template-columns: 1fr; }
   .learning-paths { grid-template-columns: 1fr; }
