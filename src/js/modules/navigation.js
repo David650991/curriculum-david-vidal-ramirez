@@ -28,6 +28,7 @@ export function initNavigation() {
       else link.removeAttribute('aria-current');
     });
     window.scrollTo(0, 0);
+    requestAnimationFrame(() => window.scrollTo(0, 0));
     if (moveFocus) document.querySelector('#contenido')?.focus({ preventScroll: true });
   };
 
@@ -36,6 +37,7 @@ export function initNavigation() {
   }));
   document.querySelector('[data-map-load]')?.addEventListener('click', loadMap, { once: true });
   window.addEventListener('hashchange', () => showPage(pageFromHash()));
+  window.addEventListener('load', () => window.scrollTo(0, 0), { once: true });
 
   profileButton?.addEventListener('click', () => {
     const open = profileButton.getAttribute('aria-expanded') === 'true';

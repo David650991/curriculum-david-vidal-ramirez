@@ -76,4 +76,7 @@ def copy_public_assets(root: Path, output: Path) -> None:
         dirs_exist_ok=True,
         ignore=shutil.ignore_patterns("*.md"),
     )
+    font_source = root / "src/assets/fonts"
+    font_target = output / "assets/fonts"
+    shutil.copytree(font_source, font_target, dirs_exist_ok=True)
     shutil.copy2(root / "LICENSE", output / "LICENSE.txt")

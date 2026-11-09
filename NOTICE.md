@@ -22,3 +22,9 @@ El retrato, los datos de contacto, el historial profesional y los textos biográ
 - Los iconos funcionales proceden de Lucide.
 - Los nombres y logotipos de empresas, instituciones y tecnologías pertenecen a sus respectivos titulares y se utilizan únicamente con fines informativos.
 - La captura del sitio “La Luz y La Esperanza Que Necesito” se utiliza como evidencia visual de un proyecto desarrollado por el autor; su marca y contenido institucional no se relicencian bajo MIT.
+
+## Tipografías distribuidas localmente
+
+- **Space Grotesk 2.0.0**, de Florian Karsten y colaboradores, se distribuye sin modificaciones bajo SIL Open Font License 1.1. Procedencia: <https://github.com/floriankarsten/space-grotesk/releases/tag/2.0.0>. Licencia: `src/assets/fonts/OFL-Space-Grotesk.txt`.
+- **Inter 4.1**, del proyecto Inter dirigido por Rasmus Andersson, se distribuye sin modificaciones bajo SIL Open Font License 1.1. Procedencia: <https://github.com/rsms/inter/releases/tag/v4.1>. Licencia: `src/assets/fonts/OFL-Inter.txt`.
+- **JetBrains Mono 2.304**, de JetBrains y colaboradores, se distribuye sin modificaciones bajo SIL Open Font License 1.1. Procedencia: <https://github.com/JetBrains/JetBrainsMono/releases/tag/v2.304>. Licencia: `src/assets/fonts/OFL-JetBrains-Mono.txt`.

@@ -83,7 +83,10 @@ def test_professional_content_is_complete(project_root: Path) -> None:
         for group in context["technologies"]["WORKFLOW_TOOLS"]["groups"]
         for item in group["items"]
     }
-    assert {"ChatGPT", "Gemini", "Codex", "GitHub Copilot", "Google Antigravity", "Canva", "CapCut", "PRISM Live Studio", "DMSS y Dahua", "Telmex y Megacable"} <= workflow_tools
+    assert {"Herramientas de desarrollo asistido", "Canva", "CapCut", "PRISM Live Studio", "DMSS y Dahua", "Telmex y Megacable"} <= workflow_tools
+    assisted = context["technologies"]["WORKFLOW_TOOLS"]["groups"][0]["items"][0]["use"]
+    for tool in ("Codex", "GitHub Copilot", "ChatGPT", "Gemini", "Google Antigravity"):
+        assert tool in assisted
     assert len(context["iconography"]["ECOSYSTEMS"]) == 8
     employment_records = context["resume"]["EARLIER_EXPERIENCE"]["records"]
     assert len(employment_records) == 17
@@ -225,6 +228,20 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
     context = Portfolio(root=project_root).context()
     cv_html = (output / "cv.html").read_text(encoding="utf-8")
     assert (output / "assets/images/branding/neural-network.svg").is_file()
+    expected_fonts = {
+        "space-grotesk-variable.woff2",
+        "inter-variable.woff2",
+        "jetbrains-mono-regular.woff2",
+        "jetbrains-mono-bold.woff2",
+        "OFL-Space-Grotesk.txt",
+        "OFL-Inter.txt",
+        "OFL-JetBrains-Mono.txt",
+    }
+    assert {path.name for path in (output / "assets/fonts").iterdir()} == expected_fonts
+    style_css = (output / "assets/css/style.css").read_text(encoding="utf-8")
+    assert 'font-family: "Space Grotesk"' in style_css
+    assert 'font-family: "Inter"' in style_css
+    assert 'font-family: "JetBrains Mono"' in style_css
     assert 'href="assets/cv-david-vidal-ramirez.pdf"' in html
     pdf = output / "assets" / "cv-david-vidal-ramirez.pdf"
     assert pdf.read_bytes().startswith(b"%PDF-1.4")
@@ -234,7 +251,10 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
     assert page_count == 11
     assert cv_html.count("assets/images/branding/neural-network.svg") == page_count
     assert "padding: 16pt 36pt 92pt" in cv_html
-    assert "grid-template-columns: repeat(3, 1fr)" in cv_html
+    assert "space-grotesk-variable.woff2" in cv_html
+    assert "inter-variable.woff2" in cv_html
+    assert "jetbrains-mono-regular.woff2" in cv_html
+    assert "grid-template-columns: repeat(2, 1fr)" in cv_html
     assert 'class="groups-grid workflow-grid"' in cv_html
     assert b"/Author (David Vidal Ramirez)" in pdf_content
     assert b"/Creator (David Vidal Ramirez)" in pdf_content
@@ -253,6 +273,7 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
     assert "Experiencia institucional complementaria" in normalized_pdf_text
     assert "48 cámaras" in normalized_pdf_text
     assert "PRISM Live Studio" in normalized_pdf_text
+    assert "Herramientas de desarrollo asistido" not in normalized_pdf_text
     assert "Producción audiovisual y redes institucionales" in normalized_pdf_text
     assert "Sitio profesional" in normalized_pdf_text
     assert context["profile"]["SITE"]["url"].encode("ascii") in pdf_content

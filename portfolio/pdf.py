@@ -136,22 +136,44 @@ def _inject_pdf_metadata(pdf_bytes: bytes) -> bytes:
 
 def _decompress_stream(obj_str: str) -> bytes:
     """Extrae y descomprime el contenido de un objeto stream PDF."""
-    match = re.search(r"stream\r?\n(.*?)\r?\nendstream", obj_str, re.S)
-    if not match:
+    stream_start = re.search(r"stream\r?\n", obj_str)
+    length_match = re.search(r"/Length\s+(\d+)\b", obj_str)
+    if not stream_start or not length_match:
         return b""
-    raw = match.group(1).encode("latin1")
+    length = int(length_match.group(1))
+    raw = obj_str[stream_start.end() : stream_start.end() + length].encode("latin1")
     if "/FlateDecode" in obj_str:
         return zlib.decompress(raw)
     return raw
 
 
+def _parse_pdf_objects(pdf_bytes: bytes) -> dict[int, str]:
+    """Separa objetos PDF respetando la longitud de sus flujos binarios."""
+    objects: dict[int, str] = {}
+    for match in re.finditer(rb"(\d+)\s+0\s+obj\r?\n", pdf_bytes):
+        obj_num = int(match.group(1))
+        body_start = match.end()
+        first_end = pdf_bytes.find(b"endobj", body_start)
+        if first_end < 0:
+            continue
+
+        header = pdf_bytes[body_start : min(first_end, body_start + 4096)]
+        stream_match = re.search(rb"stream\r?\n", header)
+        length_match = re.search(rb"/Length\s+(\d+)\b", header)
+        if stream_match and length_match:
+            stream_end = body_start + stream_match.end() + int(length_match.group(1))
+            object_end = pdf_bytes.find(b"endobj", stream_end)
+        else:
+            object_end = first_end
+        if object_end < 0:
+            continue
+        objects[obj_num] = pdf_bytes[body_start:object_end].decode("latin1")
+    return objects
+
+
 def extract_pdf_pages_text(pdf_bytes: bytes) -> list[str]:
     """Extrae el texto Unicode de cada página física del PDF mediante tablas ToUnicode CMap."""
-    text = pdf_bytes.decode("latin1")
-    objects = {
-        int(match.group(1)): match.group(2)
-        for match in re.finditer(r"(\d+)\s+0\s+obj\r?\n(.*?)\r?\nendobj", text, re.S)
-    }
+    objects = _parse_pdf_objects(pdf_bytes)
 
     cmaps: dict[int, dict[int, str]] = {}
     for obj_num, body in objects.items():
@@ -174,6 +196,16 @@ def extract_pdf_pages_text(pdf_bytes: bytes) -> list[str]:
                 dst = int(match.group(3), 16)
                 for code in range(start, end + 1):
                     mapping[code] = chr(dst + (code - start))
+            for match in re.finditer(
+                r"<([0-9A-Fa-f]+)>\s*<([0-9A-Fa-f]+)>\s*\[(.*?)\]", block, re.S
+            ):
+                start = int(match.group(1), 16)
+                end = int(match.group(2), 16)
+                values = re.findall(r"<([0-9A-Fa-f]+)>", match.group(3))
+                for offset, value in enumerate(values[: end - start + 1]):
+                    mapping[start + offset] = bytes.fromhex(value).decode(
+                        "utf-16-be", errors="ignore"
+                    )
         cmaps[obj_num] = mapping
 
     font_to_cmap: dict[int, dict[int, str]] = {}

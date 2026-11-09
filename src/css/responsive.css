@@ -1,5 +1,5 @@
 @media (max-width: 1180px) {
-  .portfolio-shell { grid-template-columns: 270px minmax(0, 1fr); width: min(1120px, calc(100% - 32px)); }
+  .portfolio-shell { grid-template-columns: 280px minmax(0, 1fr); width: min(1120px, calc(100% - 32px)); }
   .section { padding-inline: 30px; }
   .main-nav a { padding-inline: 11px; font-size: .84rem; }
   .project-grid { gap: 16px; }
@@ -52,8 +52,10 @@
   .main-nav::-webkit-scrollbar { display: none; }
   .main-nav a { flex: 0 0 auto; padding: 18px 10px 16px; scroll-snap-align: start; white-space: nowrap; }
   .section { padding: 34px 22px 42px; }
+  .page { scroll-margin-top: 72px; }
   #contenido { min-height: 600px; }
   .profile-grid, .two-column-block, .certification-grid { grid-template-columns: 1fr; }
+  .workflow-tools .career-block:first-child { grid-column: auto; }
   .focus-grid, .technology-groups, .stack-groups, .career-grid { grid-template-columns: repeat(2, 1fr); }
   .site-footer { padding: 20px 22px; }
   .contact-map { min-height: 320px; }
@@ -86,6 +88,7 @@
   .profile-portrait { width: 72px; height: 72px; }
   .profile-identity > p:last-child, .profile-kicker { display: none; }
   .profile-data, .metrics, .focus-grid, .technology-groups, .stack-groups, .career-grid { grid-template-columns: 1fr; }
+  .learning-paths .career-grid { grid-template-columns: 1fr; }
   .concept-list { columns: 1; }
   .section { padding-inline: 17px; }
   .section-heading h2, .contact-section h2 { font-size: 2.2rem; }

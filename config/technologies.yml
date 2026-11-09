@@ -49,13 +49,10 @@ WORKFLOW_TOOLS:
   label: "Herramientas de trabajo, creación y operación"
   description: "Las utilizo como apoyo en tareas concretas; su presencia no implica certificación, dominio avanzado ni desarrollo de los productos que las proveen."
   groups:
-    - title: "Programación y asistencia digital"
+    - title: "Desarrollo asistido"
       items:
-        - {name: "ChatGPT", use: "Apoyo en investigación, aprendizaje, redacción y revisión."}
-        - {name: "Gemini", use: "Apoyo en investigación, aprendizaje y contraste de información."}
-        - {name: "Codex", use: "Programación asistida, revisión y trabajo sobre repositorios."}
-        - {name: "GitHub Copilot", use: "Programación asistida y revisión dentro del editor."}
-        - {name: "Google Antigravity", use: "Contraste visual y apoyo en el flujo de trabajo."}
+        - name: "Herramientas de desarrollo asistido"
+          use: "Utilizo Codex, GitHub Copilot, ChatGPT, Gemini y Google Antigravity para consultar soluciones, revisar código y apoyar el desarrollo de proyectos. Compruebo los cambios mediante pruebas antes de incorporarlos."
     - title: "Diseño, edición y difusión"
       items:
         - {name: "Canva", use: "Flyers y piezas gráficas para comunicación institucional."}

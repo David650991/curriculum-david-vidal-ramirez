@@ -30,6 +30,30 @@
   <meta name="author" content="{{ profile.USER.name }}">
   <meta name="creator" content="{{ profile.SITE.creator }}">
   <style>
+    @font-face {
+      font-family: "Space Grotesk";
+      src: url("{{ prefix }}assets/fonts/space-grotesk-variable.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 300 700;
+    }
+    @font-face {
+      font-family: "Inter";
+      src: url("{{ prefix }}assets/fonts/inter-variable.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 100 900;
+    }
+    @font-face {
+      font-family: "JetBrains Mono";
+      src: url("{{ prefix }}assets/fonts/jetbrains-mono-regular.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 400;
+    }
+    @font-face {
+      font-family: "JetBrains Mono";
+      src: url("{{ prefix }}assets/fonts/jetbrains-mono-bold.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 700;
+    }
     @page { size: Letter; margin: 0; }
     :root {
       --ink: #111827;
@@ -49,12 +73,15 @@
       padding: 0;
       background: #E2E8F0;
       color: var(--ink);
-      font-family: Inter, "Segoe UI", "Liberation Sans", Arial, sans-serif;
+      font-family: "Inter", "Segoe UI", "Liberation Sans", Arial, sans-serif;
+      font-variant-ligatures: none;
+      font-feature-settings: "liga" 0, "clig" 0;
       -webkit-font-smoothing: antialiased;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
     }
     body { font-size: 9.5pt; line-height: 1.38; }
+    h1, h2, h3, h4, .inner-header strong { font-family: "Space Grotesk", "Inter", sans-serif; }
     .page {
       width: 612pt;
       height: 792pt;
@@ -310,7 +337,7 @@
       grid-template-columns: 1fr 1fr;
       gap: 4pt;
     }
-    .workflow-grid { grid-template-columns: repeat(3, 1fr); }
+    .workflow-grid { grid-template-columns: repeat(2, 1fr); }
     .group {
       border-left-color: var(--purple);
       padding: 4.2pt 7pt;
@@ -661,7 +688,7 @@
     <section class="section">
       <div class="section-kicker">12 / FLUJO DE TRABAJO</div>
       <h2>{{ technologies.WORKFLOW_TOOLS.label }}</h2>
-      <div class="groups-grid workflow-grid">{% for group in technologies.WORKFLOW_TOOLS.groups %}<div class="group"><h3>{{ group.title }}</h3><p class="stack">{{ group['items'] | map(attribute='name') | join(' · ') }}</p></div>{% endfor %}</div>
+      <div class="groups-grid workflow-grid">{% for group in technologies.WORKFLOW_TOOLS.groups[1:] %}<div class="group"><h3>{{ group.title }}</h3><p class="stack">{{ group['items'] | map(attribute='name') | join(' · ') }}</p></div>{% endfor %}</div>
     </section>
   {% endcall %}
 
