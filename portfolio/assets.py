@@ -46,7 +46,8 @@ PUBLIC_IMAGES = (
 
 STYLE_MODULES = (
     "base.css", "navigation.css", "profile.css", "projects.css",
-    "certifications.css", "resume-contact.css", "responsive.css",
+    "certifications.css", "resume-contact.css",
+    "visitor-analytics.css", "responsive.css",
 )
 
 

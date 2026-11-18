@@ -1,0 +1,93 @@
+
+<section class="visitor-analytics"
+         aria-labelledby="visitor-analytics-title"
+         data-visitor-analytics>
+
+  <header class="visitor-analytics__header">
+    <div>
+      <p class="visitor-analytics__eyebrow">// actividad del portafolio</p>
+      <h2 id="visitor-analytics-title">Estadísticas públicas</h2>
+      <p>Actividad de navegación y contacto registrada en el sitio.</p>
+    </div>
+    <span class="visitor-analytics__state" data-analytics-status>
+      Medición en preparación
+    </span>
+  </header>
+
+  <div class="visitor-analytics__grid">
+
+    <button class="visitor-analytics__metric" type="button">
+      <span class="visitor-analytics__label">Visitas</span>
+      <strong data-stat-visits>—</strong>
+      <span class="visitor-analytics__tip">
+        Sesiones registradas desde dispositivos compatibles.
+        No equivale a personas únicas.
+      </span>
+    </button>
+
+    <button class="visitor-analytics__metric" type="button">
+      <span class="visitor-analytics__label">Clics relevantes</span>
+      <strong data-stat-clicks>—</strong>
+      <span class="visitor-analytics__tip">
+        Interacciones registradas en descarga del CV,
+        contacto y otras acciones seleccionadas.
+      </span>
+    </button>
+
+    <button class="visitor-analytics__metric" type="button">
+      <span class="visitor-analytics__label">Tiempo activo medio</span>
+      <strong data-stat-duration>—</strong>
+      <span class="visitor-analytics__tip">
+        Tiempo aproximado de actividad con la página
+        visible. No incluye necesariamente toda la sesión.
+      </span>
+    </button>
+
+    <button class="visitor-analytics__metric" type="button">
+      <span class="visitor-analytics__label">En línea</span>
+      <strong data-stat-online>—</strong>
+      <span class="visitor-analytics__tip">
+        Conexiones activas aproximadas.
+        Una misma persona puede abrir varias sesiones.
+      </span>
+    </button>
+
+  </div>
+
+  <div class="visitor-analytics__chart"
+       aria-label="Gráfica de interacciones del portafolio">
+
+    <h3>Interacciones por acción</h3>
+
+    <div class="visitor-analytics__bar-row">
+      <span>Descargar CV</span>
+      <div class="visitor-analytics__track" aria-hidden="true">
+        <span data-bar-download></span>
+      </div>
+      <strong data-stat-downloads>—</strong>
+    </div>
+
+    <div class="visitor-analytics__bar-row">
+      <span>WhatsApp</span>
+      <div class="visitor-analytics__track" aria-hidden="true">
+        <span data-bar-whatsapp></span>
+      </div>
+      <strong data-stat-whatsapp>—</strong>
+    </div>
+
+    <div class="visitor-analytics__bar-row">
+      <span>Correo electrónico</span>
+      <div class="visitor-analytics__track" aria-hidden="true">
+        <span data-bar-email></span>
+      </div>
+      <strong data-stat-email>—</strong>
+    </div>
+
+  </div>
+
+  <p class="visitor-analytics__note">
+    Los indicadores mostrarán datos cuando se configure
+    la medición. Los clics no garantizan que una acción
+    externa se haya completado.
+  </p>
+</section>
