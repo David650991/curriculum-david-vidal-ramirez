@@ -3,7 +3,7 @@ import { initPointerGlow } from './modules/pointer-glow.js';
 import { initProjectFilters } from './modules/project-filters.js';
 import { initMapControls } from './modules/map-controls.js';
 import { initVisitorAnalytics } from './modules/visitor-analytics.js';
-
+import { initVisitorSession } from './modules/visitor-session.js';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -12,7 +12,7 @@ initProjectFilters();
 initPointerGlow(reducedMotion);
 initMapControls();
 initVisitorAnalytics();
-
+initVisitorSession();
 
 const startVisualNetwork = async () => {
   const { initNeuralNetwork } = await import('./modules/neural-network.js');

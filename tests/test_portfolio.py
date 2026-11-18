@@ -299,6 +299,7 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
         "modules/pointer-glow.js",
         "modules/project-filters.js",
         "modules/visitor-analytics.js",
+        "modules/visitor-session.js",
     }
 
     published_javascript = {
