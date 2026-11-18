@@ -290,6 +290,7 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
     for path in context["certifications"]["PATHS"]:
         for course in path["items"]:
             assert course in normalized_pdf_text
+
     expected_javascript = {
         "script.js",
         "modules/navigation.js",
@@ -297,7 +298,9 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
         "modules/neural-network.js",
         "modules/pointer-glow.js",
         "modules/project-filters.js",
+        "modules/visitor-analytics.js",
     }
+
     published_javascript = {
         path.relative_to(output / "assets/js").as_posix()
         for path in (output / "assets/js").rglob("*.js")
