@@ -64,7 +64,7 @@ function handlePreflight(origin) {
 }
 
 export default {
-    async fetch(request) {
+    async fetch(request, env) {
         const url = new URL(request.url);
         const path = url.pathname;
         const origin = request.headers.get('Origin') || '';
@@ -72,6 +72,7 @@ export default {
         const knownPaths = [
             '/',
             '/health',
+            '/db-health',
             '/stats',
             '/events'
         ];
@@ -101,6 +102,36 @@ export default {
                 firebaseConnected: false,
                 recording: false
             }, 200, origin);
+        }
+
+        if (request.method === 'GET' && path === '/db-health') {
+            if (!env.DB) {
+                return jsonResponse({
+                    ok: false,
+                    databaseConnected: false,
+                    recording: false
+                }, 503, origin);
+            }
+
+            try {
+                const result = await env.DB
+                    .prepare('SELECT COUNT(*) AS total FROM analytics_sessions')
+                    .first();
+
+                return jsonResponse({
+                    ok: true,
+                    databaseConnected: true,
+                    sessions: result.total,
+                    recording: false
+                }, 200, origin);
+
+            } catch {
+                return jsonResponse({
+                    ok: false,
+                    databaseConnected: false,
+                    recording: false
+                }, 503, origin);
+            }
         }
 
         if (request.method === 'GET' && path === '/stats') {
