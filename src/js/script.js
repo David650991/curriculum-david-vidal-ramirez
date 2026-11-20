@@ -4,6 +4,7 @@ import { initProjectFilters } from './modules/project-filters.js';
 import { initMapControls } from './modules/map-controls.js';
 import { initVisitorAnalytics } from './modules/visitor-analytics.js';
 import { initVisitorSession } from './modules/visitor-session.js';
+import { initVisitorDashboard } from './modules/visitor-dashboard.js';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -13,7 +14,7 @@ initPointerGlow(reducedMotion);
 initMapControls();
 initVisitorAnalytics();
 initVisitorSession();
-
+initVisitorDashboard();
 const startVisualNetwork = async () => {
   const { initNeuralNetwork } = await import('./modules/neural-network.js');
   initNeuralNetwork(document.querySelector('[data-neural-canvas]'), reducedMotion);

@@ -302,6 +302,7 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
         "modules/visitor-session.js",
         "modules/firebase-config.js",
         "modules/firebase-client.js",
+        "modules/visitor-dashboard.js",
     }
 
     published_javascript = {
