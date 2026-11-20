@@ -23,6 +23,9 @@ const ALLOWED_ORIGINS = new Set([
     'http://127.0.0.1:8000'
 ]);
 
+const PUBLIC_STATS_URL =
+    'https://cv-david-vidal-estadisticas-default-rtdb.firebaseio.com/public_stats.json';
+
 function jsonResponse(data, status = 200, origin = '') {
     const headers = new Headers({
         'Content-Type': 'application/json; charset=utf-8',
@@ -101,9 +104,53 @@ export default {
         }
 
         if (request.method === 'GET' && path === '/stats') {
-            return jsonResponse({
-                error: 'estadisticas_no_configuradas'
-            }, 503, origin);
+            try {
+                const firebaseResponse = await fetch(PUBLIC_STATS_URL, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (!firebaseResponse.ok) {
+                    return jsonResponse({
+                        error: 'firebase_lectura_no_disponible',
+                        firebaseStatus: firebaseResponse.status
+                    }, 502, origin);
+                }
+
+                const stats = await firebaseResponse.json();
+
+                if (stats === null) {
+                    return jsonResponse({
+                        service: 'cv-david-vidal-analytics',
+                        status: 'sin_registros',
+                        recording: false,
+                        stats: null
+                    }, 200, origin);
+                }
+
+                if (
+                    typeof stats !== 'object' ||
+                    Array.isArray(stats)
+                ) {
+                    return jsonResponse({
+                        error: 'estructura_estadistica_invalida'
+                    }, 502, origin);
+                }
+
+                return jsonResponse({
+                    service: 'cv-david-vidal-analytics',
+                    status: 'datos_disponibles',
+                    recording: false,
+                    stats
+                }, 200, origin);
+
+            } catch {
+                return jsonResponse({
+                    error: 'firebase_no_disponible'
+                }, 502, origin);
+            }
         }
 
         if (request.method === 'POST' && path === '/events') {
