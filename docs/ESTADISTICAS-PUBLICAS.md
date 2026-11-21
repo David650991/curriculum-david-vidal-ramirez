@@ -17,7 +17,9 @@ GitHub Pages
          Cloudflare D1
 ```
 
-El panel público es de lectura. `visitor-analytics.js` identifica acciones y `visitor-session.js` estima actividad, pero `visitor-transport.js` solo envía eventos cuando el sitio se ejecuta en `localhost` o `127.0.0.1`. La configuración de producción mantiene `ANALYTICAS_ESCRITURA = "deshabilitada"`.
+El panel público es de lectura. `visitor-analytics.js` identifica acciones y `visitor-session.js` estima actividad. `visitor-transport.js` mantiene localhost para pruebas y reconoce el origen oficial de GitHub Pages, pero `PUBLIC_RECORDING_ENABLED` permanece en `false`. La configuración del Worker también conserva `ANALYTICAS_ESCRITURA = "deshabilitada"`.
+
+Las dos barreras deben autorizarse de forma independiente. Mientras cualquiera permanezca deshabilitada, el sistema no está listo para aceptar eventos públicos.
 
 ## Contrato de lectura
 
@@ -43,6 +45,18 @@ Una respuesta HTTP incorrecta, JSON inválido o contador negativo produce un est
 El esquema no incluye nombres, correos, teléfonos ni direcciones IP. Cada sesión usa un UUID seudónimo creado en memoria, sin cookies ni almacenamiento persistente. DNT y Global Privacy Control bloquean el transporte local.
 
 La seudonimización no equivale a anonimización absoluta. Cloudflare puede recibir metadatos de red por operar la infraestructura. Los límites de origen, frecuencia, tamaño, sesión y eventos reducen abuso, pero no eliminan tráfico automatizado ni permiten deducir personas únicas.
+
+### Control de frecuencia preparado
+
+El Worker usa el mismo binding gratuito de rate limiting con claves de alcances distintos:
+
+- `events:edge:<colo>` limita el volumen general por centro de datos de Cloudflare;
+- `events:start:<colo>` separa los inicios de sesión;
+- `events:session:<uuid>` limita eventos posteriores dentro de una sesión aceptada.
+
+No se utiliza una dirección IP como clave. El centro de datos agrupa numerosos visitantes y un atacante todavía puede afectar a otros usuarios de la misma región. El UUID es enviado por el cliente y puede rotarse. Estas limitaciones se compensan parcialmente con sesión previa, máximo de clics, idempotencia, validación de tiempo y agregados D1, pero no desaparecen.
+
+El encabezado `Origin` y CORS restringen navegadores compatibles; no autentican al emisor y pueden ser reproducidos por clientes no controlados.
 
 ## Inicializar una D1 nueva en laboratorio
 
@@ -78,3 +92,23 @@ Las rutas públicas son:
 - `GET /history-d1`.
 
 La fecha de despliegue del frontend no es el inicio de medición. Ese inicio solo puede registrarse cuando se autorice la escritura, se despliegue la configuración correspondiente y se confirme el primer evento real. Mientras `recording` sea `false`, el sistema está publicado para lectura y validación, no para recopilación.
+
+## Activación futura propuesta
+
+Este procedimiento no se ejecuta como parte de la preparación:
+
+1. Confirmar nuevamente que D1 conserva sus acumulados y crear un respaldo operativo.
+2. Repetir las pruebas locales del Worker, transporte y esquema.
+3. Autorizar y desplegar primero el Worker con `ANALYTICAS_ESCRITURA` habilitada.
+4. Verificar salud, CORS, limitación y una sesión controlada sin borrar datos.
+5. Autorizar después `PUBLIC_RECORDING_ENABLED` en el frontend y publicar GitHub Pages.
+6. Registrar la fecha del primer evento aceptado como inicio efectivo de medición.
+
+## Reversión propuesta
+
+1. Deshabilitar y desplegar primero `ANALYTICAS_ESCRITURA` en el Worker para detener nuevas escrituras.
+2. Restaurar `PUBLIC_RECORDING_ENABLED` a `false` y publicar el frontend.
+3. Conservar todas las filas y acumulados existentes para análisis y auditoría.
+4. Investigar la causa antes de una nueva activación.
+
+La reversión nunca incluye `DELETE`, `TRUNCATE`, reinicio de contadores ni sustitución de la base D1.
