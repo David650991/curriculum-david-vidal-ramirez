@@ -42,7 +42,9 @@ CREATE TABLE IF NOT EXISTS analytics_events (
         'cv_download_click',
         'whatsapp_click',
         'email_click',
-        'project_link_click'
+        'project_link_click',
+        'phone_click',
+        'navigation_click'
     )),
 
     created_at INTEGER NOT NULL DEFAULT (unixepoch()),
@@ -77,6 +79,12 @@ CREATE TABLE IF NOT EXISTS analytics_daily (
 
     project_clicks INTEGER NOT NULL DEFAULT 0
         CHECK (project_clicks >= 0),
+
+    phone_clicks INTEGER NOT NULL DEFAULT 0
+        CHECK (phone_clicks >= 0),
+
+    navigation_clicks INTEGER NOT NULL DEFAULT 0
+        CHECK (navigation_clicks >= 0),
 
     active_ms_sum INTEGER NOT NULL DEFAULT 0
         CHECK (active_ms_sum >= 0),

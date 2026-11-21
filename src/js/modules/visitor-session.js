@@ -10,7 +10,7 @@
 'use strict';
 
 const ACTIVITY_WINDOW_MS = 60_000;
-const REPORT_INTERVAL_MS = 5_000;
+const REPORT_INTERVAL_MS = 30_000;
 const ACTIVITY_THROTTLE_MS = 1_000;
 const ACTIVITY_EVENT = 'portfolio:session-activity';
 
@@ -54,7 +54,6 @@ export function initVisitorSession() {
         }
 
         lastMeasuredAt = now;
-        report(now);
     }
 
     function registerActivity() {
@@ -105,8 +104,15 @@ export function initVisitorSession() {
     });
 
     window.addEventListener('pagehide', () => {
-        measure();
+        const now = performance.now();
+
+        // Registrar el último intervalo medible.
+        measure(now);
+
         pageVisible = false;
+
+        // Notificar la actividad final acumulada.
+        report(now);
     });
 
     // Restauración de una página desde la caché del navegador.
@@ -122,5 +128,10 @@ export function initVisitorSession() {
         report(now);
     });
 
-    window.setInterval(measure, REPORT_INTERVAL_MS);
+    window.setInterval(() => {
+        const now = performance.now();
+
+        measure(now);
+        report(now);
+    }, REPORT_INTERVAL_MS);
 }

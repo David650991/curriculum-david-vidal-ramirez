@@ -83,6 +83,103 @@
       <strong data-stat-email>—</strong>
     </div>
 
+    <div class="visitor-analytics__bar-row">
+      <span>Llamadas telefónicas</span>
+      <div class="visitor-analytics__track" aria-hidden="true">
+        <span data-bar-phone></span>
+      </div>
+      <strong data-stat-phone>—</strong>
+    </div>
+
+    <div class="visitor-analytics__bar-row">
+      <span>Navegación interna</span>
+      <div class="visitor-analytics__track" aria-hidden="true">
+        <span data-bar-navigation></span>
+      </div>
+      <strong data-stat-navigation>—</strong>
+    </div>
+
+    <div class="visitor-analytics__bar-row">
+      <span>Enlaces de proyectos</span>
+      <div class="visitor-analytics__track" aria-hidden="true">
+        <span data-bar-projects></span>
+      </div>
+      <strong data-stat-projects>—</strong>
+    </div>
+
+  </div>
+
+  <!-- Historial de estadísticas de Cloudflare D1 -->
+  <div class="visitor-analytics__history"
+       data-analytics-history
+       hidden>
+
+    <div class="visitor-analytics__history-header">
+      <h3>Historial de actividad</h3>
+      <p data-history-status aria-live="polite">
+        Consultando estadísticas históricas...
+      </p>
+    </div>
+
+    <div class="visitor-analytics__history-grid">
+
+      <section class="visitor-analytics__history-panel"
+               aria-labelledby="history-visits-title">
+
+        <h4 id="history-visits-title">
+          Visitas y clics por día
+        </h4>
+
+        <div class="visitor-analytics__history-legend">
+          <span class="visitor-analytics__legend-visits">
+            Visitas
+          </span>
+          <span class="visitor-analytics__legend-clicks">
+            Clics
+          </span>
+        </div>
+
+        <div class="visitor-analytics__history-scroll"
+             role="region"
+             tabindex="0"
+             aria-label="Historial diario de visitas y clics">
+          <div class="visitor-analytics__history-days"
+               role="list"
+               data-history-visits></div>
+        </div>
+
+      </section>
+
+      <section class="visitor-analytics__history-panel"
+               aria-labelledby="history-duration-title">
+
+        <h4 id="history-duration-title">
+          Tiempo activo medio por día
+        </h4>
+
+        <p class="visitor-analytics__history-description">
+          Promedio por sesión con actividad registrada.
+        </p>
+
+        <div class="visitor-analytics__history-scroll"
+             role="region"
+             tabindex="0"
+             aria-label="Historial diario de tiempo activo">
+          <div class="visitor-analytics__history-days"
+               role="list"
+               data-history-duration></div>
+        </div>
+
+      </section>
+
+    </div>
+
+    <p class="visitor-analytics__history-note">
+      Fechas UTC. Se muestran únicamente los días con
+      registros disponibles; la ausencia de registros
+      anteriores no significa que no hubo visitantes.
+    </p>
+
   </div>
 
   <p class="visitor-analytics__note">

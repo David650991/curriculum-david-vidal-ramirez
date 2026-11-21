@@ -206,3 +206,169 @@
         display: none;
     }
 }
+
+/* Historial de estadísticas públicas.
+ * Autor: David Vidal Ramírez.
+ */
+
+.visitor-analytics__history[hidden] {
+    display: none;
+}
+
+.visitor-analytics__history {
+    margin-top: 18px;
+}
+
+.visitor-analytics__history-header {
+    margin-bottom: 14px;
+}
+
+.visitor-analytics__history-header h3 {
+    margin: 0 0 6px;
+    font-size: 1rem;
+}
+
+.visitor-analytics__history-header p,
+.visitor-analytics__history-description,
+.visitor-analytics__history-note {
+    color: var(--text-subtle);
+    font-size: 0.75rem;
+    line-height: 1.5;
+}
+
+.visitor-analytics__history-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.visitor-analytics__history-panel {
+    min-width: 0;
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--surface);
+}
+
+.visitor-analytics__history-panel h4 {
+    margin: 0 0 10px;
+    font-size: 0.85rem;
+}
+
+.visitor-analytics__history-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 12px;
+    font-size: 0.72rem;
+}
+
+.visitor-analytics__history-legend span::before {
+    content: "";
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    margin-right: 6px;
+    border-radius: 3px;
+}
+
+.visitor-analytics__legend-visits::before {
+    background: var(--cyan);
+}
+
+.visitor-analytics__legend-clicks::before {
+    background: var(--blue);
+}
+
+.visitor-analytics__history-scroll {
+    overflow-x: auto;
+    padding: 12px 4px;
+    scrollbar-width: thin;
+}
+
+.visitor-analytics__history-scroll:focus-visible {
+    outline: 2px solid var(--cyan);
+    outline-offset: 2px;
+}
+
+.visitor-analytics__history-days {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    min-height: 180px;
+    width: max-content;
+    min-width: 100%;
+}
+
+.visitor-analytics__history-day {
+    display: flex;
+    flex: 0 0 68px;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+}
+
+.visitor-analytics__history-bars {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 5px;
+    width: 100%;
+    height: 125px;
+    border-bottom: 1px solid var(--line);
+}
+
+.visitor-analytics__history-bar {
+    display: block;
+    width: 18px;
+    max-height: 100%;
+    border-radius: 4px 4px 0 0;
+}
+
+.visitor-analytics__history-bar--visits {
+    background: var(--cyan);
+}
+
+.visitor-analytics__history-bar--clicks {
+    background: var(--blue);
+}
+
+.visitor-analytics__history-bar--duration {
+    background: linear-gradient(180deg,
+            var(--cyan),
+            var(--blue));
+}
+
+.visitor-analytics__history-value {
+    font-size: 0.7rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+}
+
+.visitor-analytics__history-date {
+    font: 400 0.66rem var(--font-code);
+    color: var(--muted);
+}
+
+.visitor-analytics__history-note {
+    margin: 12px 0 0;
+}
+
+@media (max-width: 800px) {
+    .visitor-analytics__history-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .visitor-analytics__history-panel {
+        padding: 12px;
+    }
+}
+
+@media print {
+    .visitor-analytics__history {
+        display: none;
+    }
+}

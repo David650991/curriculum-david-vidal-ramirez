@@ -27,12 +27,25 @@ function identifyAction(link) {
         return 'email_click';
     }
 
+    // Enlaces para iniciar llamadas telefónicas.
+    if (href.toLowerCase().startsWith('tel:')) {
+        return 'phone_click';
+    }
+
     // Enlaces de WhatsApp.
     try {
         const url = new URL(href, window.location.href);
 
         if (url.hostname.toLowerCase() === 'wa.me') {
             return 'whatsapp_click';
+        }
+
+        // Clics en enlaces de navegación interna.
+        if (
+            link.hasAttribute('data-page-link') &&
+            url.origin === window.location.origin
+        ) {
+            return 'navigation_click';
         }
     } catch {
         return null;

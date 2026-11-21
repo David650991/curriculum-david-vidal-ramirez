@@ -1,0 +1,26 @@
+{
+    "name": "cv-david-vidal-analytics",
+    "main": "./infra/cloudflare/analytics-worker.js",
+    "compatibility_date": "2026-11-19",
+    "workers_dev": true,
+    "d1_databases": [
+        {
+            "binding": "DB",
+            "database_name": "cv-david-vidal-stats",
+            "database_id": "0840d922-8c86-4789-8f3e-a4c0850ac0f0"
+        }
+    ],
+    "vars": {
+        "ANALYTICAS_ESCRITURA": "deshabilitada"
+    },
+    "ratelimits": [
+        {
+            "name": "EVENT_RATE_LIMITER",
+            "namespace_id": "6509912029",
+            "simple": {
+                "limit": 120,
+                "period": 60
+            }
+        }
+    ]
+}
