@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
 globalThis.window = {
@@ -60,4 +61,14 @@ test('un enlace ajeno a las categorías no genera estadísticas', () => {
         identifyAction(link({ href: 'https://example.com' })),
         null
     );
+});
+
+test('la instrumentación no bloquea enlaces ni descargas', async () => {
+    const source = await readFile(
+        new URL('../src/js/modules/visitor-analytics.js', import.meta.url),
+        'utf8'
+    );
+
+    assert.doesNotMatch(source, /preventDefault\s*\(/);
+    assert.doesNotMatch(source, /stopPropagation\s*\(/);
 });

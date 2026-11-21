@@ -11,6 +11,23 @@
 
 const EVENT_NAME = 'portfolio:analytics';
 
+function createAnalyticsEvent(detail) {
+    const EventConstructor =
+        window.CustomEvent ?? globalThis.CustomEvent;
+
+    if (typeof EventConstructor === 'function') {
+        return new EventConstructor(EVENT_NAME, { detail });
+    }
+
+    if (typeof document.createEvent === 'function') {
+        const event = document.createEvent('CustomEvent');
+        event.initCustomEvent(EVENT_NAME, false, false, detail);
+        return event;
+    }
+
+    return null;
+}
+
 export function identifyAction(
     link,
     locationObject = window.location
@@ -78,11 +95,13 @@ export function initVisitorAnalytics() {
 
         const section = link.closest('section')?.id || 'global';
 
-        window.dispatchEvent(new CustomEvent(EVENT_NAME, {
-            detail: {
-                action,
-                section
-            }
-        }));
+        const analyticsEvent = createAnalyticsEvent({
+            action,
+            section
+        });
+
+        if (analyticsEvent) {
+            window.dispatchEvent(analyticsEvent);
+        }
     }, { capture: true });
 }

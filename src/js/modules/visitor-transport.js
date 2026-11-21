@@ -37,6 +37,34 @@ const ALLOWED_ACTIONS = new Set([
 const MAX_ACTIVE_MS = 86_400_000;
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
+export function createPseudonymousUuid(cryptoObject) {
+    if (typeof cryptoObject?.randomUUID === 'function') {
+        return cryptoObject.randomUUID();
+    }
+
+    if (typeof cryptoObject?.getRandomValues !== 'function') {
+        return null;
+    }
+
+    const bytes = new Uint8Array(16);
+    cryptoObject.getRandomValues(bytes);
+    bytes[6] = (bytes[6] & 0x0f) | 0x40;
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+
+    const value = Array.from(
+        bytes,
+        (byte) => byte.toString(16).padStart(2, '0')
+    ).join('');
+
+    return [
+        value.slice(0, 8),
+        value.slice(8, 12),
+        value.slice(12, 16),
+        value.slice(16, 20),
+        value.slice(20)
+    ].join('-');
+}
+
 export function readTabSession(storageObject) {
     if (!storageObject) return null;
 
@@ -180,16 +208,16 @@ export function initVisitorTransport(options = {}) {
         return;
     }
 
-    if (
-        typeof windowObject.fetch !== 'function' ||
-        typeof cryptoObject?.randomUUID !== 'function'
-    ) {
+    if (typeof windowObject.fetch !== 'function') {
         return;
     }
 
     const storedSession = readTabSession(storageObject);
     const sessionId = storedSession?.sessionId ??
-        cryptoObject.randomUUID();
+        createPseudonymousUuid(cryptoObject);
+
+    if (!sessionId) return;
+
     const sessionActiveBaseMs = storedSession?.activeMs ?? 0;
     const handledEvents = new WeakSet();
 
@@ -199,12 +227,58 @@ export function initVisitorTransport(options = {}) {
     let sessionStarted = false;
     let sessionStartPromise = null;
 
+    function queueBeacon(payloadText) {
+        if (typeof navigatorObject.sendBeacon !== 'function') {
+            return false;
+        }
+
+        try {
+            return navigatorObject.sendBeacon(
+                transport.eventsUrl,
+                payloadText
+            );
+        } catch {
+            return false;
+        }
+    }
+
+    function dispatchAcceptedClick(action) {
+        const detail = { type: 'click', action };
+        const EventConstructor =
+            windowObject.CustomEvent ?? globalThis.CustomEvent;
+        let event = null;
+
+        if (typeof EventConstructor === 'function') {
+            event = new EventConstructor(
+                ACCEPTED_EVENT_NAME,
+                { detail }
+            );
+        } else if (typeof documentObject.createEvent === 'function') {
+            event = documentObject.createEvent('CustomEvent');
+            event.initCustomEvent(
+                ACCEPTED_EVENT_NAME,
+                false,
+                false,
+                detail
+            );
+        }
+
+        if (
+            event &&
+            typeof windowObject.dispatchEvent === 'function'
+        ) {
+            windowObject.dispatchEvent(event);
+        }
+    }
+
     async function sendEvent(type, details = {}) {
         const payload = {
             type,
             sessionId,
             ...details
         };
+
+        const payloadText = JSON.stringify(payload);
 
         try {
             const response = await windowObject.fetch(
@@ -218,7 +292,7 @@ export function initVisitorTransport(options = {}) {
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(payload)
+                    body: payloadText
                 }
             );
 
@@ -234,11 +308,17 @@ export function initVisitorTransport(options = {}) {
 
             return true;
         } catch {
+            const queued = queueBeacon(payloadText);
+
             console.warn(
-                'Estadísticas: no se pudo conectar con el Worker.',
+                queued
+                    ? 'Estadísticas: envío alternativo encolado sin confirmación.'
+                    : 'Estadísticas: no se pudo conectar con el Worker.',
                 type
             );
 
+            // Beacon no ofrece respuesta del servidor: no se presenta
+            // el evento como aceptado ni se actualiza el tablero.
             return false;
         }
     }
@@ -283,7 +363,8 @@ export function initVisitorTransport(options = {}) {
             return;
         }
 
-        const eventId = cryptoObject.randomUUID();
+        const eventId = createPseudonymousUuid(cryptoObject);
+        if (!eventId) return;
 
         void ensureSessionStarted().then((ready) => {
             if (!ready) {
@@ -294,24 +375,7 @@ export function initVisitorTransport(options = {}) {
                 eventId,
                 action
             }).then((accepted) => {
-                const EventConstructor =
-                    windowObject.CustomEvent ??
-                    globalThis.CustomEvent;
-
-                if (
-                    accepted &&
-                    typeof windowObject.dispatchEvent === 'function' &&
-                    typeof EventConstructor === 'function'
-                ) {
-                    windowObject.dispatchEvent(
-                        new EventConstructor(ACCEPTED_EVENT_NAME, {
-                            detail: {
-                                type: 'click',
-                                action
-                            }
-                        })
-                    );
-                }
+                if (accepted) dispatchAcceptedClick(action);
 
                 return accepted;
             });

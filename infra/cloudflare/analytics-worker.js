@@ -428,9 +428,12 @@ export default {
             const contentType =
                 request.headers.get('Content-Type') || '';
 
-            if (!contentType.toLowerCase().startsWith(
-                'application/json'
-            )) {
+            const normalizedContentType = contentType.toLowerCase();
+            const supportedContentType =
+                normalizedContentType.startsWith('application/json') ||
+                normalizedContentType.startsWith('text/plain');
+
+            if (!supportedContentType) {
                 return jsonResponse({
                     error: 'contenido_no_admitido'
                 }, 415, origin);

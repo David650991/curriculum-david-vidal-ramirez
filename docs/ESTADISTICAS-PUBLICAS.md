@@ -19,7 +19,19 @@ GitHub Pages
 
 El panel público es de lectura. `visitor-analytics.js` identifica acciones y `visitor-session.js` estima actividad. `visitor-transport.js` mantiene localhost para pruebas y reconoce el origen oficial de GitHub Pages. La configuración autorizada utiliza `PUBLIC_RECORDING_ENABLED = true` y `ANALYTICAS_ESCRITURA = "habilitada"`.
 
-Las dos barreras se despliegan de forma coordinada. DNT y Global Privacy Control impiden crear el UUID de sesión y enviar eventos, aunque ambas barreras estén habilitadas.
+Las dos barreras se despliegan de forma coordinada. DNT y Global Privacy Control impiden crear el UUID de sesión y enviar eventos, aunque ambas barreras estén habilitadas. Son señales diferentes: DNT es una preferencia heredada y obsoleta; GPC es una señal vigente relacionada con venta o compartición de datos. La política conservadora de este sitio respeta ambas.
+
+## Compatibilidad del transporte
+
+La ruta principal utiliza `fetch` con `keepalive` y `application/json` porque necesita distinguir una aceptación real del Worker de un error HTTP. Si la solicitud falla por un error de red y `navigator.sendBeacon` está disponible, se intenta encolar exactamente el mismo JSON como `text/plain`, un tipo simple que no exige preflight CORS. El Worker admite ambos tipos, pero aplica las mismas validaciones de origen, tamaño, estructura, UUID, sesión y acción. El UUID de sesión y el `event_id` no cambian, por lo que los inicios, la actividad acumulada y los clics continúan siendo idempotentes en D1. Beacon no entrega una respuesta: un envío encolado nunca incrementa directamente el panel ni se presenta como aceptado.
+
+La versión del Worker que admite `text/plain` debe revisarse y desplegarse antes de publicar el frontend correspondiente. Si no se respeta ese orden, la ruta principal con `fetch` continúa funcionando, pero el respaldo Beacon recibirá `415` hasta actualizar el Worker.
+
+Los UUID se generan con `crypto.randomUUID()` cuando existe. En navegadores con Web Crypto pero sin ese método se genera un UUID v4 mediante `crypto.getRandomValues()`. Sin Web Crypto, JavaScript, `fetch` o conectividad permitida no se registra la sesión.
+
+Los mecanismos utilizados pertenecen a la plataforma web y no dependen del sistema operativo. Se espera funcionamiento en versiones modernas de Chrome, Edge, Firefox, Safari, Chrome para Android y Samsung Internet que implementen Web Crypto, Fetch, CORS, eventos DOM y almacenamiento de sesión. Los navegadores integrados en aplicaciones pueden restringir almacenamiento, navegación externa o red; en ellos el transporte usa memoria si `sessionStorage` está bloqueado, pero no puede garantizar el envío si el contenedor impide JavaScript o las solicitudes.
+
+No existe una excepción específica del sitio para ignorar DNT o GPC. Una opción de consentimiento explícito requeriría diseño, texto público, pruebas y aprobación previa de la política; no está implementada por este cambio.
 
 ## Contrato de lectura
 

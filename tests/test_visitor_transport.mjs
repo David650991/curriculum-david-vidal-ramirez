@@ -4,6 +4,7 @@ import test from 'node:test';
 const {
     ACCEPTED_EVENT_NAME,
     TAB_SESSION_KEY,
+    createPseudonymousUuid,
     initVisitorTransport,
     privacyOptOutRequested,
     resolveTransportConfig
@@ -125,6 +126,17 @@ test('el transporte público está habilitado por defecto', () => {
         environment: 'public',
         eventsUrl: 'https://cv-david-vidal-analytics.david650991.workers.dev/events'
     });
+});
+
+test('genera UUID v4 con Web Crypto aunque randomUUID no exista', () => {
+    const uuid = createPseudonymousUuid({
+        getRandomValues(bytes) {
+            bytes.set(Array.from({ length: 16 }, (_, index) => index));
+            return bytes;
+        }
+    });
+
+    assert.equal(uuid, '00010203-0405-4607-8809-0a0b0c0d0e0f');
 });
 
 test('GitHub Pages inicia una sesión cuando no hay exclusión de privacidad', async () => {
@@ -284,6 +296,55 @@ test('solo un clic aceptado solicita actualizar el tablero', async () => {
 
         assert.equal(refreshEvents, accepted ? 1 : 0);
     }
+});
+
+test('un error de red usa Beacon una vez sin simular aceptación', async () => {
+    const beacons = [];
+    const navigatorObject = {
+        sendBeacon(url, body) {
+            beacons.push({ url, body });
+            return true;
+        }
+    };
+    const runtime = createRuntime({
+        navigatorObject,
+        fetchImplementation: async () => {
+            throw new TypeError('red no disponible');
+        }
+    });
+    let acceptedEvents = 0;
+    runtime.windowObject.addEventListener(
+        ACCEPTED_EVENT_NAME,
+        () => { acceptedEvents += 1; }
+    );
+
+    initVisitorTransport(runtime);
+    await flushPromises();
+
+    assert.equal(beacons.length, 1);
+    assert.equal(
+        JSON.parse(beacons[0].body).type,
+        'session_start'
+    );
+    assert.equal(acceptedEvents, 0);
+});
+
+test('un rechazo HTTP no se reenvía mediante Beacon', async () => {
+    let beacons = 0;
+    const runtime = createRuntime({
+        navigatorObject: {
+            sendBeacon() {
+                beacons += 1;
+                return true;
+            }
+        },
+        fetchImplementation: async () => ({ ok: false, status: 403 })
+    });
+
+    initVisitorTransport(runtime);
+    await flushPromises();
+
+    assert.equal(beacons, 0);
 });
 
 test('la simulación pública habilitada usa el endpoint remoto', async () => {
