@@ -1,12 +1,14 @@
 # Verificación y trazabilidad del contenido profesional
 
-Última auditoría local: 20 de agosto de 2026.
+Última auditoría local: 20 de noviembre de 2026.
 
 Este documento distingue datos confirmados, enlaces comprobados y límites de verificación. Su propósito es impedir que una recomendación narrativa se publique como hecho sin respaldo.
 
 ## Fuente de contenido
 
 La fuente recibida describe la identidad profesional, formación, trayectoria, diez proyectos, tecnologías, límites técnicos, privacidad, SEO y estructura esperada del currículum. Los datos públicos se centralizan en los archivos YAML de `config/`; las plantillas de `src/jinja/` los convierten en el sitio y el generador produce HTML y PDF.
+
+El panel de estadísticas es información operativa separada del contenido curricular. Consulta agregados mediante Cloudflare Workers y D1; no modifica nombres, proyectos, certificaciones ni antecedentes laborales.
 
 ## Datos personales y académicos publicados
 
@@ -61,5 +63,7 @@ Se revisaron los 18 certificados PDF y el documento con el perfil público propo
 ## Controles automáticos
 
 Las pruebas comprueban identidad, semestre, diez proyectos únicos, tecnologías mínimas, contenido sensible ausente, HTML en español, SEO, Schema.org, autoría, licencia pública, PDF completo tamaño carta, inventario de imágenes y publicación aislada en `dist/`.
+
+Las pruebas de estadísticas comprueban una D1 nueva y vacía, instalación de tres disparadores, acumulación de sesiones, clics y tiempo activo, idempotencia de eventos, seis acciones admitidas, representación de ceros únicamente ante ausencia confirmada, preservación de datos reales y rechazo de respuestas inválidas. El laboratorio usa SQLite en memoria y no accede a D1 remota.
 
 Una prueba automatizada demuestra consistencia interna; no sustituye documentos académicos, constancias laborales, certificados ni la revisión humana de datos personales. Esos documentos deben conservarse fuera del repositorio público y presentarse únicamente cuando corresponda.

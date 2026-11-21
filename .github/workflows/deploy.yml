@@ -45,6 +45,9 @@ jobs:
       - name: Ejecutar pruebas
         run: pytest
 
+      - name: Verificar contrato JavaScript de estadísticas
+        run: node --test tests/test_visitor_dashboard.mjs
+
       - name: Generar sitio estático
         run: python main.py
 

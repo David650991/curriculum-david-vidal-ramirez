@@ -12,6 +12,12 @@ Este currículum y portafolio fue creado, diseñado, desarrollado y es mantenido
 
 El código fuente propio se distribuye bajo la licencia MIT incluida en `LICENSE`. La licencia MIT no concede derechos sobre el nombre, retrato, datos personales, historial profesional, textos curriculares ni marcas de terceros.
 
+## Sistema de estadísticas
+
+La implementación propia del panel, los módulos JavaScript, el Cloudflare Worker y el esquema D1 forman parte del código del proyecto. David Vidal Ramírez es su creador, desarrollador y responsable de mantenimiento.
+
+Los agregados públicos describen actividad técnica del sitio. No constituyen una certificación de audiencia, conversión comercial ni identidad de visitantes. Los UUID de sesión son seudónimos y no deben reutilizarse para identificar personas.
+
 ## Contenido personal
 
 El retrato, los datos de contacto, el historial profesional y los textos biográficos pertenecen a David Vidal Ramírez. Su presencia pública permite consultar el currículum, pero no autoriza su reutilización para suplantación, perfiles derivados, entrenamiento de identidades ni publicidad.

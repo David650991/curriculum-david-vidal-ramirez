@@ -2,10 +2,29 @@
 
 ## Reportar un problema
 
-Los problemas de seguridad de este portafolio pueden comunicarse de forma privada a `David650991@gmail.com`. No publiques credenciales, datos personales ni instrucciones de explotación en una incidencia pública.
+Los problemas de seguridad pueden comunicarse de forma privada a `David650991@gmail.com`. No publiques credenciales, datos personales, registros de producción ni instrucciones de explotación en una incidencia pública.
 
 ## Alcance
 
-Este repositorio genera un sitio estático y no procesa contraseñas ni información enviada por visitantes. Los proyectos enlazados tienen alcances y políticas independientes.
+El repositorio genera un sitio estático, pero el panel de estadísticas consulta una API pública de Cloudflare Workers respaldada por Cloudflare D1. El sitio no procesa contraseñas ni formularios de identidad. Los proyectos enlazados mantienen alcances y políticas independientes.
 
-Los archivos de configuración públicos contienen únicamente datos de contacto destinados al currículum. Nunca deben añadirse llaves de API, tokens, secretos, expedientes ni información sensible de terceros.
+Los archivos públicos contienen datos de contacto destinados al currículum. Nunca deben añadirse llaves de API, tokens, secretos, expedientes, documentos personales ni información sensible de terceros.
+
+## Estadísticas y minimización de datos
+
+- Producción mantiene `ANALITICAS_ESCRITURA` deshabilitada hasta que exista una autorización expresa.
+- El transporte de eventos del navegador solo funciona en `localhost` o `127.0.0.1`.
+- DNT y Global Privacy Control impiden crear el identificador de sesión y enviar eventos en el laboratorio local.
+- Los UUID de sesión viven en memoria; no se guardan en cookies, `localStorage` ni `sessionStorage`.
+- D1 no almacena nombres, correos, teléfonos ni direcciones IP en las tablas del proyecto.
+- Los identificadores son seudónimos, no una garantía de anonimización absoluta. La infraestructura de Cloudflare puede procesar metadatos de red conforme a sus propios términos.
+
+## Controles del Worker
+
+Las escrituras exigen un origen permitido, JSON válido, tamaño limitado, tipos y acciones admitidos, una sesión previa, UUID con formato válido, límite de clics por sesión y un rate limiter configurado. Los eventos repetidos usan `event_id` idempotente y el tiempo activo solo puede aumentar dentro de límites definidos.
+
+Estos controles reducen abuso y duplicados, pero no eliminan bots ni garantizan que cada sesión corresponda a una persona distinta. El límite de solicitudes configurado es un control global del endpoint y debe revisarse antes de habilitar escritura real. Las rutas de lectura son públicas por diseño.
+
+## Operación segura
+
+No ejecutes migraciones ni pruebas destructivas contra D1 remota. Una base nueva usa `infra/cloudflare/d1-schema.sql`; las migraciones numeradas son únicamente para esquemas históricos. La activación de escritura, un despliegue del Worker o una migración remota requieren revisión y autorización independientes.

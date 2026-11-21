@@ -22,6 +22,31 @@ const STATS_URL = (
 
 const REFRESH_MS = 120_000;
 
+const EMPTY_STATS = Object.freeze({
+    total_visits: 0,
+    total_clicks: 0,
+    average_active_seconds: 0,
+    online_estimate: 0,
+    cv_clicks: 0,
+    whatsapp_clicks: 0,
+    email_clicks: 0,
+    phone_clicks: 0,
+    navigation_clicks: 0,
+    project_clicks: 0
+});
+
+const COUNT_FIELDS = Object.freeze([
+    'total_visits',
+    'total_clicks',
+    'online_estimate',
+    'cv_clicks',
+    'whatsapp_clicks',
+    'email_clicks',
+    'phone_clicks',
+    'navigation_clicks',
+    'project_clicks'
+]);
+
 const HISTORY_URL = (
     window.location.hostname === 'localhost' ||
     window.location.hostname === '127.0.0.1'
@@ -50,6 +75,117 @@ function formatDuration(seconds) {
     if (minutes === 0) return `${remaining} s`;
 
     return `${minutes} min ${remaining} s`;
+}
+
+export function normalizeStatsResponse(result) {
+    if (
+        !result ||
+        typeof result !== 'object' ||
+        Array.isArray(result) ||
+        typeof result.recording !== 'boolean'
+    ) {
+        throw new Error('Respuesta estadística no válida');
+    }
+
+    if (
+        result.status === 'sin_registros' &&
+        result.stats === null
+    ) {
+        return {
+            state: 'empty',
+            recording: result.recording,
+            stats: { ...EMPTY_STATS }
+        };
+    }
+
+    if (
+        result.status !== 'datos_disponibles' ||
+        !result.stats ||
+        typeof result.stats !== 'object' ||
+        Array.isArray(result.stats)
+    ) {
+        throw new Error('Respuesta estadística no válida');
+    }
+
+    const stats = result.stats;
+
+    for (const field of COUNT_FIELDS) {
+        if (validCount(stats[field]) === null) {
+            throw new Error(`Contador no válido: ${field}`);
+        }
+    }
+
+    if (
+        stats.average_active_seconds !== null &&
+        validCount(stats.average_active_seconds) === null
+    ) {
+        throw new Error('Duración media no válida');
+    }
+
+    return {
+        state: 'data',
+        recording: result.recording,
+        stats: { ...stats }
+    };
+}
+
+export function normalizeHistory(rows) {
+    if (!Array.isArray(rows)) {
+        throw new Error('Historial D1 no válido');
+    }
+
+    const normalized = rows.map((row) => {
+        if (!row || typeof row !== 'object') {
+            throw new Error('Fila histórica no válida');
+        }
+
+        const date = row.day_utc;
+
+        if (
+            typeof date !== 'string' ||
+            !/^\d{4}-\d{2}-\d{2}$/.test(date)
+        ) {
+            throw new Error('Fecha histórica no válida');
+        }
+
+        const parsedDate = new Date(`${date}T00:00:00Z`);
+
+        if (
+            Number.isNaN(parsedDate.getTime()) ||
+            parsedDate.toISOString().slice(0, 10) !== date
+        ) {
+            throw new Error('Fecha histórica no válida');
+        }
+
+        const visits = validCount(row.total_visits);
+        const clicks = validCount(row.total_clicks);
+        const activeMs = validCount(row.active_ms_sum);
+        const activeSessions = validCount(row.active_sessions);
+
+        if (
+            visits === null ||
+            clicks === null ||
+            activeMs === null ||
+            activeSessions === null
+        ) {
+            throw new Error('Contadores históricos no válidos');
+        }
+
+        const averageSeconds = activeSessions > 0
+            ? Math.round(activeMs / activeSessions / 1000)
+            : null;
+
+        return {
+            date,
+            visits,
+            clicks,
+            averageSeconds
+        };
+    });
+
+    return normalized.sort((a, b) =>
+        a.date.localeCompare(b.date)
+    );
 }
 
 export function initVisitorDashboard() {
@@ -138,69 +274,6 @@ export function initVisitorDashboard() {
     const durationHistory = panel.querySelector(
         '[data-history-duration]'
     );
-
-    function normalizeHistory(rows) {
-        if (!Array.isArray(rows)) {
-            throw new Error('Historial D1 no válido');
-        }
-
-        return rows.map((row) => {
-            if (!row || typeof row !== 'object') {
-                return null;
-            }
-
-            const date = row.day_utc;
-
-            if (
-                typeof date !== 'string' ||
-                !/^\d{4}-\d{2}-\d{2}$/.test(date)
-            ) {
-                return null;
-            }
-
-            const parsedDate = new Date(
-                `${date}T00:00:00Z`
-            );
-
-            if (
-                Number.isNaN(parsedDate.getTime()) ||
-                parsedDate.toISOString().slice(0, 10) !== date
-            ) {
-                return null;
-            }
-
-            const visits = validCount(row.total_visits);
-            const clicks = validCount(row.total_clicks);
-            const activeMs = validCount(row.active_ms_sum);
-            const activeSessions = validCount(
-                row.active_sessions
-            );
-
-            if (
-                visits === null ||
-                clicks === null ||
-                activeMs === null ||
-                activeSessions === null
-            ) {
-                return null;
-            }
-
-            const averageSeconds = activeSessions > 0
-                ? Math.round(
-                    activeMs / activeSessions / 1000
-                )
-                : null;
-
-            return {
-                date,
-                visits,
-                clicks,
-                averageSeconds
-            };
-        })
-            .filter((row) => row !== null)
-            .sort((a, b) => a.date.localeCompare(b.date));
-    }
 
     function createHistoryBar(value, maximum, category) {
         const bar = document.createElement('span');
@@ -396,28 +469,20 @@ export function initVisitorDashboard() {
 
             const result = await response.json();
 
-            if (
-                result.status === 'sin_registros' &&
-                result.stats === null
-            ) {
-                status.textContent = 'Sin registros todavía';
+            const normalized = normalizeStatsResponse(result);
+
+            renderStats(normalized.stats);
+
+            if (normalized.state === 'empty') {
+                status.textContent = normalized.recording
+                    ? 'Sin registros todavía · medición activa'
+                    : 'Sin registros todavía · registro pausado';
                 return;
             }
 
-            if (
-                result.status !== 'datos_disponibles' ||
-                !result.stats ||
-                typeof result.stats !== 'object' ||
-                Array.isArray(result.stats)
-            ) {
-                throw new Error('Respuesta estadística no válida');
-            }
-
-            renderStats(result.stats);
-
             status.textContent = privacyOptOutRequested()
                 ? 'Tu preferencia de privacidad está protegida'
-                : result.recording
+                : normalized.recording
                     ? 'Medición activa'
                     : 'Datos publicados · registro pausado';
 

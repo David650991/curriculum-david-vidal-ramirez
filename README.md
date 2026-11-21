@@ -1,10 +1,14 @@
 # Currículum y portafolio de David Vidal Ramírez
 
-Sitio profesional en español que reúne mi perfil, formación, experiencia y diez proyectos de software. El contenido se administra en YAML y un generador en Python/Jinja lo convierte en un sitio estático ligero para GitHub Pages.
+Este repositorio contiene mi currículum profesional y portafolio de software. Reúne mi perfil, formación, trayectoria y diez proyectos con alcances diferenciados: productos en uso, proyectos privados, prototipos, laboratorios y demostradores técnicos.
 
-## Objetivo
+El sitio separa el contenido de la presentación. Los datos profesionales se mantienen en YAML; Python los valida y Jinja2 genera el HTML que se publica en GitHub Pages. El mismo proceso produce un CV en PDF con texto seleccionable y enlaces navegables.
 
-Presentar de forma coherente mi transición desde áreas operativas y comerciales hacia el desarrollo de software, con evidencia verificable de trabajo en aplicaciones web, automatización, tiempo real, autenticación, visión computacional y despliegue cloud.
+Soy **David Vidal Ramírez**, creador, diseñador, desarrollador y responsable del mantenimiento del proyecto.
+
+## Objetivo profesional
+
+El portafolio presenta mi transición desde áreas operativas y comerciales hacia el desarrollo de software. Cada ficha explica el problema, la solución, mi aportación, el alcance actual y las tecnologías utilizadas, sin presentar experimentos como productos terminados.
 
 ## Proyectos documentados
 
@@ -15,78 +19,116 @@ Presentar de forma coherente mi transición desde áreas operativas y comerciale
 5. La Luz y La Esperanza Que Necesito — sitio institucional en producción.
 6. Currículum y portafolio automatizado — este repositorio.
 7. David Vidal IT Tuxtepec Server — demostrador Node.js sobre ARM64.
-8. VUMARI STUDIOS — sitio web modular y herramientas locales de conversión de subtítulos.
-9. Asistente Python — aplicación local de conocimiento supervisado con Python y Flask.
-10. Generador de Expedientes de Personas Usuarias y Consejeros — prototipo web modular de documentación institucional.
+8. VUMARI STUDIOS — sitio modular y herramientas locales de subtítulos.
+9. Asistente Python — aplicación local de conocimiento supervisado con Flask y SQLite.
+10. Generador de Expedientes de Personas Usuarias y Consejeros — prototipo modular de documentación institucional.
 
-Las tarjetas diferencian explícitamente productos en producción, proyectos privados, prototipos y laboratorios. No se presentan experimentos como sistemas terminados.
+## Tecnologías y generación
 
-## Arquitectura
+- Python, Jinja2, PyYAML y Poetry para cargar, validar y generar el sitio.
+- HTML5, CSS3 y JavaScript modular para la interfaz pública.
+- pytest y Ruff para pruebas y calidad de código.
+- GitHub Actions y GitHub Pages para integración y publicación.
+- Cloudflare Workers y Cloudflare D1 para la lectura pública de estadísticas agregadas.
+
+La compilación genera `index.html`, `404.html`, `cv.html`, `robots.txt`, `sitemap.xml`, `site.webmanifest`, `humans.txt`, `LICENSE.txt` y `dist/assets/cv-david-vidal-ramirez.pdf`. Los módulos CSS se consolidan en un único archivo; los iconos y las fuentes se sirven localmente; las imágenes de proyectos usan carga diferida y el mapa espera una acción del visitante.
+
+## Arquitectura del repositorio
 
 ```text
-config/             Contenido profesional y recursos fuente
-src/jinja/          Plantillas HTML semánticas
-src/css/            Módulos visuales unidos durante la compilación
-src/js/             Navegación progresiva y accesible
-portfolio/          Carga, validación, recursos y generación pública
-tests/              Pruebas del contenido y la publicación
-main.py             Generador estático
-dist/               Resultado local; no se versiona
+config/              Contenido profesional y configuración visual
+docs/                Verificación, licencias y documentación técnica
+infra/cloudflare/    Worker, esquema D1 y migraciones históricas
+infra/firebase/      Reglas del origen estadístico anterior
+portfolio/           Carga, validación, build y archivos públicos
+src/jinja/           Plantillas HTML semánticas
+src/css/             Estilos modulares y adaptación responsive
+src/js/              Navegación, accesibilidad y estadísticas
+tests/               Pruebas de publicación, PDF, D1 y frontend
+main.py              Punto de entrada del generador
+dist/                Resultado local generado; no se versiona
 ```
 
-El sitio publicado no necesita servidor, base de datos ni framework del lado cliente. Durante la compilación, los módulos CSS se unen en un solo archivo para mantener el código ordenado sin aumentar las solicitudes del navegador. Solo se copian recursos incluidos expresamente en el manifiesto público; las imágenes de proyectos cargan de forma diferida y el mapa interactivo espera una acción del visitante.
+## Estadísticas públicas
 
-La compilación también genera `cv.html` y el PDF profesional completo (`dist/assets/cv-david-vidal-ramirez.pdf`) en formato carta con texto seleccionable, numeración física consecutiva, enlaces navegables, ilustración vectorial de red neuronal y cobertura íntegra de las secciones del currículum: perfil, objetivo, competencias, experiencia reciente, formación académica, historial laboral de 17 periodos ante el IMSS, tecnologías por nivel y grupo, seis credenciales destacadas, 12 cursos complementarios y las 10 fichas técnicas de proyectos.
+El frontend estático consulta un servicio de lectura en Cloudflare Workers respaldado por Cloudflare D1. Por ello, el sitio publicado sigue siendo estático, pero su panel de actividad consume una API externa.
 
-El historial laboral usa nombres y fechas tomados de una constancia IMSS emitida el 15 de marzo de 2025. El documento fuente no se versiona y sus identificadores, salarios, registros patronales y sellos no se publican.
+El panel puede mostrar:
 
-## Requisitos y ejecución
+- sesiones registradas como visitas;
+- clics relevantes y su distribución por acción;
+- tiempo activo medio aproximado;
+- sesiones con actividad reciente como estimación de usuarios en línea;
+- historial agregado de hasta 90 días en UTC.
 
-- Python 3.10 o posterior compatible
-- Poetry
+Una visita representa una sesión aceptada, no una persona única. Una misma persona puede abrir varias sesiones. Un clic indica que se activó un enlace seleccionado, pero no demuestra que una descarga, llamada, correo o conversación externa se haya completado. El tiempo activo se estima con visibilidad e interacción del navegador y no equivale al tiempo total de lectura.
+
+Cuando la API confirma `status: "sin_registros"` y `stats: null`, el panel muestra los diez indicadores en cero. Una falla HTTP, de red o de validación conserva un estado de error; no se transforma en ceros. El historial vacío se presenta con un mensaje explícito y no se rellena con datos simulados.
+
+### Estado de producción
+
+La configuración versionada mantiene `ANALITICAS_ESCRITURA = "deshabilitada"`. El navegador público solo consulta `/stats-d1` y `/history-d1`; el transporte de escritura se limita a `localhost` y respeta DNT y Global Privacy Control. La publicación del frontend no debe interpretarse como fecha de inicio de medición mientras la escritura continúe deshabilitada.
+
+Los identificadores de sesión son UUID seudónimos creados en memoria. El código no los guarda en cookies ni almacenamiento persistente y el esquema no contiene nombres, correos, teléfonos ni direcciones IP. Esto reduce la información tratada, pero no constituye anonimización absoluta: Cloudflare puede procesar metadatos de red como parte de su infraestructura.
+
+La arquitectura, los límites y el procedimiento local para una base nueva se documentan en [Estadísticas públicas](docs/ESTADISTICAS-PUBLICAS.md).
+
+## D1: esquema actual y migraciones
+
+`infra/cloudflare/d1-schema.sql` es la fuente para inicializar una base nueva. Incluye tablas, índices y tres disparadores que acumulan sesiones, clics y tiempo activo.
+
+Los archivos `d1-migration-01-*`, `d1-migration-02-*` y `d1-migration-03-*` conservan el camino histórico para bases antiguas. No deben aplicarse sobre una base creada con el esquema actual ni ejecutarse automáticamente durante el build.
+
+Los datos locales de laboratorio son independientes de producción y nunca deben copiarse a D1 remota.
+
+## Requisitos y ejecución local
+
+- Python 3.10 o posterior compatible.
+- Poetry.
+- Node.js para las pruebas del contrato JavaScript.
+- Chrome o Chromium para generar el PDF.
 
 ```bash
 poetry install
-poetry run pytest
 poetry run ruff check .
+poetry run pytest -q
+node --test tests/test_visitor_dashboard.mjs
 poetry run python main.py
 ```
 
-El resultado se genera en `dist/`. Para revisarlo localmente:
+Para revisar el resultado:
 
 ```bash
 python -m http.server 8000 --directory dist
 ```
 
-## Actualizar contenido
+La sintaxis de los módulos modificados puede comprobarse con:
 
-- Identidad, enlaces y metadatos: `config/profile.yml`
-- Perfil y capacidades: `config/about.yml`
-- Formación y experiencia: `config/resume.yml`
-- Proyectos y estados: `config/projects.yml`
-- Tecnologías utilizadas: `config/technologies.yml`
-- Certificaciones seleccionadas: `config/certifications.yml`
-- Sistema central de iconografía: `config/iconography.yml`
-- Contacto: `config/contact.yml`
-- Navegación: `config/navbar.yml`
+```bash
+node --check src/js/modules/visitor-dashboard.js
+node --check src/js/modules/visitor-analytics.js
+node --check src/js/modules/visitor-session.js
+node --check src/js/modules/visitor-transport.js
+```
 
-Antes de publicar, hay que ejecutar las pruebas. Estas comprueban que existan los diez proyectos, que los datos académicos esenciales estén presentes y que el artefacto no arrastre imágenes o dependencias externas innecesarias.
+## Contenido y evidencias
+
+La identidad y el contenido curricular viven en `config/`. El historial laboral usa nombres y fechas de una constancia IMSS emitida el 15 de marzo de 2025; el documento fuente y sus identificadores sensibles no se versionan. La selección de certificaciones tampoco incorpora folios ni PDF personales al repositorio.
+
+Las representaciones conceptuales de proyectos se identifican como tales. La fotografía profesional, los textos curriculares y los datos personales no se relicencian bajo MIT.
 
 ## Publicación
 
-El flujo de GitHub Actions valida código y pruebas en cada `push` o `pull request` dirigido a `main`. En eventos publicables genera `dist/` y despliega únicamente ese directorio en GitHub Pages.
+GitHub Actions ejecuta Ruff, pytest, la prueba JavaScript y el build en cada `push` o `pull request` dirigido a `main`. GitHub Pages recibe únicamente `dist/` en eventos publicables; una Pull Request valida el proyecto, pero no publica ni fusiona cambios automáticamente.
 
-## Imágenes
+## Documentación relacionada
 
-La fotografía profesional, las representaciones conceptuales y la captura institucional se almacenan con nombres semánticos. Las ilustraciones conceptuales están identificadas como tales y no se presentan como capturas reales. GRID-Chat incorpora además su logotipo original como distintivo de marca.
-
-## Responsividad y archivos públicos
-
-El diseño se prueba desde 280 hasta 1440 píxeles, con puntos de ruptura para móviles estrechos, teléfonos, tabletas y escritorio. La navegación mantiene desplazamiento táctil y los controles sociales conservan logotipo y nombre.
-
-Durante cada build se generan `robots.txt`, `sitemap.xml`, `site.webmanifest`, `humans.txt`, `404.html`, `cv.html`, `LICENSE.txt` y el PDF descargable. `robots.txt` es el nombre estándar; no se mantiene una copia redundante llamada `robot.txt`.
-
-La selección, organización y licencia de los iconos se documentan en `docs/ICONOGRAFIA-Y-LICENCIAS.md`.
+- [Estadísticas públicas](docs/ESTADISTICAS-PUBLICAS.md)
+- [Verificación del contenido](docs/VERIFICACION-CONTENIDO.md)
+- [Iconografía y licencias](docs/ICONOGRAFIA-Y-LICENCIAS.md)
+- [Seguridad y privacidad](SECURITY.md)
+- [Autoría y procedencia](NOTICE.md)
+- [Guía de actualización](CONTRIBUTING.md)
 
 ## Autor y contacto
 
@@ -97,10 +139,6 @@ Creado, diseñado, desarrollado y mantenido por **David Vidal Ramírez**.
 - GitHub: [David650991](https://github.com/David650991)
 - LinkedIn: [David Vidal Ramírez](https://www.linkedin.com/in/david-vidal-ramirez-3ba01b147/)
 
-## Iconografía y rendimiento
-
-Las marcas tecnológicas se almacenan como SVG locales procedentes de Simple Icons y los conceptos funcionales utilizan Lucide. La resolución se centraliza en `config/iconography.yml` y los componentes reutilizables se encuentran en `src/jinja/components/`. El sitio no depende de CDN para mostrar iconos.
-
 ## Licencia
 
-El código propio se distribuye bajo la licencia MIT incluida en [LICENSE](LICENSE). Los datos personales, fotografías, textos curriculares y marcas de terceros no se conceden como material reutilizable. La autoría, procedencia y límites de reutilización se detallan en [NOTICE.md](NOTICE.md), y la cobertura del contenido profesional se documenta en [docs/VERIFICACION-CONTENIDO.md](docs/VERIFICACION-CONTENIDO.md).
+El código propio se distribuye bajo la licencia MIT incluida en [LICENSE](LICENSE). Los datos personales, fotografías, textos curriculares y marcas de terceros quedan fuera de esa concesión. Los detalles se encuentran en [NOTICE.md](NOTICE.md).
