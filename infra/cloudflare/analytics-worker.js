@@ -134,6 +134,8 @@ export default {
         const url = new URL(request.url);
         const path = url.pathname;
         const origin = request.headers.get('Origin') || '';
+        const recordingEnabled =
+            env.ANALYTICAS_ESCRITURA === 'habilitada';
 
         const knownPaths = [
             '/',
@@ -158,8 +160,8 @@ export default {
         if (request.method === 'GET' && path === '/') {
             return jsonResponse({
                 service: 'cv-david-vidal-analytics',
-                status: 'preparacion',
-                recording: false
+                status: recordingEnabled ? 'activo' : 'preparacion',
+                recording: recordingEnabled
             }, 200, origin);
         }
 
@@ -168,7 +170,7 @@ export default {
                 ok: true,
                 service: 'cv-david-vidal-analytics',
                 firebaseConnected: false,
-                recording: false
+                recording: recordingEnabled
             }, 200, origin);
         }
 
@@ -177,7 +179,7 @@ export default {
                 return jsonResponse({
                     ok: false,
                     databaseConnected: false,
-                    recording: false
+                    recording: recordingEnabled
                 }, 503, origin);
             }
 
@@ -190,14 +192,14 @@ export default {
                     ok: true,
                     databaseConnected: true,
                     sessions: result.total,
-                    recording: false
+                    recording: recordingEnabled
                 }, 200, origin);
 
             } catch {
                 return jsonResponse({
                     ok: false,
                     databaseConnected: false,
-                    recording: false
+                    recording: recordingEnabled
                 }, 503, origin);
             }
         }
