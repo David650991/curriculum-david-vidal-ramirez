@@ -14,9 +14,9 @@ const LOCAL_EVENTS_URL = 'http://127.0.0.1:8787/events';
 const PUBLIC_EVENTS_URL =
     'https://cv-david-vidal-analytics.david650991.workers.dev/events';
 
-// Barrera explícita del frontend. Su activación futura requiere
-// además habilitar el Worker mediante una autorización separada.
-const PUBLIC_RECORDING_ENABLED = false;
+// Barrera explícita del frontend. Debe mantenerse coordinada con
+// el Worker y siempre respetar DNT y Global Privacy Control.
+const PUBLIC_RECORDING_ENABLED = true;
 const PUBLIC_ORIGIN = 'https://david650991.github.io';
 
 const CLICK_EVENT_NAME = 'portfolio:analytics';

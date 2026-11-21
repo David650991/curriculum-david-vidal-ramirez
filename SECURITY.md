@@ -12,8 +12,8 @@ Los archivos públicos contienen datos de contacto destinados al currículum. Nu
 
 ## Estadísticas y minimización de datos
 
-- Producción mantiene `ANALYTICAS_ESCRITURA` deshabilitada hasta que exista una autorización expresa.
-- El transporte reconoce localhost y el origen oficial de GitHub Pages, pero los POST públicos permanecen bloqueados por una bandera explícita desactivada.
+- Producción utiliza `ANALYTICAS_ESCRITURA` habilitada conforme a la autorización expresa del responsable del proyecto.
+- El transporte reconoce localhost y el origen oficial de GitHub Pages; los POST públicos se omiten cuando DNT o Global Privacy Control están activos.
 - DNT y Global Privacy Control impiden crear el identificador de sesión y enviar eventos en el laboratorio local.
 - Los UUID de sesión viven en memoria; no se guardan en cookies, `localStorage` ni `sessionStorage`.
 - D1 no almacena nombres, correos, teléfonos ni direcciones IP en las tablas del proyecto.

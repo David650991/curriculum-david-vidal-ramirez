@@ -11,7 +11,7 @@
         }
     ],
     "vars": {
-        "ANALYTICAS_ESCRITURA": "deshabilitada"
+        "ANALYTICAS_ESCRITURA": "habilitada"
     },
     "ratelimits": [
         {
