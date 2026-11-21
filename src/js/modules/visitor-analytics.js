@@ -11,7 +11,10 @@
 
 const EVENT_NAME = 'portfolio:analytics';
 
-function identifyAction(link) {
+export function identifyAction(
+    link,
+    locationObject = window.location
+) {
     const href = link.getAttribute('href') || '';
 
     // Botón existente de descarga del currículum.
@@ -34,7 +37,7 @@ function identifyAction(link) {
 
     // Enlaces de WhatsApp.
     try {
-        const url = new URL(href, window.location.href);
+        const url = new URL(href, locationObject.href);
 
         if (url.hostname.toLowerCase() === 'wa.me') {
             return 'whatsapp_click';
@@ -43,7 +46,7 @@ function identifyAction(link) {
         // Clics en enlaces de navegación interna.
         if (
             link.hasAttribute('data-page-link') &&
-            url.origin === window.location.origin
+            url.origin === locationObject.origin
         ) {
             return 'navigation_click';
         }

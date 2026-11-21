@@ -330,6 +330,12 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
     assert "overflow-wrap: anywhere" in (project_root / "src/css/base.css").read_text(encoding="utf-8")
     assert ".profile-social .social-link span { display: none; }" not in responsive_css
     assert ".career-grid, .learning-paths .career-grid { grid-template-columns: 1fr; }" in responsive_css
+    projects_css = (project_root / "src/css/projects.css").read_text(encoding="utf-8")
+    assert "flex-wrap: wrap" in projects_css
+    assert "min-height: 44px" in projects_css
+    assert "overflow-wrap: anywhere" in projects_css
+    assert "flex: 1 1 10rem" in projects_css
+    assert ".project-links-primary a { flex-basis: 100%; }" in responsive_css
     base_css = (project_root / "src/css/base.css").read_text(encoding="utf-8")
     assert ".project-card, .ecosystem-card, .resume-card" not in base_css
     assert ".page:not([hidden]) .project-card" not in base_css

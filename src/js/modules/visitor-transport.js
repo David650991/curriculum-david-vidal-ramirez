@@ -6,8 +6,9 @@
  * Conecta los eventos existentes del navegador
  * con Cloudflare Workers y D1.
  *
- * Fase actual: pruebas locales y preparación pública.
- * No almacena identificadores en cookies ni storage.
+ * La sesión aceptada se conserva únicamente en sessionStorage
+ * para que una recarga de la misma pestaña no cree otra visita.
+ * No utiliza cookies ni localStorage.
  */
 
 const LOCAL_EVENTS_URL = 'http://127.0.0.1:8787/events';
@@ -21,6 +22,8 @@ const PUBLIC_ORIGIN = 'https://david650991.github.io';
 
 const CLICK_EVENT_NAME = 'portfolio:analytics';
 const ACTIVITY_EVENT_NAME = 'portfolio:session-activity';
+export const ACCEPTED_EVENT_NAME = 'portfolio:analytics-accepted';
+export const TAB_SESSION_KEY = 'portfolio:analytics:tab-session:v1';
 
 const ALLOWED_ACTIONS = new Set([
     'cv_download_click',
@@ -32,6 +35,65 @@ const ALLOWED_ACTIONS = new Set([
 ]);
 
 const MAX_ACTIVE_MS = 86_400_000;
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+export function readTabSession(storageObject) {
+    if (!storageObject) return null;
+
+    try {
+        const stored = JSON.parse(
+            storageObject.getItem(TAB_SESSION_KEY)
+        );
+
+        if (
+            !stored ||
+            !UUID_PATTERN.test(stored.sessionId) ||
+            !Number.isSafeInteger(stored.activeMs) ||
+            stored.activeMs < 0 ||
+            stored.activeMs > MAX_ACTIVE_MS
+        ) {
+            return null;
+        }
+
+        return stored;
+    } catch {
+        return null;
+    }
+}
+
+function writeTabSession(storageObject, sessionId, activeMs) {
+    if (!storageObject) return;
+
+    try {
+        storageObject.setItem(TAB_SESSION_KEY, JSON.stringify({
+            sessionId,
+            activeMs
+        }));
+    } catch {
+        // El transporte sigue funcionando en memoria si el navegador
+        // bloquea sessionStorage.
+    }
+}
+
+function clearTabSession(storageObject) {
+    if (!storageObject) return;
+
+    try {
+        storageObject.removeItem(TAB_SESSION_KEY);
+    } catch {
+        // No se fuerza ningún acceso si el almacenamiento está bloqueado.
+    }
+}
+
+function resolveSessionStorage(windowObject, suppliedStorage) {
+    if (suppliedStorage !== undefined) return suppliedStorage;
+
+    try {
+        return windowObject.sessionStorage ?? null;
+    } catch {
+        return null;
+    }
+}
 
 /**
  * Detecta preferencias de privacidad del navegador.
@@ -94,6 +156,10 @@ export function initVisitorTransport(options = {}) {
     const documentObject = options.documentObject ?? document;
     const navigatorObject = options.navigatorObject ?? navigator;
     const cryptoObject = options.cryptoObject ?? windowObject.crypto;
+    const storageObject = resolveSessionStorage(
+        windowObject,
+        options.sessionStorageObject
+    );
     const transport = resolveTransportConfig(
         windowObject.location,
         options.publicRecordingEnabled ?? PUBLIC_RECORDING_ENABLED
@@ -106,6 +172,7 @@ export function initVisitorTransport(options = {}) {
     // Respetar la preferencia de no seguimiento.
     // No generar identificadores ni enviar estadísticas.
     if (privacyOptOutRequested(navigatorObject, windowObject)) {
+        clearTabSession(storageObject);
         return;
     }
 
@@ -120,11 +187,14 @@ export function initVisitorTransport(options = {}) {
         return;
     }
 
-    const sessionId = cryptoObject.randomUUID();
+    const storedSession = readTabSession(storageObject);
+    const sessionId = storedSession?.sessionId ??
+        cryptoObject.randomUUID();
+    const sessionActiveBaseMs = storedSession?.activeMs ?? 0;
     const handledEvents = new WeakSet();
 
-    let lastReportedActiveMs = -1;
-    let highestPendingActiveMs = -1;
+    let lastReportedActiveMs = sessionActiveBaseMs;
+    let highestPendingActiveMs = sessionActiveBaseMs;
 
     let sessionStarted = false;
     let sessionStartPromise = null;
@@ -183,6 +253,11 @@ export function initVisitorTransport(options = {}) {
                 .then((accepted) => {
                     if (accepted) {
                         sessionStarted = true;
+                        writeTabSession(
+                            storageObject,
+                            sessionId,
+                            lastReportedActiveMs
+                        );
                     }
 
                     return accepted;
@@ -218,6 +293,27 @@ export function initVisitorTransport(options = {}) {
             return sendEvent('click', {
                 eventId,
                 action
+            }).then((accepted) => {
+                const EventConstructor =
+                    windowObject.CustomEvent ??
+                    globalThis.CustomEvent;
+
+                if (
+                    accepted &&
+                    typeof windowObject.dispatchEvent === 'function' &&
+                    typeof EventConstructor === 'function'
+                ) {
+                    windowObject.dispatchEvent(
+                        new EventConstructor(ACCEPTED_EVENT_NAME, {
+                            detail: {
+                                type: 'click',
+                                action
+                            }
+                        })
+                    );
+                }
+
+                return accepted;
             });
         });
     }
@@ -240,7 +336,7 @@ export function initVisitorTransport(options = {}) {
         }
 
         const activeMs = Math.min(
-            Math.floor(reportedActiveMs),
+            sessionActiveBaseMs + Math.floor(reportedActiveMs),
             MAX_ACTIVE_MS
         );
 
@@ -268,6 +364,11 @@ export function initVisitorTransport(options = {}) {
                     lastReportedActiveMs = Math.max(
                         lastReportedActiveMs,
                         activeMs
+                    );
+                    writeTabSession(
+                        storageObject,
+                        sessionId,
+                        lastReportedActiveMs
                     );
                 }
             }).finally(() => {
@@ -300,7 +401,7 @@ export function initVisitorTransport(options = {}) {
         handleActivity
     );
 
-    // Una visita corresponde, por ahora,
-    // a una carga de página con un UUID nuevo.
+    // El Worker confirma la sesión antes de conservarla en la pestaña.
+    // Una recarga reenvía el mismo UUID de forma idempotente.
     void ensureSessionStarted();
 }

@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 const {
+    ACCEPTED_EVENT_NAME,
+    TAB_SESSION_KEY,
     initVisitorTransport,
     privacyOptOutRequested,
     resolveTransportConfig
@@ -27,12 +29,39 @@ class FakeTarget {
         }
         return event;
     }
+
+    dispatchEvent(event) {
+        for (const listener of this.listeners.get(event.type) ?? []) {
+            listener(event);
+        }
+        return true;
+    }
+}
+
+class FakeStorage {
+    constructor() {
+        this.values = new Map();
+    }
+
+    getItem(key) {
+        return this.values.get(key) ?? null;
+    }
+
+    setItem(key, value) {
+        this.values.set(key, String(value));
+    }
+
+    removeItem(key) {
+        this.values.delete(key);
+    }
 }
 
 function createRuntime({
     origin = 'http://127.0.0.1:8000',
     fetchImplementation = async () => ({ ok: true, status: 200 }),
-    navigatorObject = {}
+    navigatorObject = {},
+    sessionStorageObject = new FakeStorage(),
+    cryptoObject: suppliedCryptoObject
 } = {}) {
     const url = new URL(origin);
     const windowObject = new FakeTarget({
@@ -42,6 +71,13 @@ function createRuntime({
     const documentObject = new FakeTarget();
     const requests = [];
     let uuidCount = 0;
+
+    windowObject.CustomEvent = class {
+        constructor(type, options = {}) {
+            this.type = type;
+            this.detail = options.detail;
+        }
+    };
 
     documentObject.querySelector = () => ({});
     windowObject.fetch = async (requestUrl, options) => {
@@ -53,7 +89,7 @@ function createRuntime({
         return fetchImplementation(requestUrl, options, requests.length);
     };
 
-    const cryptoObject = {
+    const cryptoObject = suppliedCryptoObject ?? {
         randomUUID() {
             uuidCount += 1;
             return uuidCount === 1
@@ -67,6 +103,7 @@ function createRuntime({
         documentObject,
         navigatorObject,
         cryptoObject,
+        sessionStorageObject,
         requests,
         uuidCount: () => uuidCount
     };
@@ -126,7 +163,15 @@ test('DNT y GPC impiden identificadores y solicitudes', async () => {
         { doNotTrack: '1' },
         { globalPrivacyControl: true }
     ]) {
-        const runtime = createRuntime({ navigatorObject });
+        const storage = new FakeStorage();
+        storage.setItem(TAB_SESSION_KEY, JSON.stringify({
+            sessionId: '11111111-1111-4111-8111-111111111111',
+            activeMs: 5000
+        }));
+        const runtime = createRuntime({
+            navigatorObject,
+            sessionStorageObject: storage
+        });
 
         assert.equal(
             privacyOptOutRequested(
@@ -141,6 +186,103 @@ test('DNT y GPC impiden identificadores y solicitudes', async () => {
 
         assert.equal(runtime.uuidCount(), 0);
         assert.deepEqual(runtime.requests, []);
+        assert.equal(storage.getItem(TAB_SESSION_KEY), null);
+    }
+});
+
+test('una recarga conserva la sesión aceptada de la pestaña', async () => {
+    const storage = new FakeStorage();
+    const first = createRuntime({ sessionStorageObject: storage });
+
+    initVisitorTransport(first);
+    await flushPromises();
+
+    const second = createRuntime({ sessionStorageObject: storage });
+    initVisitorTransport(second);
+    await flushPromises();
+
+    assert.equal(first.uuidCount(), 1);
+    assert.equal(second.uuidCount(), 0);
+    assert.equal(
+        first.requests[0].payload.sessionId,
+        second.requests[0].payload.sessionId
+    );
+});
+
+test('el tiempo activo continúa de forma acumulada después de recargar', async () => {
+    const storage = new FakeStorage();
+    const first = createRuntime({ sessionStorageObject: storage });
+
+    initVisitorTransport(first);
+    await flushPromises();
+    first.windowObject.dispatch('portfolio:session-activity', {
+        activeMs: 5000
+    });
+    await flushPromises();
+
+    const second = createRuntime({ sessionStorageObject: storage });
+    initVisitorTransport(second);
+    await flushPromises();
+    second.windowObject.dispatch('portfolio:session-activity', {
+        activeMs: 3000
+    });
+    await flushPromises();
+
+    assert.equal(second.requests[1].payload.activeMs, 8000);
+});
+
+test('sessionStorage bloqueado conserva un transporte funcional en memoria', async () => {
+    const blockedStorage = {
+        getItem() { throw new Error('bloqueado'); },
+        setItem() { throw new Error('bloqueado'); },
+        removeItem() { throw new Error('bloqueado'); }
+    };
+    const runtime = createRuntime({
+        sessionStorageObject: blockedStorage
+    });
+
+    initVisitorTransport(runtime);
+    await flushPromises();
+
+    assert.equal(runtime.requests[0].payload.type, 'session_start');
+    assert.equal(runtime.uuidCount(), 1);
+});
+
+test('un getter de sessionStorage bloqueado no interrumpe la sesión', async () => {
+    const runtime = createRuntime();
+    delete runtime.sessionStorageObject;
+    Object.defineProperty(runtime.windowObject, 'sessionStorage', {
+        get() { throw new Error('bloqueado'); }
+    });
+
+    initVisitorTransport(runtime);
+    await flushPromises();
+
+    assert.equal(runtime.requests[0].payload.type, 'session_start');
+});
+
+test('solo un clic aceptado solicita actualizar el tablero', async () => {
+    for (const accepted of [true, false]) {
+        const runtime = createRuntime({
+            fetchImplementation: async (_url, _options, index) => ({
+                ok: index === 1 || accepted,
+                status: index === 1 || accepted ? 200 : 503
+            })
+        });
+        let refreshEvents = 0;
+        runtime.windowObject.addEventListener(
+            ACCEPTED_EVENT_NAME,
+            () => { refreshEvents += 1; }
+        );
+
+        initVisitorTransport(runtime);
+        await flushPromises();
+        runtime.windowObject.dispatch('portfolio:analytics', {
+            action: 'phone_click'
+        });
+        await flushPromises();
+
+        assert.equal(refreshEvents, accepted ? 1 : 0);
     }
 });
 

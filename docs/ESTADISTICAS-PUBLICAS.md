@@ -42,7 +42,7 @@ Una respuesta HTTP incorrecta, JSON inválido o contador negativo produce un est
 
 ## Privacidad y límites
 
-El esquema no incluye nombres, correos, teléfonos ni direcciones IP. Cada sesión usa un UUID seudónimo creado en memoria, sin cookies ni almacenamiento persistente. DNT y Global Privacy Control bloquean el transporte local.
+El esquema no incluye nombres, correos, teléfonos ni direcciones IP. Cada sesión usa un UUID seudónimo que, después de ser aceptado por el Worker, se conserva junto con el tiempo activo acumulado únicamente en `sessionStorage` por pestaña. Así una recarga reutiliza la sesión sin cookies ni `localStorage`; al cerrar la pestaña se descarta. Si `sessionStorage` no está disponible, el transporte continúa en memoria. DNT y Global Privacy Control bloquean el transporte y eliminan cualquier sesión guardada.
 
 La seudonimización no equivale a anonimización absoluta. Cloudflare puede recibir metadatos de red por operar la infraestructura. Los límites de origen, frecuencia, tamaño, sesión y eventos reducen abuso, pero no eliminan tráfico automatizado ni permiten deducir personas únicas.
 
