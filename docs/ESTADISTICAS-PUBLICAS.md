@@ -17,7 +17,7 @@ GitHub Pages
          Cloudflare D1
 ```
 
-El panel público es de lectura. `visitor-analytics.js` identifica acciones y `visitor-session.js` estima actividad, pero `visitor-transport.js` solo envía eventos cuando el sitio se ejecuta en `localhost` o `127.0.0.1`. La configuración de producción mantiene `ANALITICAS_ESCRITURA = "deshabilitada"`.
+El panel público es de lectura. `visitor-analytics.js` identifica acciones y `visitor-session.js` estima actividad, pero `visitor-transport.js` solo envía eventos cuando el sitio se ejecuta en `localhost` o `127.0.0.1`. La configuración de producción mantiene `ANALYTICAS_ESCRITURA = "deshabilitada"`.
 
 ## Contrato de lectura
 

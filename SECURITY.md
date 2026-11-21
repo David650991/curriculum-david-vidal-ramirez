@@ -12,7 +12,7 @@ Los archivos públicos contienen datos de contacto destinados al currículum. Nu
 
 ## Estadísticas y minimización de datos
 
-- Producción mantiene `ANALITICAS_ESCRITURA` deshabilitada hasta que exista una autorización expresa.
+- Producción mantiene `ANALYTICAS_ESCRITURA` deshabilitada hasta que exista una autorización expresa.
 - El transporte de eventos del navegador solo funciona en `localhost` o `127.0.0.1`.
 - DNT y Global Privacy Control impiden crear el identificador de sesión y enviar eventos en el laboratorio local.
 - Los UUID de sesión viven en memoria; no se guardan en cookies, `localStorage` ni `sessionStorage`.

@@ -67,7 +67,7 @@ Cuando la API confirma `status: "sin_registros"` y `stats: null`, el panel muest
 
 ### Estado de producción
 
-La configuración versionada mantiene `ANALITICAS_ESCRITURA = "deshabilitada"`. El navegador público solo consulta `/stats-d1` y `/history-d1`; el transporte de escritura se limita a `localhost` y respeta DNT y Global Privacy Control. La publicación del frontend no debe interpretarse como fecha de inicio de medición mientras la escritura continúe deshabilitada.
+La configuración versionada mantiene `ANALYTICAS_ESCRITURA = "deshabilitada"`. El navegador público solo consulta `/stats-d1` y `/history-d1`; el transporte de escritura se limita a `localhost` y respeta DNT y Global Privacy Control. La publicación del frontend no debe interpretarse como fecha de inicio de medición mientras la escritura continúe deshabilitada.
 
 Los identificadores de sesión son UUID seudónimos creados en memoria. El código no los guarda en cookies ni almacenamiento persistente y el esquema no contiene nombres, correos, teléfonos ni direcciones IP. Esto reduce la información tratada, pero no constituye anonimización absoluta: Cloudflare puede procesar metadatos de red como parte de su infraestructura.
 
