@@ -77,6 +77,115 @@ async function responseJson(response) {
     };
 }
 
+function createGetRequest(path) {
+    return new Request(`https://worker.example${path}`, {
+        headers: {
+            Origin: ALLOWED_ORIGIN
+        }
+    });
+}
+
+function createHealthDatabase(total = 0) {
+    return {
+        prepare() {
+            return {
+                async first() {
+                    return { total };
+                }
+            };
+        }
+    };
+}
+
+test('los GET reflejan la escritura habilitada y D1 disponible', async () => {
+    const runtime = createEnvironment({
+        recording: 'habilitada',
+        database: createHealthDatabase(7)
+    });
+    const root = await responseJson(await worker.fetch(
+        createGetRequest('/'),
+        runtime.env
+    ));
+    const health = await responseJson(await worker.fetch(
+        createGetRequest('/health'),
+        runtime.env
+    ));
+    const database = await responseJson(await worker.fetch(
+        createGetRequest('/db-health'),
+        runtime.env
+    ));
+
+    assert.deepEqual(root, {
+        status: 200,
+        body: {
+            service: 'cv-david-vidal-analytics',
+            status: 'activo',
+            recording: true
+        }
+    });
+    assert.equal(health.status, 200);
+    assert.equal(health.body.recording, true);
+    assert.deepEqual(database, {
+        status: 200,
+        body: {
+            ok: true,
+            databaseConnected: true,
+            sessions: 7,
+            recording: true
+        }
+    });
+});
+
+test('los GET reflejan la escritura deshabilitada sin ocultar D1', async () => {
+    const runtime = createEnvironment({
+        recording: 'deshabilitada',
+        database: createHealthDatabase(3)
+    });
+    const root = await responseJson(await worker.fetch(
+        createGetRequest('/'),
+        runtime.env
+    ));
+    const health = await responseJson(await worker.fetch(
+        createGetRequest('/health'),
+        runtime.env
+    ));
+    const database = await responseJson(await worker.fetch(
+        createGetRequest('/db-health'),
+        runtime.env
+    ));
+
+    assert.equal(root.status, 200);
+    assert.equal(root.body.status, 'preparacion');
+    assert.equal(root.body.recording, false);
+    assert.equal(health.status, 200);
+    assert.equal(health.body.recording, false);
+    assert.equal(database.status, 200);
+    assert.equal(database.body.databaseConnected, true);
+    assert.equal(database.body.sessions, 3);
+    assert.equal(database.body.recording, false);
+});
+
+test('db-health separa escritura habilitada de D1 no disponible', async () => {
+    const runtime = createEnvironment({
+        recording: 'habilitada'
+    });
+    runtime.env.DB = undefined;
+
+    const database = await responseJson(await worker.fetch(
+        createGetRequest('/db-health'),
+        runtime.env
+    ));
+
+    assert.deepEqual(database, {
+        status: 503,
+        body: {
+            ok: false,
+            databaseConnected: false,
+            recording: true
+        }
+    });
+});
+
 test('las claves separan centro de datos, inicios y sesiones', () => {
     const request = createRequest({});
 
