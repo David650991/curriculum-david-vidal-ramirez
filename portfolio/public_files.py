@@ -38,7 +38,7 @@ def write_public_files(output: Path, site: dict[str, Any], user: dict[str, Any])
         "/* SITIO */\n"
         "Tecnologías: Python, Jinja2, YAML, HTML, CSS y JavaScript\n"
         "Estadísticas: lectura pública mediante Cloudflare Workers y D1\n"
-        "Registro de visitantes: deshabilitado\n"
+        "Registro de visitantes: habilitado con respeto a DNT y GPC\n"
         f"Idioma: {site['language']}\n"
         f"Licencia: {site['license']}\n",
         encoding="utf-8",

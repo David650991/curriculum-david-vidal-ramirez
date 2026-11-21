@@ -163,7 +163,8 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
     assert 'type="module"' in html
     assert 'data-visitor-analytics' in html
     assert html.count('data-stat-') == 10
-    assert "La medición real permanece" in html
+    assert "La medición está activa" in html
+    assert "respeta las preferencias DNT y GPC" in html
     assert "15 de junio de 1991" not in html
     for sensitive_label in ("NSS:", "CURP:", "Registro Patronal", "Salario Base"):
         assert sensitive_label not in html
@@ -175,7 +176,7 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
     assert "Nombre: David Vidal Ramírez" in humans
     assert "Rol: Creador, diseñador, desarrollador y mantenedor" in humans
     assert "Estadísticas: lectura pública mediante Cloudflare Workers y D1" in humans
-    assert "Registro de visitantes: deshabilitado" in humans
+    assert "Registro de visitantes: habilitado con respeto a DNT y GPC" in humans
     license_text = (output / "LICENSE.txt").read_text(encoding="utf-8")
     assert "Copyright (c) 2025-2026 David Vidal Ramírez" in license_text
 
