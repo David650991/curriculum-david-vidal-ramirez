@@ -17,9 +17,9 @@ GitHub Pages
          Cloudflare D1
 ```
 
-El panel público es de lectura. `visitor-analytics.js` identifica acciones y `visitor-session.js` estima actividad. `visitor-transport.js` mantiene localhost para pruebas y reconoce el origen oficial de GitHub Pages, pero `PUBLIC_RECORDING_ENABLED` permanece en `false`. La configuración del Worker también conserva `ANALYTICAS_ESCRITURA = "deshabilitada"`.
+El panel público es de lectura. `visitor-analytics.js` identifica acciones y `visitor-session.js` estima actividad. `visitor-transport.js` mantiene localhost para pruebas y reconoce el origen oficial de GitHub Pages. La configuración autorizada utiliza `PUBLIC_RECORDING_ENABLED = true` y `ANALYTICAS_ESCRITURA = "habilitada"`.
 
-Las dos barreras deben autorizarse de forma independiente. Mientras cualquiera permanezca deshabilitada, el sistema no está listo para aceptar eventos públicos.
+Las dos barreras se despliegan de forma coordinada. DNT y Global Privacy Control impiden crear el UUID de sesión y enviar eventos, aunque ambas barreras estén habilitadas.
 
 ## Contrato de lectura
 
@@ -91,11 +91,11 @@ Las rutas públicas son:
 - `GET /stats-d1`;
 - `GET /history-d1`.
 
-La fecha de despliegue del frontend no es el inicio de medición. Ese inicio solo puede registrarse cuando se autorice la escritura, se despliegue la configuración correspondiente y se confirme el primer evento real. Mientras `recording` sea `false`, el sistema está publicado para lectura y validación, no para recopilación.
+La fecha de despliegue del frontend no es por sí sola el inicio de medición. Ese inicio se registra cuando D1 confirma el primer evento público legítimo. Mientras `recording` sea `false`, el sistema está publicado para lectura y validación, no para recopilación.
 
-## Activación futura propuesta
+## Procedimiento de activación
 
-Este procedimiento no se ejecuta como parte de la preparación:
+Este procedimiento exige autorización expresa:
 
 1. Confirmar nuevamente que D1 conserva sus acumulados y crear un respaldo operativo.
 2. Repetir las pruebas locales del Worker, transporte y esquema.

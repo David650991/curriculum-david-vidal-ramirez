@@ -77,20 +77,20 @@ async function flushPromises() {
     await new Promise((resolve) => setImmediate(resolve));
 }
 
-test('el transporte público permanece deshabilitado por defecto', () => {
+test('el transporte público está habilitado por defecto', () => {
     const config = resolveTransportConfig({
         hostname: 'david650991.github.io',
         origin: 'https://david650991.github.io'
     });
 
     assert.deepEqual(config, {
-        enabled: false,
+        enabled: true,
         environment: 'public',
         eventsUrl: 'https://cv-david-vidal-analytics.david650991.workers.dev/events'
     });
 });
 
-test('GitHub Pages no genera UUID ni POST mientras está deshabilitado', async () => {
+test('GitHub Pages inicia una sesión cuando no hay exclusión de privacidad', async () => {
     const runtime = createRuntime({
         origin: 'https://david650991.github.io'
     });
@@ -98,8 +98,13 @@ test('GitHub Pages no genera UUID ni POST mientras está deshabilitado', async (
     initVisitorTransport(runtime);
     await flushPromises();
 
-    assert.equal(runtime.uuidCount(), 0);
-    assert.deepEqual(runtime.requests, []);
+    assert.equal(runtime.uuidCount(), 1);
+    assert.equal(runtime.requests.length, 1);
+    assert.equal(runtime.requests[0].payload.type, 'session_start');
+    assert.equal(
+        runtime.requests[0].url,
+        'https://cv-david-vidal-analytics.david650991.workers.dev/events'
+    );
 });
 
 test('localhost conserva el Worker local para pruebas', async () => {

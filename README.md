@@ -67,11 +67,11 @@ Cuando la API confirma `status: "sin_registros"` y `stats: null`, el panel muest
 
 ### Estado de producción
 
-La configuración versionada mantiene `ANALYTICAS_ESCRITURA = "deshabilitada"`. El navegador público solo consulta `/stats-d1` y `/history-d1`; el transporte reconoce el origen oficial y el endpoint `/events`, pero una bandera explícita conserva desactivados los POST públicos. Localhost continúa disponible para pruebas aisladas. DNT y Global Privacy Control se comprueban antes de generar un identificador de sesión.
+La configuración de producción utiliza `ANALYTICAS_ESCRITURA = "habilitada"` y el navegador público envía eventos al endpoint `/events`. Localhost continúa disponible para pruebas aisladas. DNT y Global Privacy Control se comprueban antes de generar un identificador de sesión o realizar una solicitud.
 
 El Worker aplica un límite general por centro de datos de Cloudflare y un segundo ámbito que separa inicios de sesión de eventos posteriores. No utiliza direcciones IP como clave. Los eventos de una sesión comparten un ámbito seudónimo, pero el UUID procede del cliente y puede rotarse; por ello, este control se combina con sesión previa, idempotencia y límites en D1. `Origin`, CORS y el limitador reducen abuso, pero no autentican visitantes ni eliminan completamente los bots.
 
-La publicación del frontend no debe interpretarse como fecha de inicio de medición mientras ambas barreras de escritura continúen deshabilitadas.
+La fecha efectiva de inicio de medición debe registrarse cuando D1 confirme el primer evento público legítimo; la publicación por sí sola no demuestra que exista una visita.
 
 Los identificadores de sesión son UUID seudónimos creados en memoria. El código no los guarda en cookies ni almacenamiento persistente y el esquema no contiene nombres, correos, teléfonos ni direcciones IP. Esto reduce la información tratada, pero no constituye anonimización absoluta: Cloudflare puede procesar metadatos de red como parte de su infraestructura.
 

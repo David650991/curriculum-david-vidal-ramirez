@@ -17,4 +17,4 @@ Las capturas de proyectos deben ocultar información privada y representar el pr
 
 Los cambios en el Worker, el esquema D1 o sus migraciones requieren pruebas locales aisladas. No se prueban escrituras contra producción y las migraciones históricas no se aplican a una base nueva creada con `d1-schema.sql`.
 
-Preparar el endpoint público no autoriza activarlo. La bandera del frontend y `ANALYTICAS_ESCRITURA` del Worker deben permanecer deshabilitadas hasta que exista una aprobación específica para cada despliegue.
+La bandera del frontend y `ANALYTICAS_ESCRITURA` del Worker solo pueden modificarse mediante una aprobación específica y un despliegue coordinado. Cualquier reversión debe deshabilitar primero el Worker y conservar todas las filas de D1.
