@@ -2,6 +2,10 @@ import { initNavigation } from './modules/navigation.js';
 import { initPointerGlow } from './modules/pointer-glow.js';
 import { initProjectFilters } from './modules/project-filters.js';
 import { initMapControls } from './modules/map-controls.js';
+import { initVisitorAnalytics } from './modules/visitor-analytics.js';
+import { initVisitorSession } from './modules/visitor-session.js';
+import { initVisitorDashboard } from './modules/visitor-dashboard.js';
+import { initVisitorTransport } from './modules/visitor-transport.js';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -9,7 +13,10 @@ initNavigation();
 initProjectFilters();
 initPointerGlow(reducedMotion);
 initMapControls();
-
+initVisitorAnalytics();
+initVisitorSession();
+initVisitorDashboard();
+initVisitorTransport();
 const startVisualNetwork = async () => {
   const { initNeuralNetwork } = await import('./modules/neural-network.js');
   initNeuralNetwork(document.querySelector('[data-neural-canvas]'), reducedMotion);

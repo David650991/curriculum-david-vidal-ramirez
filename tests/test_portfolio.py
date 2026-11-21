@@ -161,6 +161,9 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
     assert 'rel="preload"' in html
     assert "Descargar CV" in html
     assert 'type="module"' in html
+    assert 'data-visitor-analytics' in html
+    assert html.count('data-stat-') == 10
+    assert "La medición real permanece" in html
     assert "15 de junio de 1991" not in html
     for sensitive_label in ("NSS:", "CURP:", "Registro Patronal", "Salario Base"):
         assert sensitive_label not in html
@@ -171,6 +174,8 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
     humans = (output / "humans.txt").read_text(encoding="utf-8")
     assert "Nombre: David Vidal Ramírez" in humans
     assert "Rol: Creador, diseñador, desarrollador y mantenedor" in humans
+    assert "Estadísticas: lectura pública mediante Cloudflare Workers y D1" in humans
+    assert "Registro de visitantes: deshabilitado" in humans
     license_text = (output / "LICENSE.txt").read_text(encoding="utf-8")
     assert "Copyright (c) 2025-2026 David Vidal Ramírez" in license_text
 
@@ -290,6 +295,7 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
     for path in context["certifications"]["PATHS"]:
         for course in path["items"]:
             assert course in normalized_pdf_text
+
     expected_javascript = {
         "script.js",
         "modules/navigation.js",
@@ -297,7 +303,14 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
         "modules/neural-network.js",
         "modules/pointer-glow.js",
         "modules/project-filters.js",
+        "modules/visitor-analytics.js",
+        "modules/visitor-session.js",
+        "modules/firebase-config.js",
+        "modules/firebase-client.js",
+        "modules/visitor-dashboard.js",
+        "modules/visitor-transport.js",
     }
+
     published_javascript = {
         path.relative_to(output / "assets/js").as_posix()
         for path in (output / "assets/js").rglob("*.js")
@@ -464,3 +477,21 @@ def test_all_professional_content_is_published(project_root: Path, tmp_path: Pat
             continue
         local_path = urlsplit(reference).path
         assert (output / local_path).is_file(), f"Referencia local rota: {reference}"
+
+
+def test_project_documentation_links_are_consistent(
+    project_root: Path,
+) -> None:
+    readme = (project_root / "README.md").read_text(encoding="utf-8")
+    documentation = {
+        "CONTRIBUTING.md",
+        "NOTICE.md",
+        "SECURITY.md",
+        "docs/ESTADISTICAS-PUBLICAS.md",
+        "docs/ICONOGRAFIA-Y-LICENCIAS.md",
+        "docs/VERIFICACION-CONTENIDO.md",
+    }
+
+    for relative_path in documentation:
+        assert (project_root / relative_path).is_file()
+        assert f"]({relative_path})" in readme

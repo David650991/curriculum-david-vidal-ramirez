@@ -1,0 +1,191 @@
+
+<section class="visitor-analytics"
+         aria-labelledby="visitor-analytics-title"
+         data-visitor-analytics>
+
+  <header class="visitor-analytics__header">
+    <div>
+      <p class="visitor-analytics__eyebrow">// actividad del portafolio</p>
+      <h2 id="visitor-analytics-title">Estadísticas públicas</h2>
+      <p>Actividad de navegación y contacto registrada en el sitio.</p>
+    </div>
+    <span class="visitor-analytics__state" data-analytics-status>
+      Medición en preparación
+    </span>
+  </header>
+
+  <div class="visitor-analytics__grid">
+
+    <button class="visitor-analytics__metric" type="button">
+      <span class="visitor-analytics__label">Visitas</span>
+      <strong data-stat-visits>—</strong>
+      <span class="visitor-analytics__tip">
+        Sesiones registradas desde dispositivos compatibles.
+        No equivale a personas únicas.
+      </span>
+    </button>
+
+    <button class="visitor-analytics__metric" type="button">
+      <span class="visitor-analytics__label">Clics relevantes</span>
+      <strong data-stat-clicks>—</strong>
+      <span class="visitor-analytics__tip">
+        Interacciones registradas en descarga del CV,
+        contacto y otras acciones seleccionadas.
+      </span>
+    </button>
+
+    <button class="visitor-analytics__metric" type="button">
+      <span class="visitor-analytics__label">Tiempo activo medio</span>
+      <strong data-stat-duration>—</strong>
+      <span class="visitor-analytics__tip">
+        Tiempo aproximado de actividad con la página
+        visible. No incluye necesariamente toda la sesión.
+      </span>
+    </button>
+
+    <button class="visitor-analytics__metric" type="button">
+      <span class="visitor-analytics__label">En línea</span>
+      <strong data-stat-online>—</strong>
+      <span class="visitor-analytics__tip">
+        Conexiones activas aproximadas.
+        Una misma persona puede abrir varias sesiones.
+      </span>
+    </button>
+
+  </div>
+
+  <div class="visitor-analytics__chart"
+       aria-label="Gráfica de interacciones del portafolio">
+
+    <h3>Interacciones por acción</h3>
+
+    <div class="visitor-analytics__bar-row">
+      <span>Descargar CV</span>
+      <div class="visitor-analytics__track" aria-hidden="true">
+        <span data-bar-download></span>
+      </div>
+      <strong data-stat-downloads>—</strong>
+    </div>
+
+    <div class="visitor-analytics__bar-row">
+      <span>WhatsApp</span>
+      <div class="visitor-analytics__track" aria-hidden="true">
+        <span data-bar-whatsapp></span>
+      </div>
+      <strong data-stat-whatsapp>—</strong>
+    </div>
+
+    <div class="visitor-analytics__bar-row">
+      <span>Correo electrónico</span>
+      <div class="visitor-analytics__track" aria-hidden="true">
+        <span data-bar-email></span>
+      </div>
+      <strong data-stat-email>—</strong>
+    </div>
+
+    <div class="visitor-analytics__bar-row">
+      <span>Llamadas telefónicas</span>
+      <div class="visitor-analytics__track" aria-hidden="true">
+        <span data-bar-phone></span>
+      </div>
+      <strong data-stat-phone>—</strong>
+    </div>
+
+    <div class="visitor-analytics__bar-row">
+      <span>Navegación interna</span>
+      <div class="visitor-analytics__track" aria-hidden="true">
+        <span data-bar-navigation></span>
+      </div>
+      <strong data-stat-navigation>—</strong>
+    </div>
+
+    <div class="visitor-analytics__bar-row">
+      <span>Enlaces de proyectos</span>
+      <div class="visitor-analytics__track" aria-hidden="true">
+        <span data-bar-projects></span>
+      </div>
+      <strong data-stat-projects>—</strong>
+    </div>
+
+  </div>
+
+  <!-- Historial de estadísticas de Cloudflare D1 -->
+  <div class="visitor-analytics__history"
+       data-analytics-history
+       hidden>
+
+    <div class="visitor-analytics__history-header">
+      <h3>Historial de actividad</h3>
+      <p data-history-status aria-live="polite">
+        Consultando estadísticas históricas...
+      </p>
+    </div>
+
+    <div class="visitor-analytics__history-grid">
+
+      <section class="visitor-analytics__history-panel"
+               aria-labelledby="history-visits-title">
+
+        <h4 id="history-visits-title">
+          Visitas y clics por día
+        </h4>
+
+        <div class="visitor-analytics__history-legend">
+          <span class="visitor-analytics__legend-visits">
+            Visitas
+          </span>
+          <span class="visitor-analytics__legend-clicks">
+            Clics
+          </span>
+        </div>
+
+        <div class="visitor-analytics__history-scroll"
+             role="region"
+             tabindex="0"
+             aria-label="Historial diario de visitas y clics">
+          <div class="visitor-analytics__history-days"
+               role="list"
+               data-history-visits></div>
+        </div>
+
+      </section>
+
+      <section class="visitor-analytics__history-panel"
+               aria-labelledby="history-duration-title">
+
+        <h4 id="history-duration-title">
+          Tiempo activo medio por día
+        </h4>
+
+        <p class="visitor-analytics__history-description">
+          Promedio por sesión con actividad registrada.
+        </p>
+
+        <div class="visitor-analytics__history-scroll"
+             role="region"
+             tabindex="0"
+             aria-label="Historial diario de tiempo activo">
+          <div class="visitor-analytics__history-days"
+               role="list"
+               data-history-duration></div>
+        </div>
+
+      </section>
+
+    </div>
+
+    <p class="visitor-analytics__history-note">
+      Fechas UTC. Se muestran únicamente los días con
+      registros disponibles; la ausencia de registros
+      anteriores no significa que no hubo visitantes.
+    </p>
+
+  </div>
+
+  <p class="visitor-analytics__note">
+    Los indicadores parten de cero únicamente cuando el servicio
+    confirma que no existen registros. La medición real permanece
+    deshabilitada; los clics no garantizan que una acción externa
+    se haya completado.
+  </p>
+</section>
