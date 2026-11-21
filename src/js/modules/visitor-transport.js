@@ -73,33 +73,78 @@ export function readTabSession(storageObject) {
             storageObject.getItem(TAB_SESSION_KEY)
         );
 
+        const confirmedActiveMs =
+            stored?.confirmedActiveMs ?? stored?.activeMs;
+        const pendingActiveMs =
+            stored?.pendingActiveMs ?? null;
+
         if (
             !stored ||
             !UUID_PATTERN.test(stored.sessionId) ||
-            !Number.isSafeInteger(stored.activeMs) ||
-            stored.activeMs < 0 ||
-            stored.activeMs > MAX_ACTIVE_MS
+            !Number.isSafeInteger(confirmedActiveMs) ||
+            confirmedActiveMs < 0 ||
+            confirmedActiveMs > MAX_ACTIVE_MS ||
+            (
+                pendingActiveMs !== null &&
+                (
+                    !Number.isSafeInteger(pendingActiveMs) ||
+                    pendingActiveMs < confirmedActiveMs ||
+                    pendingActiveMs > MAX_ACTIVE_MS
+                )
+            )
         ) {
             return null;
         }
 
-        return stored;
+        return {
+            sessionId: stored.sessionId,
+            confirmedActiveMs,
+            pendingActiveMs
+        };
     } catch {
         return null;
     }
 }
 
-function writeTabSession(storageObject, sessionId, activeMs) {
-    if (!storageObject) return;
+function writeTabSession(storageObject, sessionState) {
+    if (!storageObject) return sessionState;
 
     try {
-        storageObject.setItem(TAB_SESSION_KEY, JSON.stringify({
-            sessionId,
-            activeMs
-        }));
+        const stored = readTabSession(storageObject);
+        const sameSession = stored?.sessionId ===
+            sessionState.sessionId;
+        const confirmedActiveMs = Math.max(
+            sessionState.confirmedActiveMs,
+            sameSession ? stored.confirmedActiveMs : 0
+        );
+        const pendingCandidates = [
+            sessionState.pendingActiveMs,
+            sameSession ? stored.pendingActiveMs : null
+        ].filter((value) => value !== null);
+        const highestPending = pendingCandidates.length
+            ? Math.max(...pendingCandidates)
+            : null;
+        const pendingActiveMs =
+            highestPending !== null &&
+            highestPending > confirmedActiveMs
+                ? highestPending
+                : null;
+        const reconciled = {
+            sessionId: sessionState.sessionId,
+            confirmedActiveMs,
+            pendingActiveMs
+        };
+
+        storageObject.setItem(
+            TAB_SESSION_KEY,
+            JSON.stringify(reconciled)
+        );
+
+        return reconciled;
     } catch {
         // El transporte sigue funcionando en memoria si el navegador
         // bloquea sessionStorage.
+        return sessionState;
     }
 }
 
@@ -218,14 +263,36 @@ export function initVisitorTransport(options = {}) {
 
     if (!sessionId) return;
 
-    const sessionActiveBaseMs = storedSession?.activeMs ?? 0;
+    let confirmedActiveMs =
+        storedSession?.confirmedActiveMs ?? 0;
+    let pendingActiveMs =
+        storedSession?.pendingActiveMs ?? null;
+    const previousPendingActiveMs = pendingActiveMs;
+    let pageBaseActiveMs = confirmedActiveMs;
     const handledEvents = new WeakSet();
 
-    let lastReportedActiveMs = sessionActiveBaseMs;
-    let highestPendingActiveMs = sessionActiveBaseMs;
+    let highestPendingActiveMs =
+        pendingActiveMs ?? confirmedActiveMs;
 
     let sessionStarted = false;
     let sessionStartPromise = null;
+    let activityReconciliationPromise = null;
+    let previousActivityReconciled =
+        previousPendingActiveMs === null;
+
+    function persistActivityState() {
+        const reconciled = writeTabSession(storageObject, {
+            sessionId,
+            confirmedActiveMs,
+            pendingActiveMs
+        });
+
+        confirmedActiveMs = Math.max(
+            confirmedActiveMs,
+            reconciled.confirmedActiveMs
+        );
+        pendingActiveMs = reconciled.pendingActiveMs;
+    }
 
     function queueBeacon(payloadText) {
         if (typeof navigatorObject.sendBeacon !== 'function') {
@@ -333,11 +400,7 @@ export function initVisitorTransport(options = {}) {
                 .then((accepted) => {
                     if (accepted) {
                         sessionStarted = true;
-                        writeTabSession(
-                            storageObject,
-                            sessionId,
-                            lastReportedActiveMs
-                        );
+                        persistActivityState();
                     }
 
                     return accepted;
@@ -348,6 +411,48 @@ export function initVisitorTransport(options = {}) {
         }
 
         return sessionStartPromise;
+    }
+
+    function reconcilePreviousActivity() {
+        if (previousActivityReconciled) {
+            return Promise.resolve(true);
+        }
+
+        if (!activityReconciliationPromise) {
+            activityReconciliationPromise = ensureSessionStarted()
+                .then((ready) => {
+                    if (!ready) return false;
+
+                    return sendEvent('session_activity', {
+                        activeMs: previousPendingActiveMs
+                    });
+                })
+                .then((accepted) => {
+                    if (!accepted) return false;
+
+                    confirmedActiveMs = Math.max(
+                        confirmedActiveMs,
+                        previousPendingActiveMs
+                    );
+
+                    if (
+                        pendingActiveMs !== null &&
+                        pendingActiveMs <= confirmedActiveMs
+                    ) {
+                        pendingActiveMs = null;
+                    }
+
+                    persistActivityState();
+                    pageBaseActiveMs = confirmedActiveMs;
+                    previousActivityReconciled = true;
+                    return true;
+                })
+                .finally(() => {
+                    activityReconciliationPromise = null;
+                });
+        }
+
+        return activityReconciliationPromise;
     }
 
     function handleClick(event) {
@@ -399,46 +504,65 @@ export function initVisitorTransport(options = {}) {
             return;
         }
 
-        const activeMs = Math.min(
-            sessionActiveBaseMs + Math.floor(reportedActiveMs),
-            MAX_ACTIVE_MS
-        );
+        const pageActiveMs = Math.floor(reportedActiveMs);
 
-        if (
-            activeMs <= lastReportedActiveMs ||
-            activeMs <= highestPendingActiveMs
-        ) {
-            return;
-        }
+        void reconcilePreviousActivity()
+            .then((reconciled) => {
+                if (!reconciled) return false;
 
-        highestPendingActiveMs = activeMs;
+                const activeMs = Math.min(
+                    pageBaseActiveMs + pageActiveMs,
+                    MAX_ACTIVE_MS
+                );
 
-        void ensureSessionStarted()
-            .then((ready) => {
-                if (!ready) {
+                if (
+                    activeMs <= confirmedActiveMs ||
+                    activeMs <= highestPendingActiveMs
+                ) {
                     return false;
                 }
 
-                return sendEvent('session_activity', {
+                highestPendingActiveMs = activeMs;
+                pendingActiveMs = Math.max(
+                    pendingActiveMs ?? 0,
                     activeMs
+                );
+                persistActivityState();
+
+                return ensureSessionStarted().then((ready) => {
+                    if (!ready) {
+                        return { accepted: false, activeMs };
+                    }
+
+                    return sendEvent('session_activity', {
+                        activeMs
+                    }).then((accepted) => ({
+                        accepted,
+                        activeMs
+                    }));
                 });
             })
-            .then((accepted) => {
-                if (accepted) {
-                    lastReportedActiveMs = Math.max(
-                        lastReportedActiveMs,
-                        activeMs
-                    );
-                    writeTabSession(
-                        storageObject,
-                        sessionId,
-                        lastReportedActiveMs
-                    );
+            .then((result) => {
+                if (!result || !result.accepted) return;
+
+                confirmedActiveMs = Math.max(
+                    confirmedActiveMs,
+                    result.activeMs
+                );
+
+                if (
+                    pendingActiveMs !== null &&
+                    pendingActiveMs <= confirmedActiveMs
+                ) {
+                    pendingActiveMs = null;
                 }
+
+                persistActivityState();
             }).finally(() => {
-                if (highestPendingActiveMs === activeMs) {
-                    highestPendingActiveMs = -1;
-                }
+                highestPendingActiveMs = Math.max(
+                    confirmedActiveMs,
+                    pendingActiveMs ?? 0
+                );
             });
     }
 
@@ -467,5 +591,7 @@ export function initVisitorTransport(options = {}) {
 
     // El Worker confirma la sesión antes de conservarla en la pestaña.
     // Una recarga reenvía el mismo UUID de forma idempotente.
-    void ensureSessionStarted();
+    void ensureSessionStarted().then((ready) => {
+        if (ready) void reconcilePreviousActivity();
+    });
 }

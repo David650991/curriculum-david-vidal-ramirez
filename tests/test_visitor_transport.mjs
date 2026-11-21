@@ -243,6 +243,126 @@ test('el tiempo activo continúa de forma acumulada después de recargar', async
     assert.equal(second.requests[1].payload.activeMs, 8000);
 });
 
+test('una recarga reconcilia actividad pendiente antes de sumar tiempo nuevo', async () => {
+    let confirmOldActivity;
+    const oldActivityResponse = new Promise((resolve) => {
+        confirmOldActivity = resolve;
+    });
+    const storage = new FakeStorage();
+    const first = createRuntime({
+        sessionStorageObject: storage,
+        fetchImplementation: async (_url, _options, index) =>
+            index === 2
+                ? oldActivityResponse
+                : { ok: true, status: 200 }
+    });
+
+    initVisitorTransport(first);
+    await flushPromises();
+    first.windowObject.dispatch('portfolio:session-activity', {
+        activeMs: 5000
+    });
+    await flushPromises();
+
+    assert.deepEqual(
+        JSON.parse(storage.getItem(TAB_SESSION_KEY)),
+        {
+            sessionId: '11111111-1111-4111-8111-111111111111',
+            confirmedActiveMs: 0,
+            pendingActiveMs: 5000
+        }
+    );
+
+    const second = createRuntime({ sessionStorageObject: storage });
+    initVisitorTransport(second);
+    await flushPromises();
+
+    assert.equal(second.requests[1].payload.type, 'session_activity');
+    assert.equal(second.requests[1].payload.activeMs, 5000);
+
+    second.windowObject.dispatch('portfolio:session-activity', {
+        activeMs: 3000
+    });
+    await flushPromises();
+    assert.equal(second.requests[2].payload.activeMs, 8000);
+
+    confirmOldActivity({ ok: true, status: 200 });
+    await flushPromises();
+
+    const reconciled = JSON.parse(
+        storage.getItem(TAB_SESSION_KEY)
+    );
+    assert.equal(reconciled.confirmedActiveMs, 8000);
+    assert.equal(reconciled.pendingActiveMs, null);
+});
+
+test('un error de red final conserva solo actividad pendiente verificable', async () => {
+    const storage = new FakeStorage();
+    const beacons = [];
+    const first = createRuntime({
+        sessionStorageObject: storage,
+        navigatorObject: {
+            sendBeacon(_url, body) {
+                beacons.push(JSON.parse(body));
+                return true;
+            }
+        },
+        fetchImplementation: async (_url, _options, index) => {
+            if (index === 2) throw new TypeError('página cerrada');
+            return { ok: true, status: 200 };
+        }
+    });
+
+    initVisitorTransport(first);
+    await flushPromises();
+    first.windowObject.dispatch('portfolio:session-activity', {
+        activeMs: 4000
+    });
+    await flushPromises();
+
+    const pending = JSON.parse(storage.getItem(TAB_SESSION_KEY));
+    assert.equal(pending.confirmedActiveMs, 0);
+    assert.equal(pending.pendingActiveMs, 4000);
+    assert.equal(beacons[0].activeMs, 4000);
+
+    const second = createRuntime({ sessionStorageObject: storage });
+    initVisitorTransport(second);
+    await flushPromises();
+    second.windowObject.dispatch('portfolio:session-activity', {
+        activeMs: 2000
+    });
+    await flushPromises();
+
+    assert.equal(second.requests[1].payload.activeMs, 4000);
+    assert.equal(second.requests[2].payload.activeMs, 6000);
+});
+
+test('múltiples recargas conservan un acumulado exacto y creciente', async () => {
+    const storage = new FakeStorage();
+    const reportedTotals = [];
+
+    for (let load = 0; load < 3; load += 1) {
+        const runtime = createRuntime({
+            sessionStorageObject: storage
+        });
+        initVisitorTransport(runtime);
+        await flushPromises();
+        runtime.windowObject.dispatch('portfolio:session-activity', {
+            activeMs: 1000
+        });
+        await flushPromises();
+
+        reportedTotals.push(
+            runtime.requests.at(-1).payload.activeMs
+        );
+    }
+
+    assert.deepEqual(reportedTotals, [1000, 2000, 3000]);
+    const stored = JSON.parse(storage.getItem(TAB_SESSION_KEY));
+    assert.equal(stored.confirmedActiveMs, 3000);
+    assert.equal(stored.pendingActiveMs, null);
+});
+
 test('sessionStorage bloqueado conserva un transporte funcional en memoria', async () => {
     const blockedStorage = {
         getItem() { throw new Error('bloqueado'); },

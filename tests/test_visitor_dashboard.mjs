@@ -173,3 +173,49 @@ test('las actualizaciones simultáneas comparten una sola solicitud', async () =
     resolveTask();
     await first;
 });
+
+test('un clic durante una lectura pendiente fuerza una lectura posterior', async () => {
+    const resolvers = [];
+    let executions = 0;
+    const refresh = createSingleFlight(() => {
+        executions += 1;
+        return new Promise((resolve) => resolvers.push(resolve));
+    });
+
+    const pending = refresh();
+    await new Promise((resolve) => setImmediate(resolve));
+    assert.equal(executions, 1);
+
+    const acceptedClick = refresh({ ensureFresh: true });
+    assert.strictEqual(acceptedClick, pending);
+
+    resolvers[0]();
+    await new Promise((resolve) => setImmediate(resolve));
+    assert.equal(executions, 2);
+
+    resolvers[1]();
+    await pending;
+});
+
+test('varios clics durante la misma lectura agrupan una sola consulta nueva', async () => {
+    const resolvers = [];
+    let executions = 0;
+    const refresh = createSingleFlight(() => {
+        executions += 1;
+        return new Promise((resolve) => resolvers.push(resolve));
+    });
+
+    const pending = refresh();
+    await new Promise((resolve) => setImmediate(resolve));
+
+    refresh({ ensureFresh: true });
+    refresh({ ensureFresh: true });
+    refresh({ ensureFresh: true });
+    resolvers[0]();
+    await new Promise((resolve) => setImmediate(resolve));
+
+    assert.equal(executions, 2);
+
+    resolvers[1]();
+    await pending;
+});

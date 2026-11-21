@@ -26,12 +26,30 @@ const ACCEPTED_REFRESH_DELAY_MS = 250;
 
 export function createSingleFlight(task) {
     let pending = null;
+    let refreshAfterPending = false;
 
-    return function run() {
-        if (pending) return pending;
+    async function execute() {
+        let result;
+
+        do {
+            refreshAfterPending = false;
+            result = await task();
+        } while (refreshAfterPending);
+
+        return result;
+    }
+
+    return function run(options = {}) {
+        if (pending) {
+            if (options.ensureFresh === true) {
+                refreshAfterPending = true;
+            }
+
+            return pending;
+        }
 
         pending = Promise.resolve()
-            .then(task)
+            .then(execute)
             .finally(() => {
                 pending = null;
             });
@@ -536,8 +554,8 @@ export function initVisitorDashboard() {
 
     const refreshAfterAcceptedClick =
         createAcceptedRefreshHandler([
-            refresh,
-            refreshHistory
+            () => refresh({ ensureFresh: true }),
+            () => refreshHistory({ ensureFresh: true })
         ]);
 
     window.addEventListener(

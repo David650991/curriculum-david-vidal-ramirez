@@ -54,7 +54,7 @@ Una respuesta HTTP incorrecta, JSON inválido o contador negativo produce un est
 
 ## Privacidad y límites
 
-El esquema no incluye nombres, correos, teléfonos ni direcciones IP. Cada sesión usa un UUID seudónimo que, después de ser aceptado por el Worker, se conserva junto con el tiempo activo acumulado únicamente en `sessionStorage` por pestaña. Así una recarga reutiliza la sesión sin cookies ni `localStorage`; al cerrar la pestaña se descarta. Si `sessionStorage` no está disponible, el transporte continúa en memoria. DNT y Global Privacy Control bloquean el transporte y eliminan cualquier sesión guardada.
+El esquema no incluye nombres, correos, teléfonos ni direcciones IP. Cada sesión usa un UUID seudónimo que, después de ser aceptado por el Worker, se conserva únicamente en `sessionStorage` por pestaña. El estado local distingue `confirmedActiveMs`, ya confirmado, de `pendingActiveMs`, el último acumulado medido cuya respuesta pudo quedar interrumpida. Una recarga reenvía primero el pendiente con la misma actualización monotónica y solo después fija la base para sumar actividad nueva. Las escrituras tardías fusionan máximos y no pueden reducir ni borrar un valor más reciente. Al cerrar la pestaña se descarta el estado; no se usan cookies ni `localStorage`. Si `sessionStorage` no está disponible, el transporte continúa en memoria. DNT y Global Privacy Control bloquean el transporte y eliminan cualquier sesión guardada.
 
 La seudonimización no equivale a anonimización absoluta. Cloudflare puede recibir metadatos de red por operar la infraestructura. Los límites de origen, frecuencia, tamaño, sesión y eventos reducen abuso, pero no eliminan tráfico automatizado ni permiten deducir personas únicas.
 
