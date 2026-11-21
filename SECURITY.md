@@ -13,7 +13,7 @@ Los archivos públicos contienen datos de contacto destinados al currículum. Nu
 ## Estadísticas y minimización de datos
 
 - Producción mantiene `ANALYTICAS_ESCRITURA` deshabilitada hasta que exista una autorización expresa.
-- El transporte de eventos del navegador solo funciona en `localhost` o `127.0.0.1`.
+- El transporte reconoce localhost y el origen oficial de GitHub Pages, pero los POST públicos permanecen bloqueados por una bandera explícita desactivada.
 - DNT y Global Privacy Control impiden crear el identificador de sesión y enviar eventos en el laboratorio local.
 - Los UUID de sesión viven en memoria; no se guardan en cookies, `localStorage` ni `sessionStorage`.
 - D1 no almacena nombres, correos, teléfonos ni direcciones IP en las tablas del proyecto.
@@ -23,7 +23,9 @@ Los archivos públicos contienen datos de contacto destinados al currículum. Nu
 
 Las escrituras exigen un origen permitido, JSON válido, tamaño limitado, tipos y acciones admitidos, una sesión previa, UUID con formato válido, límite de clics por sesión y un rate limiter configurado. Los eventos repetidos usan `event_id` idempotente y el tiempo activo solo puede aumentar dentro de límites definidos.
 
-Estos controles reducen abuso y duplicados, pero no eliminan bots ni garantizan que cada sesión corresponda a una persona distinta. El límite de solicitudes configurado es un control global del endpoint y debe revisarse antes de habilitar escritura real. Las rutas de lectura son públicas por diseño.
+El limitador usa dos ámbitos: uno general por centro de datos de Cloudflare y otro para inicios o eventos de una sesión. No utiliza la IP como clave. El UUID de sesión es controlado por el cliente y puede rotarse, por lo que tampoco funciona como identidad ni como defensa suficiente por sí mismo.
+
+Estos controles reducen abuso y duplicados, pero no eliminan bots ni garantizan que cada sesión corresponda a una persona distinta. `Origin` y CORS son controles del navegador, no mecanismos de autenticación. Las rutas de lectura son públicas por diseño.
 
 ## Operación segura
 

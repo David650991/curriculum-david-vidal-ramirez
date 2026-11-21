@@ -6,11 +6,18 @@
  * Conecta los eventos existentes del navegador
  * con Cloudflare Workers y D1.
  *
- * Fase actual: pruebas locales exclusivamente.
+ * Fase actual: pruebas locales y preparación pública.
  * No almacena identificadores en cookies ni storage.
  */
 
 const LOCAL_EVENTS_URL = 'http://127.0.0.1:8787/events';
+const PUBLIC_EVENTS_URL =
+    'https://cv-david-vidal-analytics.david650991.workers.dev/events';
+
+// Barrera explícita del frontend. Su activación futura requiere
+// además habilitar el Worker mediante una autorización separada.
+const PUBLIC_RECORDING_ENABLED = false;
+const PUBLIC_ORIGIN = 'https://david650991.github.io';
 
 const CLICK_EVENT_NAME = 'portfolio:analytics';
 const ACTIVITY_EVENT_NAME = 'portfolio:session-activity';
@@ -33,50 +40,87 @@ const MAX_ACTIVE_MS = 86_400_000;
  * Se respetan DNT y Global Privacy Control.
  * No se almacenan estas preferencias.
  */
-export function privacyOptOutRequested() {
+export function privacyOptOutRequested(
+    navigatorObject = navigator,
+    windowObject = window
+) {
     const doNotTrack =
-        navigator.doNotTrack ??
-        window.doNotTrack ??
-        navigator.msDoNotTrack ??
+        navigatorObject.doNotTrack ??
+        windowObject.doNotTrack ??
+        navigatorObject.msDoNotTrack ??
         null;
 
     return (
-        navigator.globalPrivacyControl === true ||
+        navigatorObject.globalPrivacyControl === true ||
         doNotTrack === '1' ||
         doNotTrack === 'yes'
     );
 }
 
-function isLocalEnvironment() {
-    return (
-        window.location.hostname === 'localhost' ||
-        window.location.hostname === '127.0.0.1'
-    );
+export function resolveTransportConfig(
+    locationObject,
+    publicRecordingEnabled = PUBLIC_RECORDING_ENABLED
+) {
+    const hostname = locationObject?.hostname || '';
+
+    if (
+        hostname === 'localhost' ||
+        hostname === '127.0.0.1'
+    ) {
+        return {
+            enabled: true,
+            environment: 'local',
+            eventsUrl: LOCAL_EVENTS_URL
+        };
+    }
+
+    if (locationObject?.origin === PUBLIC_ORIGIN) {
+        return {
+            enabled: publicRecordingEnabled === true,
+            environment: 'public',
+            eventsUrl: PUBLIC_EVENTS_URL
+        };
+    }
+
+    return {
+        enabled: false,
+        environment: 'unsupported',
+        eventsUrl: null
+    };
 }
 
-export function initVisitorTransport() {
-    if (!isLocalEnvironment()) {
+export function initVisitorTransport(options = {}) {
+    const windowObject = options.windowObject ?? window;
+    const documentObject = options.documentObject ?? document;
+    const navigatorObject = options.navigatorObject ?? navigator;
+    const cryptoObject = options.cryptoObject ?? windowObject.crypto;
+    const transport = resolveTransportConfig(
+        windowObject.location,
+        options.publicRecordingEnabled ?? PUBLIC_RECORDING_ENABLED
+    );
+
+    if (!transport.enabled || !transport.eventsUrl) {
         return;
     }
 
     // Respetar la preferencia de no seguimiento.
     // No generar identificadores ni enviar estadísticas.
-    if (privacyOptOutRequested()) {
+    if (privacyOptOutRequested(navigatorObject, windowObject)) {
         return;
     }
 
-    if (!document.querySelector('[data-visitor-analytics]')) {
+    if (!documentObject.querySelector('[data-visitor-analytics]')) {
         return;
     }
 
     if (
-        typeof window.fetch !== 'function' ||
-        typeof window.crypto?.randomUUID !== 'function'
+        typeof windowObject.fetch !== 'function' ||
+        typeof cryptoObject?.randomUUID !== 'function'
     ) {
         return;
     }
 
-    const sessionId = window.crypto.randomUUID();
+    const sessionId = cryptoObject.randomUUID();
     const handledEvents = new WeakSet();
 
     let lastReportedActiveMs = -1;
@@ -93,8 +137,8 @@ export function initVisitorTransport() {
         };
 
         try {
-            const response = await window.fetch(
-                LOCAL_EVENTS_URL,
+            const response = await windowObject.fetch(
+                transport.eventsUrl,
                 {
                     method: 'POST',
                     mode: 'cors',
@@ -164,7 +208,7 @@ export function initVisitorTransport() {
             return;
         }
 
-        const eventId = window.crypto.randomUUID();
+        const eventId = cryptoObject.randomUUID();
 
         void ensureSessionStarted().then((ready) => {
             if (!ready) {
@@ -236,22 +280,22 @@ export function initVisitorTransport() {
     // Ambos destinos permiten escuchar los eventos
     // existentes sin cambiar sus emisores.
     // WeakSet evita procesar dos veces el mismo evento.
-    document.addEventListener(
+    documentObject.addEventListener(
         CLICK_EVENT_NAME,
         handleClick
     );
 
-    window.addEventListener(
+    windowObject.addEventListener(
         CLICK_EVENT_NAME,
         handleClick
     );
 
-    document.addEventListener(
+    documentObject.addEventListener(
         ACTIVITY_EVENT_NAME,
         handleActivity
     );
 
-    window.addEventListener(
+    windowObject.addEventListener(
         ACTIVITY_EVENT_NAME,
         handleActivity
     );

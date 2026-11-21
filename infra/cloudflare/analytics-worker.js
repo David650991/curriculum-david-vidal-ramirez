@@ -81,6 +81,54 @@ function validSessionId(value) {
         /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
 }
 
+export function buildRateLimitKeys(request, type, sessionId) {
+    const colo = (
+        typeof request.cf?.colo === 'string' &&
+        /^[A-Z0-9]{3}$/i.test(request.cf.colo)
+    )
+        ? request.cf.colo.toUpperCase()
+        : 'UNKNOWN';
+
+    return {
+        edge: `events:edge:${colo}`,
+        subject: type === 'session_start'
+            ? `events:start:${colo}`
+            : `events:session:${sessionId}`
+    };
+}
+
+async function checkRateLimit(env, key) {
+    if (
+        !env.EVENT_RATE_LIMITER ||
+        typeof env.EVENT_RATE_LIMITER.limit !== 'function'
+    ) {
+        return {
+            error: 'limite_no_configurado',
+            status: 503
+        };
+    }
+
+    try {
+        const { success } = await env.EVENT_RATE_LIMITER.limit({
+            key
+        });
+
+        return success
+            ? null
+            : {
+                error: 'demasiadas_solicitudes',
+                status: 429
+            };
+    } catch (error) {
+        console.error('Rate limiting failed:', error);
+
+        return {
+            error: 'control_de_frecuencia_no_disponible',
+            status: 503
+        };
+    }
+}
+
 export default {
     async fetch(request, env) {
         const url = new URL(request.url);
@@ -355,37 +403,24 @@ export default {
             // Limitar solicitudes antes de acceder a D1.
             // Autor: David Vidal Ramírez.
             //
-            // Si falta la configuración, la escritura
-            // permanece deshabilitada por seguridad.
-            if (
-                !env.EVENT_RATE_LIMITER ||
-                typeof env.EVENT_RATE_LIMITER.limit !== 'function'
-            ) {
+            // El primer ámbito agrupa por centro de datos de
+            // Cloudflare, no por IP. Reduce el bloqueo mundial
+            // causado por una sola clave, pero no autentica ni
+            // elimina tráfico automatizado.
+            const preliminaryKeys = buildRateLimitKeys(
+                request,
+                '',
+                'unvalidated'
+            );
+            const edgeLimit = await checkRateLimit(
+                env,
+                preliminaryKeys.edge
+            );
+
+            if (edgeLimit) {
                 return jsonResponse({
-                    error: 'limite_no_configurado'
-                }, 503, origin);
-            }
-
-            try {
-                const { success } =
-                    await env.EVENT_RATE_LIMITER.limit({
-                        key: '/events'
-                    });
-
-                if (!success) {
-                    return jsonResponse({
-                        error: 'demasiadas_solicitudes'
-                    }, 429, origin);
-                }
-            } catch (error) {
-                console.error(
-                    'Rate limiting failed:',
-                    error
-                );
-
-                return jsonResponse({
-                    error: 'control_de_frecuencia_no_disponible'
-                }, 503, origin);
+                    error: edgeLimit.error
+                }, edgeLimit.status, origin);
             }
 
             const contentType =
@@ -433,6 +468,26 @@ export default {
             }
 
             const { sessionId, type } = data;
+
+            // El segundo ámbito separa inicios por centro de datos
+            // y eventos posteriores por sesión. El UUID procede del
+            // cliente y puede rotarse, por lo que este control se
+            // combina con sesión previa, idempotencia y límites D1.
+            const rateLimitKeys = buildRateLimitKeys(
+                request,
+                type,
+                sessionId
+            );
+            const subjectLimit = await checkRateLimit(
+                env,
+                rateLimitKeys.subject
+            );
+
+            if (subjectLimit) {
+                return jsonResponse({
+                    error: subjectLimit.error
+                }, subjectLimit.status, origin);
+            }
 
             try {
                 // Autor: David Vidal Ramírez.
