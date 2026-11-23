@@ -3,10 +3,12 @@ import test from 'node:test';
 
 const {
     ACCEPTED_EVENT_NAME,
+    SITE_CONSENT_KEY,
     TAB_SESSION_KEY,
     createPseudonymousUuid,
     initVisitorTransport,
     privacyOptOutRequested,
+    resolvePrivacyState,
     resolveTransportConfig
 } = await import('../src/js/modules/visitor-transport.js');
 
@@ -62,12 +64,18 @@ function createRuntime({
     fetchImplementation = async () => ({ ok: true, status: 200 }),
     navigatorObject = {},
     sessionStorageObject = new FakeStorage(),
-    cryptoObject: suppliedCryptoObject
+    cryptoObject: suppliedCryptoObject,
+    panel = {}
 } = {}) {
     const url = new URL(origin);
+    let reloadCount = 0;
     const windowObject = new FakeTarget({
         hostname: url.hostname,
-        origin: url.origin
+        origin: url.origin,
+        href: url.href,
+        reload() {
+            reloadCount += 1;
+        }
     });
     const documentObject = new FakeTarget();
     const requests = [];
@@ -80,7 +88,7 @@ function createRuntime({
         }
     };
 
-    documentObject.querySelector = () => ({});
+    documentObject.querySelector = () => panel;
     windowObject.fetch = async (requestUrl, options) => {
         requests.push({
             url: requestUrl,
@@ -106,7 +114,67 @@ function createRuntime({
         cryptoObject,
         sessionStorageObject,
         requests,
+        reloadCount: () => reloadCount,
         uuidCount: () => uuidCount
+    };
+}
+
+function createConsentPanel() {
+    const container = new FakeTarget();
+    container.hidden = true;
+    container.dataset = {};
+    let scrollCount = 0;
+    container.scrollIntoView = () => {
+        scrollCount += 1;
+    };
+
+    const message = { textContent: '' };
+    const choices = { hidden: false };
+    const allow = new FakeTarget();
+    const deny = new FakeTarget();
+    const revoke = new FakeTarget();
+    revoke.hidden = true;
+    const preferences = new FakeTarget();
+    preferences.hidden = true;
+    const title = {
+        focusCount: 0,
+        focus() {
+            this.focusCount += 1;
+        }
+    };
+
+    const elements = new Map([
+        ['[data-consent-message]', message],
+        ['[data-consent-choices]', choices],
+        ['[data-consent-allow]', allow],
+        ['[data-consent-deny]', deny],
+        ['[data-consent-revoke]', revoke],
+        ['#analytics-consent-title', title]
+    ]);
+    container.querySelector = (selector) =>
+        elements.get(selector) ?? null;
+
+    return {
+        panel: {
+            querySelector(selector) {
+                if (selector === '[data-analytics-consent]') {
+                    return container;
+                }
+                if (selector === '[data-analytics-preferences]') {
+                    return preferences;
+                }
+                return null;
+            }
+        },
+        container,
+        message,
+        choices,
+        allow,
+        deny,
+        revoke,
+        preferences,
+        title,
+        scrollCount: () => scrollCount
     };
 }
 
@@ -202,6 +270,287 @@ test('DNT y GPC impiden identificadores y solicitudes', async () => {
     }
 });
 
+test('DNT y GPC se resuelven como señales distintas', () => {
+    const storage = new FakeStorage();
+
+    assert.equal(resolvePrivacyState(
+        { doNotTrack: '1', globalPrivacyControl: false },
+        {},
+        storage
+    ).reason, 'dnt-pending');
+
+    storage.setItem(SITE_CONSENT_KEY, 'granted');
+
+    assert.equal(resolvePrivacyState(
+        { doNotTrack: '1', globalPrivacyControl: false },
+        {},
+        storage
+    ).reason, 'dnt-granted');
+    assert.equal(resolvePrivacyState(
+        { doNotTrack: '1', globalPrivacyControl: true },
+        {},
+        storage
+    ).reason, 'gpc');
+});
+
+test('DNT autorizado explícitamente permite iniciar la sesión', async () => {
+    const storage = new FakeStorage();
+    storage.setItem(SITE_CONSENT_KEY, 'granted');
+    const runtime = createRuntime({
+        navigatorObject: {
+            doNotTrack: '1',
+            globalPrivacyControl: false
+        },
+        sessionStorageObject: storage
+    });
+
+    initVisitorTransport(runtime);
+    await flushPromises();
+
+    assert.equal(runtime.requests.length, 1);
+    assert.equal(runtime.requests[0].payload.type, 'session_start');
+});
+
+test('DNT rechazado conserva cero solicitudes', async () => {
+    const storage = new FakeStorage();
+    storage.setItem(SITE_CONSENT_KEY, 'denied');
+    const runtime = createRuntime({
+        navigatorObject: { doNotTrack: '1' },
+        sessionStorageObject: storage
+    });
+
+    initVisitorTransport(runtime);
+    await flushPromises();
+
+    assert.deepEqual(runtime.requests, []);
+    assert.equal(runtime.uuidCount(), 0);
+});
+
+test('la autorización voluntaria se guarda antes de iniciar medición', async () => {
+    const controls = createConsentPanel();
+    const storage = new FakeStorage();
+    const navigatorObject = {
+        doNotTrack: '1',
+        globalPrivacyControl: false
+    };
+    const first = createRuntime({
+        navigatorObject,
+        sessionStorageObject: storage,
+        panel: controls.panel
+    });
+
+    initVisitorTransport(first);
+    await flushPromises();
+    assert.deepEqual(first.requests, []);
+    assert.equal(controls.container.hidden, false);
+
+    controls.allow.dispatch('click');
+    assert.equal(storage.getItem(SITE_CONSENT_KEY), 'granted');
+    assert.equal(first.reloadCount(), 1);
+    assert.deepEqual(first.requests, []);
+
+    const second = createRuntime({
+        navigatorObject,
+        sessionStorageObject: storage,
+        panel: createConsentPanel().panel
+    });
+    initVisitorTransport(second);
+    await flushPromises();
+
+    assert.equal(second.requests[0].payload.type, 'session_start');
+});
+
+test('el acceso visible lleva por teclado a las preferencias DNT', async () => {
+    const controls = createConsentPanel();
+    const runtime = createRuntime({
+        navigatorObject: { doNotTrack: '1' },
+        panel: controls.panel
+    });
+
+    initVisitorTransport(runtime);
+    await flushPromises();
+
+    assert.equal(controls.preferences.hidden, false);
+    assert.equal(controls.preferences.listeners.has('click'), true);
+    controls.preferences.dispatch('click');
+    assert.equal(controls.scrollCount(), 1);
+    assert.equal(controls.title.focusCount, 1);
+    assert.deepEqual(runtime.requests, []);
+});
+
+test('rechazar desde el panel no recarga ni genera una visita', async () => {
+    const controls = createConsentPanel();
+    const storage = new FakeStorage();
+    const runtime = createRuntime({
+        navigatorObject: { doNotTrack: '1' },
+        sessionStorageObject: storage,
+        panel: controls.panel
+    });
+
+    initVisitorTransport(runtime);
+    controls.deny.dispatch('click');
+    await flushPromises();
+
+    assert.equal(storage.getItem(SITE_CONSENT_KEY), 'denied');
+    assert.equal(runtime.reloadCount(), 0);
+    assert.deepEqual(runtime.requests, []);
+});
+
+test('DNT permanece bloqueado si sessionStorage no admite la decisión', async () => {
+    const controls = createConsentPanel();
+    const blockedStorage = {
+        getItem() { throw new Error('bloqueado'); },
+        setItem() { throw new Error('bloqueado'); },
+        removeItem() { throw new Error('bloqueado'); }
+    };
+    const runtime = createRuntime({
+        navigatorObject: { doNotTrack: '1' },
+        sessionStorageObject: blockedStorage,
+        panel: controls.panel
+    });
+
+    initVisitorTransport(runtime);
+    controls.allow.dispatch('click');
+    await flushPromises();
+
+    assert.deepEqual(runtime.requests, []);
+    assert.equal(runtime.reloadCount(), 0);
+    assert.match(
+        controls.message.textContent,
+        /bloqueó el almacenamiento temporal/
+    );
+});
+
+test('revocar detiene eventos nuevos y limpia la sesión local', async () => {
+    const controls = createConsentPanel();
+    const storage = new FakeStorage();
+    storage.setItem(SITE_CONSENT_KEY, 'granted');
+    const runtime = createRuntime({
+        navigatorObject: { doNotTrack: '1' },
+        sessionStorageObject: storage,
+        panel: controls.panel
+    });
+
+    initVisitorTransport(runtime);
+    await flushPromises();
+    assert.equal(runtime.requests.length, 1);
+
+    // Reproduce el reporte final que visitor-session emite desde pagehide.
+    runtime.windowObject.addEventListener('pagehide', () => {
+        runtime.windowObject.dispatch('portfolio:session-activity', {
+            activeMs: 5000
+        });
+    });
+
+    controls.revoke.dispatch('click');
+    assert.equal(storage.getItem(SITE_CONSENT_KEY), 'denied');
+    assert.equal(storage.getItem(TAB_SESSION_KEY), null);
+    assert.equal(runtime.reloadCount(), 1);
+
+    runtime.windowObject.dispatch('portfolio:analytics', {
+        action: 'cv_download_click'
+    });
+    runtime.windowObject.dispatch('pagehide');
+    await flushPromises();
+
+    assert.equal(runtime.requests.length, 1);
+    assert.equal(storage.getItem(TAB_SESSION_KEY), null);
+});
+
+test('revocar durante una solicitud pendiente impide un Beacon posterior', async () => {
+    let rejectClick;
+    const pendingClick = new Promise((_resolve, reject) => {
+        rejectClick = reject;
+    });
+    const controls = createConsentPanel();
+    const storage = new FakeStorage();
+    const beacons = [];
+    storage.setItem(SITE_CONSENT_KEY, 'granted');
+    const runtime = createRuntime({
+        navigatorObject: {
+            doNotTrack: '1',
+            sendBeacon(_url, body) {
+                beacons.push(JSON.parse(body));
+                return true;
+            }
+        },
+        sessionStorageObject: storage,
+        panel: controls.panel,
+        fetchImplementation: async (_url, _options, index) =>
+            index === 2
+                ? pendingClick
+                : { ok: true, status: 200 }
+    });
+
+    initVisitorTransport(runtime);
+    await flushPromises();
+    runtime.windowObject.dispatch('portfolio:analytics', {
+        action: 'cv_download_click'
+    });
+    await flushPromises();
+
+    controls.revoke.dispatch('click');
+    rejectClick(new TypeError('navegación interrumpida'));
+    await flushPromises();
+
+    assert.equal(storage.getItem(SITE_CONSENT_KEY), 'denied');
+    assert.equal(beacons.length, 0);
+});
+
+test('una respuesta tardía de actividad no repone la sesión revocada', async () => {
+    let confirmActivity;
+    const pendingActivity = new Promise((resolve) => {
+        confirmActivity = resolve;
+    });
+    const controls = createConsentPanel();
+    const storage = new FakeStorage();
+    storage.setItem(SITE_CONSENT_KEY, 'granted');
+    const runtime = createRuntime({
+        navigatorObject: { doNotTrack: '1' },
+        sessionStorageObject: storage,
+        panel: controls.panel,
+        fetchImplementation: async (_url, _options, index) =>
+            index === 2
+                ? pendingActivity
+                : { ok: true, status: 200 }
+    });
+
+    initVisitorTransport(runtime);
+    await flushPromises();
+    runtime.windowObject.dispatch('portfolio:session-activity', {
+        activeMs: 5000
+    });
+    await flushPromises();
+    assert.notEqual(storage.getItem(TAB_SESSION_KEY), null);
+
+    controls.revoke.dispatch('click');
+    assert.equal(storage.getItem(TAB_SESSION_KEY), null);
+    confirmActivity({ ok: true, status: 200 });
+    await flushPromises();
+
+    assert.equal(storage.getItem(TAB_SESSION_KEY), null);
+    assert.equal(runtime.requests.length, 2);
+});
+
+test('GPC bloquea incluso una autorización DNT previamente guardada', async () => {
+    const storage = new FakeStorage();
+    storage.setItem(SITE_CONSENT_KEY, 'granted');
+    const runtime = createRuntime({
+        navigatorObject: {
+            doNotTrack: '1',
+            globalPrivacyControl: true
+        },
+        sessionStorageObject: storage,
+        panel: createConsentPanel().panel
+    });
+
+    initVisitorTransport(runtime);
+    await flushPromises();
+
+    assert.deepEqual(runtime.requests, []);
+    assert.equal(runtime.uuidCount(), 0);
+});
+
 test('una recarga conserva la sesión aceptada de la pestaña', async () => {
     const storage = new FakeStorage();
     const first = createRuntime({ sessionStorageObject: storage });
@@ -219,6 +568,59 @@ test('una recarga conserva la sesión aceptada de la pestaña', async () => {
         first.requests[0].payload.sessionId,
         second.requests[0].payload.sessionId
     );
+});
+
+test('una recarga autorizada con DNT reutiliza la misma sesión', async () => {
+    const storage = new FakeStorage();
+    storage.setItem(SITE_CONSENT_KEY, 'granted');
+    const navigatorObject = { doNotTrack: '1' };
+    const first = createRuntime({
+        navigatorObject,
+        sessionStorageObject: storage
+    });
+    initVisitorTransport(first);
+    await flushPromises();
+
+    const second = createRuntime({
+        navigatorObject,
+        sessionStorageObject: storage
+    });
+    initVisitorTransport(second);
+    await flushPromises();
+
+    assert.equal(second.uuidCount(), 0);
+    assert.equal(
+        second.requests[0].payload.sessionId,
+        first.requests[0].payload.sessionId
+    );
+});
+
+test('recargar sin autorización DNT nunca crea visitas', async () => {
+    const storage = new FakeStorage();
+    const navigatorObject = { doNotTrack: '1' };
+
+    for (let load = 0; load < 2; load += 1) {
+        const runtime = createRuntime({
+            navigatorObject,
+            sessionStorageObject: storage
+        });
+        initVisitorTransport(runtime);
+        await flushPromises();
+        assert.deepEqual(runtime.requests, []);
+    }
+});
+
+test('parámetros UTM y procedencia externa no alteran el transporte', async () => {
+    const runtime = createRuntime({
+        origin: 'https://david650991.github.io/curriculum-david-vidal-ramirez/?utm_source=google&utm_medium=organic'
+    });
+    runtime.documentObject.referrer = 'https://www.google.com/';
+
+    initVisitorTransport(runtime);
+    await flushPromises();
+
+    assert.equal(runtime.requests.length, 1);
+    assert.equal(runtime.requests[0].payload.type, 'session_start');
 });
 
 test('el tiempo activo continúa de forma acumulada después de recargar', async () => {

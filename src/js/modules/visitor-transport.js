@@ -23,7 +23,9 @@ const PUBLIC_ORIGIN = 'https://david650991.github.io';
 const CLICK_EVENT_NAME = 'portfolio:analytics';
 const ACTIVITY_EVENT_NAME = 'portfolio:session-activity';
 export const ACCEPTED_EVENT_NAME = 'portfolio:analytics-accepted';
+export const PRIVACY_STATE_EVENT_NAME = 'portfolio:privacy-state';
 export const TAB_SESSION_KEY = 'portfolio:analytics:tab-session:v1';
+export const SITE_CONSENT_KEY = 'portfolio:analytics:site-consent:v1';
 
 const ALLOWED_ACTIONS = new Set([
     'cv_download_click',
@@ -168,6 +170,79 @@ function resolveSessionStorage(windowObject, suppliedStorage) {
     }
 }
 
+export function readSiteConsent(storageObject) {
+    if (!storageObject) return null;
+
+    try {
+        const value = storageObject.getItem(SITE_CONSENT_KEY);
+        return value === 'granted' || value === 'denied'
+            ? value
+            : null;
+    } catch {
+        return null;
+    }
+}
+
+function writeSiteConsent(storageObject, value) {
+    if (!storageObject) return false;
+
+    try {
+        storageObject.setItem(SITE_CONSENT_KEY, value);
+        return storageObject.getItem(SITE_CONSENT_KEY) === value;
+    } catch {
+        return false;
+    }
+}
+
+export function resolvePrivacyState(
+    navigatorObject = navigator,
+    windowObject = window,
+    storageObject = resolveSessionStorage(windowObject)
+) {
+    const doNotTrack =
+        navigatorObject.doNotTrack ??
+        windowObject.doNotTrack ??
+        navigatorObject.msDoNotTrack ??
+        null;
+    const dntEnabled =
+        doNotTrack === '1' || doNotTrack === 'yes';
+    const gpcEnabled =
+        navigatorObject.globalPrivacyControl === true;
+    const consent = readSiteConsent(storageObject);
+
+    if (gpcEnabled) {
+        return {
+            allowed: false,
+            reason: 'gpc',
+            consent,
+            dntEnabled,
+            gpcEnabled
+        };
+    }
+
+    if (!dntEnabled) {
+        return {
+            allowed: true,
+            reason: 'default',
+            consent,
+            dntEnabled,
+            gpcEnabled
+        };
+    }
+
+    return {
+        allowed: consent === 'granted',
+        reason: consent === 'granted'
+            ? 'dnt-granted'
+            : consent === 'denied'
+                ? 'dnt-denied'
+                : 'dnt-pending',
+        consent,
+        dntEnabled,
+        gpcEnabled
+    };
+}
+
 /**
  * Detecta preferencias de privacidad del navegador.
  * Autor: David Vidal Ramírez
@@ -177,19 +252,14 @@ function resolveSessionStorage(windowObject, suppliedStorage) {
  */
 export function privacyOptOutRequested(
     navigatorObject = navigator,
-    windowObject = window
+    windowObject = window,
+    storageObject = resolveSessionStorage(windowObject)
 ) {
-    const doNotTrack =
-        navigatorObject.doNotTrack ??
-        windowObject.doNotTrack ??
-        navigatorObject.msDoNotTrack ??
-        null;
-
-    return (
-        navigatorObject.globalPrivacyControl === true ||
-        doNotTrack === '1' ||
-        doNotTrack === 'yes'
-    );
+    return !resolvePrivacyState(
+        navigatorObject,
+        windowObject,
+        storageObject
+    ).allowed;
 }
 
 export function resolveTransportConfig(
@@ -224,6 +294,190 @@ export function resolveTransportConfig(
     };
 }
 
+function dispatchPrivacyState(
+    windowObject,
+    documentObject,
+    state
+) {
+    const EventConstructor =
+        windowObject.CustomEvent ?? globalThis.CustomEvent;
+    let event = null;
+
+    if (typeof EventConstructor === 'function') {
+        event = new EventConstructor(
+            PRIVACY_STATE_EVENT_NAME,
+            { detail: state }
+        );
+    } else if (typeof documentObject.createEvent === 'function') {
+        event = documentObject.createEvent('CustomEvent');
+        event.initCustomEvent(
+            PRIVACY_STATE_EVENT_NAME,
+            false,
+            false,
+            state
+        );
+    }
+
+    if (event && typeof windowObject.dispatchEvent === 'function') {
+        windowObject.dispatchEvent(event);
+    }
+}
+
+function setupPrivacyControls({
+    panel,
+    storageObject,
+    navigatorObject,
+    windowObject,
+    documentObject
+}) {
+    if (typeof panel.querySelector !== 'function') {
+        return resolvePrivacyState(
+            navigatorObject,
+            windowObject,
+            storageObject
+        );
+    }
+
+    const container = panel.querySelector(
+        '[data-analytics-consent]'
+    );
+
+    if (!container) {
+        return resolvePrivacyState(
+            navigatorObject,
+            windowObject,
+            storageObject
+        );
+    }
+
+    const message = container.querySelector(
+        '[data-consent-message]'
+    );
+    const choices = container.querySelector(
+        '[data-consent-choices]'
+    );
+    const allowButton = container.querySelector(
+        '[data-consent-allow]'
+    );
+    const denyButton = container.querySelector(
+        '[data-consent-deny]'
+    );
+    const revokeButton = container.querySelector(
+        '[data-consent-revoke]'
+    );
+    const preferencesButton = panel.querySelector(
+        '[data-analytics-preferences]'
+    );
+    const consentTitle = container.querySelector(
+        '#analytics-consent-title'
+    );
+
+    function render(state, storageError = false) {
+        container.hidden = state.reason === 'default';
+        container.dataset.consentState = state.reason;
+
+        if (preferencesButton) {
+            preferencesButton.hidden = state.reason === 'default';
+        }
+
+        if (storageError) {
+            message.textContent =
+                'El navegador bloqueó el almacenamiento temporal; ' +
+                'la medición permanece desactivada.';
+        } else if (state.reason === 'gpc') {
+            message.textContent =
+                'Global Privacy Control está activo. La medición ' +
+                'de esta pestaña permanece desactivada.';
+        } else if (state.reason === 'dnt-granted') {
+            message.textContent =
+                'Autorizaste la medición para esta pestaña. ' +
+                'Puedes revocarla cuando quieras.';
+        } else if (state.reason === 'dnt-denied') {
+            message.textContent =
+                'La medición está desactivada para esta pestaña. ' +
+                'Puedes autorizarla voluntariamente.';
+        } else if (state.reason === 'dnt-pending') {
+            message.textContent =
+                'Do Not Track está activo. Decide si deseas permitir ' +
+                'la medición únicamente en esta pestaña.';
+        }
+
+        if (choices) {
+            choices.hidden =
+                state.reason === 'gpc' ||
+                state.reason === 'dnt-granted' ||
+                storageError;
+        }
+
+        if (revokeButton) {
+            revokeButton.hidden =
+                state.reason !== 'dnt-granted';
+        }
+    }
+
+    function currentState() {
+        return resolvePrivacyState(
+            navigatorObject,
+            windowObject,
+            storageObject
+        );
+    }
+
+    function applyChoice(choice) {
+        const wasAllowed = currentState().allowed;
+
+        if (!writeSiteConsent(storageObject, choice)) {
+            render(currentState(), true);
+            return;
+        }
+
+        if (choice === 'denied') {
+            clearTabSession(storageObject);
+        }
+
+        const state = currentState();
+        render(state);
+        dispatchPrivacyState(
+            windowObject,
+            documentObject,
+            state
+        );
+
+        // Recargar crea o detiene el ciclo de transporte completo
+        // sin conservar listeners ni UUID anteriores en memoria.
+        if (
+            (choice === 'granted' || wasAllowed) &&
+            typeof windowObject.location?.reload === 'function'
+        ) {
+            windowObject.location.reload();
+        }
+    }
+
+    allowButton?.addEventListener('click', () => {
+        applyChoice('granted');
+    });
+
+    denyButton?.addEventListener('click', () => {
+        applyChoice('denied');
+    });
+
+    revokeButton?.addEventListener('click', () => {
+        applyChoice('denied');
+    });
+
+    preferencesButton?.addEventListener('click', () => {
+        container.scrollIntoView?.({
+            behavior: 'smooth',
+            block: 'center'
+        });
+        consentTitle?.focus({ preventScroll: true });
+    });
+
+    const state = currentState();
+    render(state);
+    return state;
+}
+
 export function initVisitorTransport(options = {}) {
     const windowObject = options.windowObject ?? window;
     const documentObject = options.documentObject ?? document;
@@ -242,20 +496,36 @@ export function initVisitorTransport(options = {}) {
         return;
     }
 
-    // Respetar la preferencia de no seguimiento.
-    // No generar identificadores ni enviar estadísticas.
-    if (privacyOptOutRequested(navigatorObject, windowObject)) {
-        clearTabSession(storageObject);
-        return;
-    }
+    const panel = documentObject.querySelector(
+        '[data-visitor-analytics]'
+    );
 
-    if (!documentObject.querySelector('[data-visitor-analytics]')) {
+    if (!panel) return;
+
+    const privacyState = setupPrivacyControls({
+        panel,
+        storageObject,
+        navigatorObject,
+        windowObject,
+        documentObject
+    });
+
+    // GPC siempre bloquea. DNT solo permite continuar después
+    // de una autorización explícita y temporal del sitio.
+    if (!privacyState.allowed) {
+        clearTabSession(storageObject);
         return;
     }
 
     if (typeof windowObject.fetch !== 'function') {
         return;
     }
+
+    const measurementAllowed = () => resolvePrivacyState(
+        navigatorObject,
+        windowObject,
+        storageObject
+    ).allowed;
 
     const storedSession = readTabSession(storageObject);
     const sessionId = storedSession?.sessionId ??
@@ -281,6 +551,8 @@ export function initVisitorTransport(options = {}) {
         previousPendingActiveMs === null;
 
     function persistActivityState() {
+        if (!measurementAllowed()) return false;
+
         const reconciled = writeTabSession(storageObject, {
             sessionId,
             confirmedActiveMs,
@@ -292,9 +564,12 @@ export function initVisitorTransport(options = {}) {
             reconciled.confirmedActiveMs
         );
         pendingActiveMs = reconciled.pendingActiveMs;
+        return true;
     }
 
     function queueBeacon(payloadText) {
+        if (!measurementAllowed()) return false;
+
         if (typeof navigatorObject.sendBeacon !== 'function') {
             return false;
         }
@@ -339,6 +614,8 @@ export function initVisitorTransport(options = {}) {
     }
 
     async function sendEvent(type, details = {}) {
+        if (!measurementAllowed()) return false;
+
         const payload = {
             type,
             sessionId,
@@ -373,8 +650,10 @@ export function initVisitorTransport(options = {}) {
                 return false;
             }
 
-            return true;
+            return measurementAllowed();
         } catch {
+            if (!measurementAllowed()) return false;
+
             const queued = queueBeacon(payloadText);
 
             console.warn(
@@ -398,7 +677,7 @@ export function initVisitorTransport(options = {}) {
         if (!sessionStartPromise) {
             sessionStartPromise = sendEvent('session_start')
                 .then((accepted) => {
-                    if (accepted) {
+                    if (accepted && measurementAllowed()) {
                         sessionStarted = true;
                         persistActivityState();
                     }
@@ -428,7 +707,7 @@ export function initVisitorTransport(options = {}) {
                     });
                 })
                 .then((accepted) => {
-                    if (!accepted) return false;
+                    if (!accepted || !measurementAllowed()) return false;
 
                     confirmedActiveMs = Math.max(
                         confirmedActiveMs,
@@ -456,6 +735,8 @@ export function initVisitorTransport(options = {}) {
     }
 
     function handleClick(event) {
+        if (!measurementAllowed()) return;
+
         if (handledEvents.has(event)) {
             return;
         }
@@ -472,7 +753,7 @@ export function initVisitorTransport(options = {}) {
         if (!eventId) return;
 
         void ensureSessionStarted().then((ready) => {
-            if (!ready) {
+            if (!ready || !measurementAllowed()) {
                 return;
             }
 
@@ -488,6 +769,8 @@ export function initVisitorTransport(options = {}) {
     }
 
     function handleActivity(event) {
+        if (!measurementAllowed()) return;
+
         if (handledEvents.has(event)) {
             return;
         }
@@ -508,7 +791,7 @@ export function initVisitorTransport(options = {}) {
 
         void reconcilePreviousActivity()
             .then((reconciled) => {
-                if (!reconciled) return false;
+                if (!reconciled || !measurementAllowed()) return false;
 
                 const activeMs = Math.min(
                     pageBaseActiveMs + pageActiveMs,
@@ -530,7 +813,7 @@ export function initVisitorTransport(options = {}) {
                 persistActivityState();
 
                 return ensureSessionStarted().then((ready) => {
-                    if (!ready) {
+                    if (!ready || !measurementAllowed()) {
                         return { accepted: false, activeMs };
                     }
 
@@ -543,7 +826,11 @@ export function initVisitorTransport(options = {}) {
                 });
             })
             .then((result) => {
-                if (!result || !result.accepted) return;
+                if (
+                    !result ||
+                    !result.accepted ||
+                    !measurementAllowed()
+                ) return;
 
                 confirmedActiveMs = Math.max(
                     confirmedActiveMs,

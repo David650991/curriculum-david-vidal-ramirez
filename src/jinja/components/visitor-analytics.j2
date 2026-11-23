@@ -14,6 +14,46 @@
     </span>
   </header>
 
+  <button class="visitor-analytics__preferences-shortcut"
+          type="button"
+          data-analytics-preferences
+          aria-controls="analytics-consent"
+          hidden>
+    Preferencias de medición
+  </button>
+
+  <aside class="visitor-analytics__consent"
+         id="analytics-consent"
+         data-analytics-consent
+         aria-labelledby="analytics-consent-title"
+         hidden>
+    <div>
+      <h3 id="analytics-consent-title" tabindex="-1">Privacidad de esta pestaña</h3>
+      <p data-consent-message aria-live="polite"></p>
+      <p>
+        Si autorizas, se contabilizarán una sesión seudónima,
+        tiempo activo aproximado y categorías de clics. No se
+        guardan nombres, correos, teléfonos ni direcciones IP en
+        las tablas del proyecto.
+      </p>
+    </div>
+    <div class="visitor-analytics__consent-actions"
+         data-consent-choices>
+      <button type="button" data-consent-allow>
+        Permitir en esta pestaña
+      </button>
+      <button type="button" data-consent-deny>
+        Mantener desactivada
+      </button>
+    </div>
+    <button class="visitor-analytics__consent-revoke"
+            type="button"
+            data-consent-revoke
+            hidden>
+      Revocar autorización
+    </button>
+  </aside>
+
   <div class="visitor-analytics__grid">
 
     <button class="visitor-analytics__metric" type="button">
@@ -185,7 +225,8 @@
   <p class="visitor-analytics__note">
     Los indicadores parten de cero únicamente cuando el servicio
     confirma que no existen registros. La medición está activa y
-    respeta las preferencias DNT y GPC; los clics no garantizan que
+    respeta GPC y permite una decisión explícita cuando DNT está
+    activo; los clics no garantizan que
     una acción externa se haya completado.
   </p>
 </section>

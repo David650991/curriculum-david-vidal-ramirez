@@ -44,6 +44,89 @@
     font-size: 0.72rem;
 }
 
+.visitor-analytics__preferences-shortcut {
+    position: fixed;
+    right: max(14px, env(safe-area-inset-right));
+    bottom: max(14px, env(safe-area-inset-bottom));
+    z-index: 40;
+    min-height: 44px;
+    max-width: min(240px, calc(100vw - 28px));
+    padding: 9px 13px;
+    border: 1px solid var(--border-active);
+    border-radius: 999px;
+    background: rgba(11, 18, 32, 0.96);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    color: var(--text);
+    font: 700 0.74rem var(--font-main);
+    cursor: pointer;
+}
+
+.visitor-analytics__preferences-shortcut:hover,
+.visitor-analytics__preferences-shortcut:focus-visible {
+    border-color: var(--cyan);
+    color: var(--cyan);
+}
+
+.visitor-analytics__preferences-shortcut[hidden] {
+    display: none;
+}
+
+.visitor-analytics__consent {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 14px 20px;
+    margin: 0 0 22px;
+    padding: 16px;
+    border: 1px solid var(--border-medium);
+    border-radius: 14px;
+    background: var(--surface);
+}
+
+.visitor-analytics__consent[hidden],
+.visitor-analytics__consent [hidden] {
+    display: none;
+}
+
+.visitor-analytics__consent h3 {
+    margin: 0 0 6px;
+    font-size: 0.95rem;
+}
+
+.visitor-analytics__consent p {
+    margin: 4px 0 0;
+    color: var(--text-subtle);
+    font-size: 0.78rem;
+    line-height: 1.55;
+}
+
+.visitor-analytics__consent-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.visitor-analytics__consent button {
+    min-height: 44px;
+    padding: 9px 12px;
+    border: 1px solid var(--border-active);
+    border-radius: 10px;
+    background: rgba(37, 99, 235, 0.14);
+    color: var(--text);
+    font: 700 0.75rem var(--font-main);
+    cursor: pointer;
+}
+
+.visitor-analytics__consent button:hover,
+.visitor-analytics__consent button:focus-visible {
+    border-color: var(--cyan);
+}
+
+.visitor-analytics__consent-revoke {
+    justify-self: end;
+}
+
 .visitor-analytics__grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -170,6 +253,23 @@
 
     .visitor-analytics__grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .visitor-analytics__consent {
+        grid-template-columns: 1fr;
+    }
+
+    .visitor-analytics__consent-actions {
+        justify-content: stretch;
+    }
+
+    .visitor-analytics__consent button {
+        flex: 1 1 12rem;
+    }
+
+    .visitor-analytics__consent-revoke {
+        justify-self: stretch;
+        width: 100%;
     }
 
     .visitor-analytics__metric {

@@ -9,7 +9,8 @@
 
 import {
     ACCEPTED_EVENT_NAME,
-    privacyOptOutRequested
+    PRIVACY_STATE_EVENT_NAME,
+    resolvePrivacyState
 } from './visitor-transport.js';
 
 'use strict';
@@ -23,6 +24,40 @@ const STATS_URL = (
 
 const REFRESH_MS = 120_000;
 const ACCEPTED_REFRESH_DELAY_MS = 250;
+
+export function measurementStatusText(
+    privacyState,
+    recording,
+    empty = false
+) {
+    if (privacyState.reason === 'gpc') {
+        return 'Contadores públicos · medición local bloqueada por GPC';
+    }
+
+    if (privacyState.reason === 'dnt-pending') {
+        return 'Contadores públicos · autorización pendiente';
+    }
+
+    if (privacyState.reason === 'dnt-denied') {
+        return 'Contadores públicos · medición desactivada en esta pestaña';
+    }
+
+    if (privacyState.reason === 'dnt-granted') {
+        return recording
+            ? 'Medición autorizada en esta pestaña'
+            : 'Autorización guardada · registro pausado';
+    }
+
+    if (empty) {
+        return recording
+            ? 'Sin registros todavía · medición activa'
+            : 'Sin registros todavía · registro pausado';
+    }
+
+    return recording
+        ? 'Medición activa'
+        : 'Datos publicados · registro pausado';
+}
 
 export function createSingleFlight(task) {
     let pending = null;
@@ -248,6 +283,18 @@ export function initVisitorDashboard() {
     if (!panel) return;
 
     const status = panel.querySelector('[data-analytics-status]');
+    let latestRecording = false;
+    let latestEmptyState = false;
+
+    function updateMeasurementStatus(
+        privacyState = resolvePrivacyState()
+    ) {
+        status.textContent = measurementStatusText(
+            privacyState,
+            latestRecording,
+            latestEmptyState
+        );
+    }
 
     function setText(selector, value) {
         const element = panel.querySelector(selector);
@@ -525,21 +572,11 @@ export function initVisitorDashboard() {
             const result = await response.json();
 
             const normalized = normalizeStatsResponse(result);
+            latestRecording = normalized.recording;
+            latestEmptyState = normalized.state === 'empty';
 
             renderStats(normalized.stats);
-
-            if (normalized.state === 'empty') {
-                status.textContent = normalized.recording
-                    ? 'Sin registros todavía · medición activa'
-                    : 'Sin registros todavía · registro pausado';
-                return;
-            }
-
-            status.textContent = privacyOptOutRequested()
-                ? 'Tu preferencia de privacidad está protegida'
-                : normalized.recording
-                    ? 'Medición activa'
-                    : 'Datos publicados · registro pausado';
+            updateMeasurementStatus();
 
         } catch (error) {
             status.textContent = 'Estadísticas no disponibles';
@@ -561,6 +598,11 @@ export function initVisitorDashboard() {
     window.addEventListener(
         ACCEPTED_EVENT_NAME,
         refreshAfterAcceptedClick
+    );
+
+    window.addEventListener(
+        PRIVACY_STATE_EVENT_NAME,
+        (event) => updateMeasurementStatus(event.detail)
     );
 
     document.addEventListener('visibilitychange', () => {

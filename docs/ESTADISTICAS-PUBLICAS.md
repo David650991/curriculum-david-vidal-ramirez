@@ -19,7 +19,7 @@ GitHub Pages
 
 El panel público es de lectura. `visitor-analytics.js` identifica acciones y `visitor-session.js` estima actividad. `visitor-transport.js` mantiene localhost para pruebas y reconoce el origen oficial de GitHub Pages. La configuración autorizada utiliza `PUBLIC_RECORDING_ENABLED = true` y `ANALYTICAS_ESCRITURA = "habilitada"`.
 
-Las dos barreras se despliegan de forma coordinada. DNT y Global Privacy Control impiden crear el UUID de sesión y enviar eventos, aunque ambas barreras estén habilitadas. Son señales diferentes: DNT es una preferencia heredada y obsoleta; GPC es una señal vigente relacionada con venta o compartición de datos. La política conservadora de este sitio respeta ambas.
+Las dos barreras se despliegan de forma coordinada. DNT y Global Privacy Control son señales diferentes: DNT es una preferencia heredada y GPC una señal vigente relacionada con venta o compartición de datos. GPC mantiene la medición deshabilitada sin excepción. DNT bloquea por defecto, pero cuando GPC está inactivo permite una autorización explícita, temporal y específica para esta pestaña.
 
 ## Compatibilidad del transporte
 
@@ -31,7 +31,7 @@ Los UUID se generan con `crypto.randomUUID()` cuando existe. En navegadores con 
 
 Los mecanismos utilizados pertenecen a la plataforma web y no dependen del sistema operativo. Se espera funcionamiento en versiones modernas de Chrome, Edge, Firefox, Safari, Chrome para Android y Samsung Internet que implementen Web Crypto, Fetch, CORS, eventos DOM y almacenamiento de sesión. Los navegadores integrados en aplicaciones pueden restringir almacenamiento, navegación externa o red; en ellos el transporte usa memoria si `sessionStorage` está bloqueado, pero no puede garantizar el envío si el contenedor impide JavaScript o las solicitudes.
 
-No existe una excepción específica del sitio para ignorar DNT o GPC. Una opción de consentimiento explícito requeriría diseño, texto público, pruebas y aprobación previa de la política; no está implementada por este cambio.
+La autorización DNT explica que se contabilizan una sesión seudónima, tiempo activo aproximado y categorías de clics. Permitirla guarda `granted` únicamente en `sessionStorage` y recarga el ciclo estadístico; rechazar guarda `denied` sin generar visitas. Revocar cambia la decisión a `denied`, elimina el UUID y el tiempo local y detiene eventos nuevos. La decisión desaparece al cerrar la pestaña, no usa cookies ni `localStorage` y no modifica la preferencia global del navegador. Si el almacenamiento temporal está bloqueado, la autorización no se conserva y la medición permanece desactivada.
 
 ## Contrato de lectura
 
@@ -54,7 +54,7 @@ Una respuesta HTTP incorrecta, JSON inválido o contador negativo produce un est
 
 ## Privacidad y límites
 
-El esquema no incluye nombres, correos, teléfonos ni direcciones IP. Cada sesión usa un UUID seudónimo que, después de ser aceptado por el Worker, se conserva únicamente en `sessionStorage` por pestaña. El estado local distingue `confirmedActiveMs`, ya confirmado, de `pendingActiveMs`, el último acumulado medido cuya respuesta pudo quedar interrumpida. Una recarga reenvía primero el pendiente con la misma actualización monotónica y solo después fija la base para sumar actividad nueva. Las escrituras tardías fusionan máximos y no pueden reducir ni borrar un valor más reciente. Al cerrar la pestaña se descarta el estado; no se usan cookies ni `localStorage`. Si `sessionStorage` no está disponible, el transporte continúa en memoria. DNT y Global Privacy Control bloquean el transporte y eliminan cualquier sesión guardada.
+El esquema no incluye nombres, correos, teléfonos ni direcciones IP. Cada sesión usa un UUID seudónimo que, después de ser aceptado por el Worker, se conserva únicamente en `sessionStorage` por pestaña. El estado local distingue `confirmedActiveMs`, ya confirmado, de `pendingActiveMs`, el último acumulado medido cuya respuesta pudo quedar interrumpida. Una recarga reenvía primero el pendiente con la misma actualización monotónica y solo después fija la base para sumar actividad nueva. Las escrituras tardías fusionan máximos y no pueden reducir ni borrar un valor más reciente. Al cerrar la pestaña se descarta el estado; no se usan cookies ni `localStorage`. Sin DNT, el transporte conserva su funcionamiento directo. Con DNT, requiere la decisión temporal descrita anteriormente. GPC siempre lo bloquea. Si `sessionStorage` no está disponible, el transporte sin exclusión continúa en memoria, pero una autorización DNT no puede conservarse.
 
 La seudonimización no equivale a anonimización absoluta. Cloudflare puede recibir metadatos de red por operar la infraestructura. Los límites de origen, frecuencia, tamaño, sesión y eventos reducen abuso, pero no eliminan tráfico automatizado ni permiten deducir personas únicas.
 

@@ -42,7 +42,10 @@ test('clasifica las seis interacciones públicas relevantes', () => {
         [link({ href: 'tel:+522871234567' }), 'phone_click'],
         [link({ href: 'https://wa.me/522871234567' }), 'whatsapp_click'],
         [
-            link({ href: '/proyectos/', page: true }),
+            link({
+                href: '/proyectos/?utm_source=whatsapp',
+                page: true
+            }),
             'navigation_click'
         ],
         [
