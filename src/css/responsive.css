@@ -80,7 +80,8 @@
   .map-controls { flex-wrap: wrap; }
   .map-location { margin-left: 0; }
   .map-location, .map-directions { flex: 1 1 145px; }
-  .project-links { flex-wrap: wrap; gap: 10px 16px; }
+  .project-links { gap: 10px; }
+  .project-links-primary a { flex-basis: 100%; }
   .practice-grid, .media-channel-grid { grid-template-columns: 1fr; }
   .media-evidence { padding: 20px; }
 }

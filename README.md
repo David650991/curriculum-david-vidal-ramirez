@@ -73,7 +73,7 @@ El Worker aplica un límite general por centro de datos de Cloudflare y un segun
 
 La fecha efectiva de inicio de medición debe registrarse cuando D1 confirme el primer evento público legítimo; la publicación por sí sola no demuestra que exista una visita.
 
-Los identificadores de sesión son UUID seudónimos creados en memoria. El código no los guarda en cookies ni almacenamiento persistente y el esquema no contiene nombres, correos, teléfonos ni direcciones IP. Esto reduce la información tratada, pero no constituye anonimización absoluta: Cloudflare puede procesar metadatos de red como parte de su infraestructura.
+Los identificadores de sesión son UUID seudónimos. Tras la aceptación del Worker, el UUID y el tiempo activo confirmado se conservan únicamente en `sessionStorage` para reutilizar la sesión al recargar la misma pestaña. El último acumulado medido puede quedar marcado por separado como pendiente hasta recibir confirmación; una recarga lo reconcilia de forma idempotente antes de sumar tiempo nuevo. Estos datos se eliminan al cerrar la pestaña y no se guardan en cookies ni `localStorage`. Si el navegador bloquea `sessionStorage`, el transporte continúa en memoria. DNT y GPC impiden el registro y eliminan cualquier sesión guardada. El esquema no contiene nombres, correos, teléfonos ni direcciones IP. Esto reduce la información tratada, pero no constituye anonimización absoluta: Cloudflare puede procesar metadatos de red como parte de su infraestructura.
 
 La arquitectura, los límites y el procedimiento local para una base nueva se documentan en [Estadísticas públicas](docs/ESTADISTICAS-PUBLICAS.md).
 

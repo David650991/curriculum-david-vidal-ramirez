@@ -136,6 +136,65 @@ test('los GET reflejan la escritura habilitada y D1 disponible', async () => {
     });
 });
 
+test('CORS autoriza el POST JSON usado por fetch', async () => {
+    const response = await worker.fetch(
+        new Request('https://worker.example/events', {
+            method: 'OPTIONS',
+            headers: {
+                Origin: ALLOWED_ORIGIN,
+                'Access-Control-Request-Method': 'POST',
+                'Access-Control-Request-Headers': 'content-type'
+            }
+        }),
+        createEnvironment().env
+    );
+
+    assert.equal(response.status, 204);
+    assert.equal(
+        response.headers.get('Access-Control-Allow-Origin'),
+        ALLOWED_ORIGIN
+    );
+    assert.match(
+        response.headers.get('Access-Control-Allow-Methods'),
+        /POST/
+    );
+    assert.match(
+        response.headers.get('Access-Control-Allow-Headers'),
+        /Content-Type/i
+    );
+});
+
+test('Beacon admite JSON como texto simple sin relajar su validación', async () => {
+    const runtime = createEnvironment();
+    const result = await responseJson(await worker.fetch(
+        createRequest({
+            type: 'session_start',
+            sessionId: SESSION_ID
+        }, {
+            contentType: 'text/plain;charset=UTF-8'
+        }),
+        runtime.env
+    ));
+
+    assert.equal(result.status, 200);
+    assert.equal(result.body.type, 'session_start');
+    assert.equal(runtime.databaseCalls.length, 1);
+});
+
+test('el Worker sigue rechazando tipos de contenido ajenos', async () => {
+    const runtime = createEnvironment();
+    const result = await responseJson(await worker.fetch(
+        createRequest('type=session_start', {
+            contentType: 'application/x-www-form-urlencoded'
+        }),
+        runtime.env
+    ));
+
+    assert.equal(result.status, 415);
+    assert.equal(result.body.error, 'contenido_no_admitido');
+    assert.deepEqual(runtime.databaseCalls, []);
+});
+
 test('los GET reflejan la escritura deshabilitada sin ocultar D1', async () => {
     const runtime = createEnvironment({
         recording: 'deshabilitada',

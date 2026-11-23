@@ -4,10 +4,14 @@ import test from 'node:test';
 globalThis.window = {
     location: {
         hostname: 'localhost'
-    }
+    },
+    setTimeout,
+    clearTimeout
 };
 
 const {
+    createAcceptedRefreshHandler,
+    createSingleFlight,
     normalizeHistory,
     normalizeStatsResponse
 } = await import('../src/js/modules/visitor-dashboard.js');
@@ -119,4 +123,99 @@ test('una fila histórica inválida produce error', () => {
         () => normalizeHistory([{ day_utc: '2026-02-30' }]),
         /Fecha histórica no válida/
     );
+});
+
+test('un clic aceptado actualiza estadísticas e historial una vez', () => {
+    const scheduled = [];
+    const cancelled = [];
+    const calls = [];
+    const handler = createAcceptedRefreshHandler(
+        [
+            () => calls.push('stats'),
+            () => calls.push('history')
+        ],
+        (callback, delay) => {
+            scheduled.push({ callback, delay });
+            return scheduled.length;
+        },
+        (timerId) => cancelled.push(timerId)
+    );
+
+    handler({ detail: { type: 'session_activity' } });
+    assert.equal(scheduled.length, 0);
+
+    handler({ detail: { type: 'click' } });
+    handler({ detail: { type: 'click' } });
+
+    assert.equal(scheduled.length, 2);
+    assert.deepEqual(cancelled, [1]);
+    assert.equal(scheduled[1].delay, 250);
+
+    scheduled[1].callback();
+    assert.deepEqual(calls, ['stats', 'history']);
+});
+
+test('las actualizaciones simultáneas comparten una sola solicitud', async () => {
+    let resolveTask;
+    let executions = 0;
+    const task = createSingleFlight(() => {
+        executions += 1;
+        return new Promise((resolve) => { resolveTask = resolve; });
+    });
+
+    const first = task();
+    const second = task();
+    await new Promise((resolve) => setImmediate(resolve));
+
+    assert.equal(executions, 1);
+    assert.strictEqual(first, second);
+
+    resolveTask();
+    await first;
+});
+
+test('un clic durante una lectura pendiente fuerza una lectura posterior', async () => {
+    const resolvers = [];
+    let executions = 0;
+    const refresh = createSingleFlight(() => {
+        executions += 1;
+        return new Promise((resolve) => resolvers.push(resolve));
+    });
+
+    const pending = refresh();
+    await new Promise((resolve) => setImmediate(resolve));
+    assert.equal(executions, 1);
+
+    const acceptedClick = refresh({ ensureFresh: true });
+    assert.strictEqual(acceptedClick, pending);
+
+    resolvers[0]();
+    await new Promise((resolve) => setImmediate(resolve));
+    assert.equal(executions, 2);
+
+    resolvers[1]();
+    await pending;
+});
+
+test('varios clics durante la misma lectura agrupan una sola consulta nueva', async () => {
+    const resolvers = [];
+    let executions = 0;
+    const refresh = createSingleFlight(() => {
+        executions += 1;
+        return new Promise((resolve) => resolvers.push(resolve));
+    });
+
+    const pending = refresh();
+    await new Promise((resolve) => setImmediate(resolve));
+
+    refresh({ ensureFresh: true });
+    refresh({ ensureFresh: true });
+    refresh({ ensureFresh: true });
+    resolvers[0]();
+    await new Promise((resolve) => setImmediate(resolve));
+
+    assert.equal(executions, 2);
+
+    resolvers[1]();
+    await pending;
 });

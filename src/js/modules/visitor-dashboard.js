@@ -8,6 +8,7 @@
  */
 
 import {
+    ACCEPTED_EVENT_NAME,
     privacyOptOutRequested
 } from './visitor-transport.js';
 
@@ -21,6 +22,60 @@ const STATS_URL = (
     : 'https://cv-david-vidal-analytics.david650991.workers.dev/stats-d1';
 
 const REFRESH_MS = 120_000;
+const ACCEPTED_REFRESH_DELAY_MS = 250;
+
+export function createSingleFlight(task) {
+    let pending = null;
+    let refreshAfterPending = false;
+
+    async function execute() {
+        let result;
+
+        do {
+            refreshAfterPending = false;
+            result = await task();
+        } while (refreshAfterPending);
+
+        return result;
+    }
+
+    return function run(options = {}) {
+        if (pending) {
+            if (options.ensureFresh === true) {
+                refreshAfterPending = true;
+            }
+
+            return pending;
+        }
+
+        pending = Promise.resolve()
+            .then(execute)
+            .finally(() => {
+                pending = null;
+            });
+
+        return pending;
+    };
+}
+
+export function createAcceptedRefreshHandler(
+    refreshCallbacks,
+    schedule = window.setTimeout.bind(window),
+    cancel = window.clearTimeout.bind(window)
+) {
+    let timerId = null;
+
+    return function handleAcceptedEvent(event) {
+        if (event.detail?.type !== 'click') return;
+
+        if (timerId !== null) cancel(timerId);
+
+        timerId = schedule(() => {
+            timerId = null;
+            refreshCallbacks.forEach((refresh) => void refresh());
+        }, ACCEPTED_REFRESH_DELAY_MS);
+    };
+}
 
 const EMPTY_STATS = Object.freeze({
     total_visits: 0,
@@ -397,7 +452,7 @@ export function initVisitorDashboard() {
         );
     }
 
-    async function refreshHistory() {
+    async function performHistoryRefresh() {
         if (
             !HISTORY_URL ||
             !historyPanel ||
@@ -451,7 +506,7 @@ export function initVisitorDashboard() {
         }
     }
 
-    async function refresh() {
+    async function performRefresh() {
         if (document.visibilityState !== 'visible') return;
 
         try {
@@ -491,6 +546,22 @@ export function initVisitorDashboard() {
             console.warn('No fue posible actualizar estadísticas:', error.message);
         }
     }
+
+    const refresh = createSingleFlight(performRefresh);
+    const refreshHistory = createSingleFlight(
+        performHistoryRefresh
+    );
+
+    const refreshAfterAcceptedClick =
+        createAcceptedRefreshHandler([
+            () => refresh({ ensureFresh: true }),
+            () => refreshHistory({ ensureFresh: true })
+        ]);
+
+    window.addEventListener(
+        ACCEPTED_EVENT_NAME,
+        refreshAfterAcceptedClick
+    );
 
     document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible') {

@@ -11,7 +11,27 @@
 
 const EVENT_NAME = 'portfolio:analytics';
 
-function identifyAction(link) {
+function createAnalyticsEvent(detail) {
+    const EventConstructor =
+        window.CustomEvent ?? globalThis.CustomEvent;
+
+    if (typeof EventConstructor === 'function') {
+        return new EventConstructor(EVENT_NAME, { detail });
+    }
+
+    if (typeof document.createEvent === 'function') {
+        const event = document.createEvent('CustomEvent');
+        event.initCustomEvent(EVENT_NAME, false, false, detail);
+        return event;
+    }
+
+    return null;
+}
+
+export function identifyAction(
+    link,
+    locationObject = window.location
+) {
     const href = link.getAttribute('href') || '';
 
     // Botón existente de descarga del currículum.
@@ -34,7 +54,7 @@ function identifyAction(link) {
 
     // Enlaces de WhatsApp.
     try {
-        const url = new URL(href, window.location.href);
+        const url = new URL(href, locationObject.href);
 
         if (url.hostname.toLowerCase() === 'wa.me') {
             return 'whatsapp_click';
@@ -43,7 +63,7 @@ function identifyAction(link) {
         // Clics en enlaces de navegación interna.
         if (
             link.hasAttribute('data-page-link') &&
-            url.origin === window.location.origin
+            url.origin === locationObject.origin
         ) {
             return 'navigation_click';
         }
@@ -75,11 +95,13 @@ export function initVisitorAnalytics() {
 
         const section = link.closest('section')?.id || 'global';
 
-        window.dispatchEvent(new CustomEvent(EVENT_NAME, {
-            detail: {
-                action,
-                section
-            }
-        }));
+        const analyticsEvent = createAnalyticsEvent({
+            action,
+            section
+        });
+
+        if (analyticsEvent) {
+            window.dispatchEvent(analyticsEvent);
+        }
     }, { capture: true });
 }
