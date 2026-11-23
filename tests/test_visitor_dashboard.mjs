@@ -45,14 +45,14 @@ test('una respuesta vacía confirmada produce diez ceros', () => {
 test('el panel separa contadores públicos y permiso local', () => {
     assert.equal(
         measurementStatusText(
-            { reason: 'dnt-pending' },
+            { reason: 'consent-pending' },
             true
         ),
         'Contadores públicos · autorización pendiente'
     );
     assert.equal(
         measurementStatusText(
-            { reason: 'dnt-granted' },
+            { reason: 'consent-granted' },
             true
         ),
         'Medición autorizada en esta pestaña'

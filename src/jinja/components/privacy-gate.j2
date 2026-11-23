@@ -1,0 +1,65 @@
+<section class="privacy-gate"
+         id="privacy-gate"
+         data-analytics-consent
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="privacy-gate-title">
+  <div class="privacy-gate__card">
+    <p class="privacy-gate__eyebrow">// privacidad y transparencia</p>
+    <h1 id="privacy-gate-title" tabindex="-1">
+      Bienvenido a mi portafolio profesional
+    </h1>
+    <p class="privacy-gate__summary" data-consent-message aria-live="polite">
+      Antes de continuar, elige si deseas permitir la medición en esta pestaña.
+    </p>
+
+    <div class="privacy-gate__details">
+      <h2>¿Qué se registra si aceptas?</h2>
+      <ul>
+        <li>Una sesión seudónima y tiempo activo aproximado.</li>
+        <li>Categorías de clics en contacto, navegación y proyectos.</li>
+        <li>La decisión solo durante esta pestaña mediante sessionStorage.</li>
+      </ul>
+      <p>
+        Las tablas del proyecto no guardan nombres, correos, teléfonos ni
+        direcciones IP. Puedes cambiar tu decisión posteriormente.
+      </p>
+    </div>
+
+    <div class="privacy-gate__actions" data-consent-choices>
+      <button class="privacy-gate__accept" type="button" data-consent-allow>
+        Aceptar medición y ver currículum
+      </button>
+      <button class="privacy-gate__continue" type="button" data-consent-deny>
+        Continuar sin medición
+      </button>
+    </div>
+
+    <button class="privacy-gate__revoke"
+            type="button"
+            data-consent-revoke
+            hidden>
+      Revocar autorización
+    </button>
+
+    <button class="privacy-gate__close"
+            type="button"
+            data-consent-close
+            hidden>
+      Cerrar preferencias y volver al currículum
+    </button>
+
+    <p class="privacy-gate__footnote">
+      Global Privacy Control mantiene la medición desactivada. No se usan
+      cookies ni localStorage para esta decisión.
+    </p>
+  </div>
+</section>
+
+<button class="privacy-preferences-shortcut"
+        type="button"
+        data-analytics-preferences
+        aria-controls="privacy-gate"
+        hidden>
+  Preferencias de medición
+</button>

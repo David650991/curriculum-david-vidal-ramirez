@@ -13,10 +13,10 @@ Los archivos públicos contienen datos de contacto destinados al currículum. Nu
 ## Estadísticas y minimización de datos
 
 - Producción utiliza `ANALYTICAS_ESCRITURA` habilitada conforme a la autorización expresa del responsable del proyecto.
-- El transporte reconoce localhost y el origen oficial de GitHub Pages. Global Privacy Control bloquea siempre los POST. DNT los bloquea hasta que exista autorización explícita del sitio para la pestaña actual.
+- El transporte reconoce localhost y el origen oficial de GitHub Pages. Cada pestaña nueva bloquea los POST hasta una decisión explícita. Global Privacy Control bloquea siempre la medición y DNT permanece respetado hasta una autorización voluntaria.
 - DNT es una señal heredada y GPC una señal vigente y distinta. La autorización local nunca invalida GPC ni depende del navegador, sistema operativo o procedencia del enlace.
-- El UUID, el tiempo activo confirmado, un posible acumulado pendiente y la decisión DNT se conservan por separado solo en `sessionStorage` por pestaña. Una recarga reconcilia primero el pendiente mediante la actualización monotónica del Worker; no se guardan cookies ni `localStorage`.
-- Rechazar o revocar elimina la sesión estadística local y detiene eventos nuevos. Si `sessionStorage` está bloqueado, no se conserva la autorización y la medición permanece desactivada bajo DNT.
+- El UUID, el tiempo activo confirmado, un posible acumulado pendiente y la decisión del sitio se conservan por separado solo en `sessionStorage` por pestaña. Una recarga reconcilia primero el pendiente mediante la actualización monotónica del Worker; no se guardan cookies ni `localStorage`.
+- Continuar sin medición o revocar elimina la sesión estadística local y detiene eventos nuevos. Si `sessionStorage` está bloqueado, el currículum sigue disponible y la medición permanece desactivada.
 - D1 no almacena nombres, correos, teléfonos ni direcciones IP en las tablas del proyecto.
 - Los identificadores son seudónimos, no una garantía de anonimización absoluta. La infraestructura de Cloudflare puede procesar metadatos de red conforme a sus propios términos.
 

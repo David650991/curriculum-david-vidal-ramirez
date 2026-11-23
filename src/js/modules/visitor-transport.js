@@ -220,23 +220,13 @@ export function resolvePrivacyState(
         };
     }
 
-    if (!dntEnabled) {
-        return {
-            allowed: true,
-            reason: 'default',
-            consent,
-            dntEnabled,
-            gpcEnabled
-        };
-    }
-
     return {
         allowed: consent === 'granted',
         reason: consent === 'granted'
-            ? 'dnt-granted'
+            ? 'consent-granted'
             : consent === 'denied'
-                ? 'dnt-denied'
-                : 'dnt-pending',
+                ? 'consent-denied'
+                : 'consent-pending',
         consent,
         dntEnabled,
         gpcEnabled
@@ -248,7 +238,7 @@ export function resolvePrivacyState(
  * Autor: David Vidal Ramírez
  *
  * Se respetan DNT y Global Privacy Control.
- * No se almacenan estas preferencias.
+ * La decisión del sitio se conserva solo durante la pestaña.
  */
 export function privacyOptOutRequested(
     navigatorObject = navigator,
@@ -324,21 +314,12 @@ function dispatchPrivacyState(
 }
 
 function setupPrivacyControls({
-    panel,
     storageObject,
     navigatorObject,
     windowObject,
     documentObject
 }) {
-    if (typeof panel.querySelector !== 'function') {
-        return resolvePrivacyState(
-            navigatorObject,
-            windowObject,
-            storageObject
-        );
-    }
-
-    const container = panel.querySelector(
+    const container = documentObject.querySelector(
         '[data-analytics-consent]'
     );
 
@@ -365,53 +346,98 @@ function setupPrivacyControls({
     const revokeButton = container.querySelector(
         '[data-consent-revoke]'
     );
-    const preferencesButton = panel.querySelector(
+    const closeButton = container.querySelector(
+        '[data-consent-close]'
+    );
+    const preferencesButton = documentObject.querySelector(
         '[data-analytics-preferences]'
     );
     const consentTitle = container.querySelector(
-        '#analytics-consent-title'
+        '#privacy-gate-title'
+    );
+    const portfolioContent = documentObject.querySelector(
+        '[data-portfolio-content]'
+    );
+    const originalBodyOverflow = documentObject.body?.style?.overflow ?? '';
+    let storageUnavailable = false;
+    let openedFromPreferences = false;
+
+    windowObject.__privacyGateReady = true;
+    windowObject.clearTimeout?.(
+        windowObject.__privacyGateFailOpenTimer
     );
 
-    function render(state, storageError = false) {
-        container.hidden = state.reason === 'default';
+    function setGateOpen(open) {
+        container.hidden = !open;
+        if (portfolioContent) {
+            portfolioContent.inert = open;
+            if (typeof portfolioContent.toggleAttribute === 'function') {
+                portfolioContent.toggleAttribute('aria-hidden', open);
+            }
+        }
+        if (documentObject.body?.style) {
+            documentObject.body.style.overflow = open
+                ? 'hidden'
+                : originalBodyOverflow;
+        }
+    }
+
+    function render(state, options = {}) {
+        const forceOpen = options.forceOpen === true;
+        const storageError = options.storageError === true;
+        const requiresChoice = state.consent === null;
+        const open = forceOpen || requiresChoice;
+
+        openedFromPreferences = forceOpen && !requiresChoice;
+
+        setGateOpen(open);
         container.dataset.consentState = state.reason;
 
         if (preferencesButton) {
-            preferencesButton.hidden = state.reason === 'default';
+            preferencesButton.hidden = open;
+            preferencesButton.textContent = storageError
+                ? 'Medición desactivada: almacenamiento no disponible'
+                : 'Preferencias de medición';
         }
 
         if (storageError) {
             message.textContent =
                 'El navegador bloqueó el almacenamiento temporal; ' +
-                'la medición permanece desactivada.';
+                'puedes continuar, pero la medición permanecerá desactivada.';
         } else if (state.reason === 'gpc') {
             message.textContent =
                 'Global Privacy Control está activo. La medición ' +
-                'de esta pestaña permanece desactivada.';
-        } else if (state.reason === 'dnt-granted') {
+                'permanece desactivada; puedes consultar el currículum.';
+        } else if (state.reason === 'consent-granted') {
             message.textContent =
                 'Autorizaste la medición para esta pestaña. ' +
                 'Puedes revocarla cuando quieras.';
-        } else if (state.reason === 'dnt-denied') {
+        } else if (state.reason === 'consent-denied') {
             message.textContent =
                 'La medición está desactivada para esta pestaña. ' +
                 'Puedes autorizarla voluntariamente.';
-        } else if (state.reason === 'dnt-pending') {
+        } else if (state.reason === 'consent-pending') {
             message.textContent =
-                'Do Not Track está activo. Decide si deseas permitir ' +
-                'la medición únicamente en esta pestaña.';
+                (state.dntEnabled ? 'Do Not Track está activo. ' : '') +
+                'Elige si deseas permitir la medición solo en esta pestaña.';
+        }
+
+        if (allowButton) {
+            allowButton.hidden = state.reason === 'gpc' || storageError;
+            allowButton.disabled = state.reason === 'gpc' || storageError;
         }
 
         if (choices) {
-            choices.hidden =
-                state.reason === 'gpc' ||
-                state.reason === 'dnt-granted' ||
-                storageError;
+            choices.hidden = state.reason === 'consent-granted';
         }
 
         if (revokeButton) {
             revokeButton.hidden =
-                state.reason !== 'dnt-granted';
+                state.reason !== 'consent-granted';
+        }
+
+        if (closeButton) {
+            closeButton.hidden = !openedFromPreferences;
         }
     }
 
@@ -427,7 +453,20 @@ function setupPrivacyControls({
         const wasAllowed = currentState().allowed;
 
         if (!writeSiteConsent(storageObject, choice)) {
-            render(currentState(), true);
+            clearTabSession(storageObject);
+            storageUnavailable = true;
+            const state = {
+                ...currentState(),
+                allowed: false,
+                reason: 'consent-denied',
+                consent: 'denied'
+            };
+            render(state, { storageError: true });
+            dispatchPrivacyState(
+                windowObject,
+                documentObject,
+                state
+            );
             return;
         }
 
@@ -436,7 +475,7 @@ function setupPrivacyControls({
         }
 
         const state = currentState();
-        render(state);
+        render(state, { storageError: storageUnavailable });
         dispatchPrivacyState(
             windowObject,
             documentObject,
@@ -453,6 +492,16 @@ function setupPrivacyControls({
         }
     }
 
+    function closePreferences() {
+        if (!openedFromPreferences) return;
+
+        openedFromPreferences = false;
+        setGateOpen(false);
+        if (closeButton) closeButton.hidden = true;
+        if (preferencesButton) preferencesButton.hidden = false;
+        preferencesButton?.focus();
+    }
+
     allowButton?.addEventListener('click', () => {
         applyChoice('granted');
     });
@@ -465,16 +514,62 @@ function setupPrivacyControls({
         applyChoice('denied');
     });
 
+    closeButton?.addEventListener('click', closePreferences);
+
+    container.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            if (!openedFromPreferences) return;
+            event.preventDefault();
+            closePreferences();
+            return;
+        }
+
+        if (event.key !== 'Tab') return;
+
+        const focusable = [
+            allowButton,
+            denyButton,
+            revokeButton,
+            closeButton
+        ].filter((element) => (
+            element &&
+            !element.hidden &&
+            !element.disabled &&
+            (
+                (element !== allowButton && element !== denyButton) ||
+                !choices?.hidden
+            )
+        ));
+
+        if (focusable.length === 0) return;
+
+        const first = focusable[0];
+        const last = focusable.at(-1);
+        const activeElement = documentObject.activeElement;
+
+        if (
+            event.shiftKey &&
+            (activeElement === first || activeElement === consentTitle)
+        ) {
+            event.preventDefault();
+            last.focus();
+        } else if (!event.shiftKey && activeElement === last) {
+            event.preventDefault();
+            first.focus();
+        }
+    });
+
     preferencesButton?.addEventListener('click', () => {
-        container.scrollIntoView?.({
-            behavior: 'smooth',
-            block: 'center'
+        render(currentState(), {
+            forceOpen: true,
+            storageError: storageUnavailable
         });
-        consentTitle?.focus({ preventScroll: true });
+        consentTitle?.focus();
     });
 
     const state = currentState();
     render(state);
+    if (!container.hidden) consentTitle?.focus();
     return state;
 }
 
@@ -492,10 +587,6 @@ export function initVisitorTransport(options = {}) {
         options.publicRecordingEnabled ?? PUBLIC_RECORDING_ENABLED
     );
 
-    if (!transport.enabled || !transport.eventsUrl) {
-        return;
-    }
-
     const panel = documentObject.querySelector(
         '[data-visitor-analytics]'
     );
@@ -503,12 +594,15 @@ export function initVisitorTransport(options = {}) {
     if (!panel) return;
 
     const privacyState = setupPrivacyControls({
-        panel,
         storageObject,
         navigatorObject,
         windowObject,
         documentObject
     });
+
+    if (!transport.enabled || !transport.eventsUrl) {
+        return;
+    }
 
     // GPC siempre bloquea. DNT solo permite continuar después
     // de una autorización explícita y temporal del sitio.

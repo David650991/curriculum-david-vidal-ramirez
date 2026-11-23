@@ -17,6 +17,7 @@ class FakeTarget {
         this.location = location;
         this.listeners = new Map();
         this.doNotTrack = null;
+        this.focusCount = 0;
     }
 
     addEventListener(type, listener) {
@@ -26,11 +27,23 @@ class FakeTarget {
     }
 
     dispatch(type, detail = {}) {
-        const event = { detail };
+        const event = Object.hasOwn(detail, 'key')
+            ? {
+                ...detail,
+                defaultPrevented: false,
+                preventDefault() {
+                    this.defaultPrevented = true;
+                }
+            }
+            : { detail };
         for (const listener of this.listeners.get(type) ?? []) {
             listener(event);
         }
         return event;
+    }
+
+    focus() {
+        this.focusCount += 1;
     }
 
     dispatchEvent(event) {
@@ -59,11 +72,17 @@ class FakeStorage {
     }
 }
 
+function createGrantedStorage() {
+    const storage = new FakeStorage();
+    storage.setItem(SITE_CONSENT_KEY, 'granted');
+    return storage;
+}
+
 function createRuntime({
     origin = 'http://127.0.0.1:8000',
     fetchImplementation = async () => ({ ok: true, status: 200 }),
     navigatorObject = {},
-    sessionStorageObject = new FakeStorage(),
+    sessionStorageObject = createGrantedStorage(),
     cryptoObject: suppliedCryptoObject,
     panel = {}
 } = {}) {
@@ -78,6 +97,8 @@ function createRuntime({
         }
     });
     const documentObject = new FakeTarget();
+    documentObject.body = { style: { overflow: '' } };
+    documentObject.activeElement = null;
     const requests = [];
     let uuidCount = 0;
 
@@ -88,7 +109,10 @@ function createRuntime({
         }
     };
 
-    documentObject.querySelector = () => panel;
+    documentObject.querySelector = (selector) => {
+        if (selector === '[data-visitor-analytics]') return panel;
+        return panel.querySelector?.(selector) ?? null;
+    };
     windowObject.fetch = async (requestUrl, options) => {
         requests.push({
             url: requestUrl,
@@ -134,8 +158,11 @@ function createConsentPanel() {
     const deny = new FakeTarget();
     const revoke = new FakeTarget();
     revoke.hidden = true;
+    const close = new FakeTarget();
+    close.hidden = true;
     const preferences = new FakeTarget();
     preferences.hidden = true;
+    const portfolioContent = { inert: false };
     const title = {
         focusCount: 0,
         focus() {
@@ -149,7 +176,8 @@ function createConsentPanel() {
         ['[data-consent-allow]', allow],
         ['[data-consent-deny]', deny],
         ['[data-consent-revoke]', revoke],
-        ['#analytics-consent-title', title]
+        ['[data-consent-close]', close],
+        ['#privacy-gate-title', title]
     ]);
     container.querySelector = (selector) =>
         elements.get(selector) ?? null;
@@ -163,6 +191,9 @@ function createConsentPanel() {
                 if (selector === '[data-analytics-preferences]') {
                     return preferences;
                 }
+                if (selector === '[data-portfolio-content]') {
+                    return portfolioContent;
+                }
                 return null;
             }
         },
@@ -172,7 +203,9 @@ function createConsentPanel() {
         allow,
         deny,
         revoke,
+        close,
         preferences,
+        portfolioContent,
         title,
         scrollCount: () => scrollCount
     };
@@ -207,7 +240,7 @@ test('genera UUID v4 con Web Crypto aunque randomUUID no exista', () => {
     assert.equal(uuid, '00010203-0405-4607-8809-0a0b0c0d0e0f');
 });
 
-test('GitHub Pages inicia una sesión cuando no hay exclusión de privacidad', async () => {
+test('GitHub Pages inicia una sesión después de autorizar', async () => {
     const runtime = createRuntime({
         origin: 'https://david650991.github.io'
     });
@@ -222,6 +255,23 @@ test('GitHub Pages inicia una sesión cuando no hay exclusión de privacidad', a
         runtime.requests[0].url,
         'https://cv-david-vidal-analytics.david650991.workers.dev/events'
     );
+});
+
+test('una pestaña nueva no crea sesión antes de decidir', async () => {
+    const controls = createConsentPanel();
+    const runtime = createRuntime({
+        sessionStorageObject: new FakeStorage(),
+        panel: controls.panel
+    });
+
+    initVisitorTransport(runtime);
+    await flushPromises();
+
+    assert.equal(controls.container.hidden, false);
+    assert.equal(controls.portfolioContent.inert, true);
+    assert.equal(controls.title.focusCount, 1);
+    assert.deepEqual(runtime.requests, []);
+    assert.equal(runtime.uuidCount(), 0);
 });
 
 test('localhost conserva el Worker local para pruebas', async () => {
@@ -277,7 +327,7 @@ test('DNT y GPC se resuelven como señales distintas', () => {
         { doNotTrack: '1', globalPrivacyControl: false },
         {},
         storage
-    ).reason, 'dnt-pending');
+    ).reason, 'consent-pending');
 
     storage.setItem(SITE_CONSENT_KEY, 'granted');
 
@@ -285,7 +335,7 @@ test('DNT y GPC se resuelven como señales distintas', () => {
         { doNotTrack: '1', globalPrivacyControl: false },
         {},
         storage
-    ).reason, 'dnt-granted');
+    ).reason, 'consent-granted');
     assert.equal(resolvePrivacyState(
         { doNotTrack: '1', globalPrivacyControl: true },
         {},
@@ -360,7 +410,7 @@ test('la autorización voluntaria se guarda antes de iniciar medición', async (
     assert.equal(second.requests[0].payload.type, 'session_start');
 });
 
-test('el acceso visible lleva por teclado a las preferencias DNT', async () => {
+test('el acceso visible reabre y enfoca las preferencias', async () => {
     const controls = createConsentPanel();
     const runtime = createRuntime({
         navigatorObject: { doNotTrack: '1' },
@@ -373,9 +423,110 @@ test('el acceso visible lleva por teclado a las preferencias DNT', async () => {
     assert.equal(controls.preferences.hidden, false);
     assert.equal(controls.preferences.listeners.has('click'), true);
     controls.preferences.dispatch('click');
-    assert.equal(controls.scrollCount(), 1);
     assert.equal(controls.title.focusCount, 1);
+    assert.equal(controls.container.hidden, false);
+    assert.equal(controls.portfolioContent.inert, true);
+    assert.equal(runtime.requests.length, 1);
+});
+
+test('cerrar preferencias conserva autorización, sesión y visita', async () => {
+    const controls = createConsentPanel();
+    const storage = createGrantedStorage();
+    const runtime = createRuntime({
+        sessionStorageObject: storage,
+        panel: controls.panel
+    });
+
+    initVisitorTransport(runtime);
+    await flushPromises();
+    const storedSession = storage.getItem(TAB_SESSION_KEY);
+
+    controls.preferences.dispatch('click');
+    assert.equal(controls.close.hidden, false);
+    assert.equal(controls.portfolioContent.inert, true);
+    assert.equal(runtime.documentObject.body.style.overflow, 'hidden');
+
+    controls.close.dispatch('click');
+
+    assert.equal(storage.getItem(SITE_CONSENT_KEY), 'granted');
+    assert.equal(storage.getItem(TAB_SESSION_KEY), storedSession);
+    assert.equal(runtime.requests.length, 1);
+    assert.equal(runtime.reloadCount(), 0);
+    assert.equal(controls.container.hidden, true);
+    assert.equal(controls.portfolioContent.inert, false);
+    assert.equal(runtime.documentObject.body.style.overflow, '');
+    assert.equal(controls.preferences.focusCount, 1);
+});
+
+test('Escape cierra solo preferencias reabiertas y devuelve el foco', async () => {
+    const controls = createConsentPanel();
+    const storage = createGrantedStorage();
+    const runtime = createRuntime({
+        sessionStorageObject: storage,
+        panel: controls.panel
+    });
+
+    initVisitorTransport(runtime);
+    await flushPromises();
+    controls.preferences.dispatch('click');
+
+    const escape = controls.container.dispatch('keydown', {
+        key: 'Escape'
+    });
+
+    assert.equal(escape.defaultPrevented, true);
+    assert.equal(controls.container.hidden, true);
+    assert.equal(controls.portfolioContent.inert, false);
+    assert.equal(controls.preferences.focusCount, 1);
+    assert.equal(storage.getItem(SITE_CONSENT_KEY), 'granted');
+    assert.equal(runtime.requests.length, 1);
+});
+
+test('Escape no omite la decisión inicial', async () => {
+    const controls = createConsentPanel();
+    const storage = new FakeStorage();
+    const runtime = createRuntime({
+        sessionStorageObject: storage,
+        panel: controls.panel
+    });
+
+    initVisitorTransport(runtime);
+    const escape = controls.container.dispatch('keydown', {
+        key: 'Escape'
+    });
+    await flushPromises();
+
+    assert.equal(escape.defaultPrevented, false);
+    assert.equal(controls.container.hidden, false);
+    assert.equal(controls.close.hidden, true);
+    assert.equal(controls.portfolioContent.inert, true);
+    assert.equal(storage.getItem(SITE_CONSENT_KEY), null);
     assert.deepEqual(runtime.requests, []);
+});
+
+test('el foco queda confinado en las preferencias abiertas', async () => {
+    const controls = createConsentPanel();
+    const runtime = createRuntime({ panel: controls.panel });
+
+    initVisitorTransport(runtime);
+    await flushPromises();
+    controls.preferences.dispatch('click');
+
+    runtime.documentObject.activeElement = controls.close;
+    const forward = controls.container.dispatch('keydown', {
+        key: 'Tab',
+        shiftKey: false
+    });
+    assert.equal(forward.defaultPrevented, true);
+    assert.equal(controls.revoke.focusCount, 1);
+
+    runtime.documentObject.activeElement = controls.revoke;
+    const backward = controls.container.dispatch('keydown', {
+        key: 'Tab',
+        shiftKey: true
+    });
+    assert.equal(backward.defaultPrevented, true);
+    assert.equal(controls.close.focusCount, 1);
 });
 
 test('rechazar desde el panel no recarga ni genera una visita', async () => {
@@ -551,8 +702,35 @@ test('GPC bloquea incluso una autorización DNT previamente guardada', async () 
     assert.equal(runtime.uuidCount(), 0);
 });
 
+test('GPC permite entrar al CV pero nunca habilita la medición', async () => {
+    const controls = createConsentPanel();
+    const storage = new FakeStorage();
+    const runtime = createRuntime({
+        navigatorObject: { globalPrivacyControl: true },
+        sessionStorageObject: storage,
+        panel: controls.panel
+    });
+
+    initVisitorTransport(runtime);
+    await flushPromises();
+
+    assert.equal(controls.container.hidden, false);
+    assert.equal(controls.allow.hidden, true);
+    assert.equal(controls.portfolioContent.inert, true);
+    assert.deepEqual(runtime.requests, []);
+
+    controls.deny.dispatch('click');
+    await flushPromises();
+
+    assert.equal(storage.getItem(SITE_CONSENT_KEY), 'denied');
+    assert.equal(controls.container.hidden, true);
+    assert.equal(controls.portfolioContent.inert, false);
+    assert.deepEqual(runtime.requests, []);
+});
+
 test('una recarga conserva la sesión aceptada de la pestaña', async () => {
     const storage = new FakeStorage();
+    storage.setItem(SITE_CONSENT_KEY, 'granted');
     const first = createRuntime({ sessionStorageObject: storage });
 
     initVisitorTransport(first);
@@ -625,6 +803,7 @@ test('parámetros UTM y procedencia externa no alteran el transporte', async () 
 
 test('el tiempo activo continúa de forma acumulada después de recargar', async () => {
     const storage = new FakeStorage();
+    storage.setItem(SITE_CONSENT_KEY, 'granted');
     const first = createRuntime({ sessionStorageObject: storage });
 
     initVisitorTransport(first);
@@ -651,6 +830,7 @@ test('una recarga reconcilia actividad pendiente antes de sumar tiempo nuevo', a
         confirmOldActivity = resolve;
     });
     const storage = new FakeStorage();
+    storage.setItem(SITE_CONSENT_KEY, 'granted');
     const first = createRuntime({
         sessionStorageObject: storage,
         fetchImplementation: async (_url, _options, index) =>
@@ -700,6 +880,7 @@ test('una recarga reconcilia actividad pendiente antes de sumar tiempo nuevo', a
 
 test('un error de red final conserva solo actividad pendiente verificable', async () => {
     const storage = new FakeStorage();
+    storage.setItem(SITE_CONSENT_KEY, 'granted');
     const beacons = [];
     const first = createRuntime({
         sessionStorageObject: storage,
@@ -741,6 +922,7 @@ test('un error de red final conserva solo actividad pendiente verificable', asyn
 
 test('múltiples recargas conservan un acumulado exacto y creciente', async () => {
     const storage = new FakeStorage();
+    storage.setItem(SITE_CONSENT_KEY, 'granted');
     const reportedTotals = [];
 
     for (let load = 0; load < 3; load += 1) {
@@ -765,34 +947,42 @@ test('múltiples recargas conservan un acumulado exacto y creciente', async () =
     assert.equal(stored.pendingActiveMs, null);
 });
 
-test('sessionStorage bloqueado conserva un transporte funcional en memoria', async () => {
+test('sessionStorage bloqueado permite continuar sin medición', async () => {
     const blockedStorage = {
         getItem() { throw new Error('bloqueado'); },
         setItem() { throw new Error('bloqueado'); },
         removeItem() { throw new Error('bloqueado'); }
     };
+    const controls = createConsentPanel();
     const runtime = createRuntime({
-        sessionStorageObject: blockedStorage
+        sessionStorageObject: blockedStorage,
+        panel: controls.panel
     });
 
     initVisitorTransport(runtime);
+    controls.deny.dispatch('click');
     await flushPromises();
 
-    assert.equal(runtime.requests[0].payload.type, 'session_start');
-    assert.equal(runtime.uuidCount(), 1);
+    assert.deepEqual(runtime.requests, []);
+    assert.equal(runtime.uuidCount(), 0);
+    assert.equal(controls.container.hidden, true);
+    assert.match(controls.preferences.textContent, /almacenamiento no disponible/);
 });
 
-test('un getter de sessionStorage bloqueado no interrumpe la sesión', async () => {
-    const runtime = createRuntime();
+test('un getter de sessionStorage bloqueado no activa medición', async () => {
+    const controls = createConsentPanel();
+    const runtime = createRuntime({ panel: controls.panel });
     delete runtime.sessionStorageObject;
     Object.defineProperty(runtime.windowObject, 'sessionStorage', {
         get() { throw new Error('bloqueado'); }
     });
 
     initVisitorTransport(runtime);
+    controls.deny.dispatch('click');
     await flushPromises();
 
-    assert.equal(runtime.requests[0].payload.type, 'session_start');
+    assert.deepEqual(runtime.requests, []);
+    assert.equal(controls.container.hidden, true);
 });
 
 test('solo un clic aceptado solicita actualizar el tablero', async () => {
