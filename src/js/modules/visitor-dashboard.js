@@ -34,15 +34,15 @@ export function measurementStatusText(
         return 'Contadores públicos · medición local bloqueada por GPC';
     }
 
-    if (privacyState.reason === 'dnt-pending') {
+    if (privacyState.reason === 'consent-pending') {
         return 'Contadores públicos · autorización pendiente';
     }
 
-    if (privacyState.reason === 'dnt-denied') {
+    if (privacyState.reason === 'consent-denied') {
         return 'Contadores públicos · medición desactivada en esta pestaña';
     }
 
-    if (privacyState.reason === 'dnt-granted') {
+    if (privacyState.reason === 'consent-granted') {
         return recording
             ? 'Medición autorizada en esta pestaña'
             : 'Autorización guardada · registro pausado';

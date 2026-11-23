@@ -165,10 +165,17 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
     assert html.count('data-stat-') == 10
     assert "La medición está activa" in html
     assert "respeta GPC y permite una decisión explícita cuando DNT está" in html
+    assert "Bienvenido a mi portafolio profesional" in html
+    assert "Aceptar medición y ver currículum" in html
+    assert "Continuar sin medición" in html
     assert "data-analytics-consent" in html
     assert "data-analytics-preferences" in html
-    assert 'aria-controls="analytics-consent"' in html
-    assert 'id="analytics-consent"' in html
+    assert 'role="dialog"' in html
+    assert 'aria-modal="true"' in html
+    assert 'aria-controls="privacy-gate"' in html
+    assert "data-portfolio-content" in html
+    assert "window.__privacyGateReady" in html
+    assert "<noscript>" in html
     assert "data-consent-allow" in html
     assert "data-consent-deny" in html
     assert "data-consent-revoke" in html
@@ -183,7 +190,7 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
     assert "Nombre: David Vidal Ramírez" in humans
     assert "Rol: Creador, diseñador, desarrollador y mantenedor" in humans
     assert "Estadísticas: lectura pública mediante Cloudflare Workers y D1" in humans
-    assert "Registro de visitantes: GPC bloquea; DNT requiere autorización temporal" in humans
+    assert "Registro de visitantes: decisión previa por pestaña; GPC bloquea" in humans
     license_text = (output / "LICENSE.txt").read_text(encoding="utf-8")
     assert "Copyright (c) 2025-2026 David Vidal Ramírez" in license_text
 
