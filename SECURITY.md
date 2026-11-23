@@ -13,9 +13,10 @@ Los archivos públicos contienen datos de contacto destinados al currículum. Nu
 ## Estadísticas y minimización de datos
 
 - Producción utiliza `ANALYTICAS_ESCRITURA` habilitada conforme a la autorización expresa del responsable del proyecto.
-- El transporte reconoce localhost y el origen oficial de GitHub Pages; los POST públicos se omiten cuando DNT o Global Privacy Control están activos.
-- DNT (señal heredada y obsoleta) y Global Privacy Control (señal vigente y distinta) impiden crear el identificador de sesión y enviar eventos; no existe una excepción silenciosa por navegador o dispositivo.
-- El UUID, el tiempo activo confirmado y un posible acumulado pendiente se conservan por separado solo en `sessionStorage` por pestaña. Una recarga reconcilia primero el pendiente mediante la actualización monotónica del Worker; no se guardan cookies ni `localStorage`. DNT y GPC bloquean el registro y eliminan esa sesión local.
+- El transporte reconoce localhost y el origen oficial de GitHub Pages. Global Privacy Control bloquea siempre los POST. DNT los bloquea hasta que exista autorización explícita del sitio para la pestaña actual.
+- DNT es una señal heredada y GPC una señal vigente y distinta. La autorización local nunca invalida GPC ni depende del navegador, sistema operativo o procedencia del enlace.
+- El UUID, el tiempo activo confirmado, un posible acumulado pendiente y la decisión DNT se conservan por separado solo en `sessionStorage` por pestaña. Una recarga reconcilia primero el pendiente mediante la actualización monotónica del Worker; no se guardan cookies ni `localStorage`.
+- Rechazar o revocar elimina la sesión estadística local y detiene eventos nuevos. Si `sessionStorage` está bloqueado, no se conserva la autorización y la medición permanece desactivada bajo DNT.
 - D1 no almacena nombres, correos, teléfonos ni direcciones IP en las tablas del proyecto.
 - Los identificadores son seudónimos, no una garantía de anonimización absoluta. La infraestructura de Cloudflare puede procesar metadatos de red conforme a sus propios términos.
 

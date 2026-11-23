@@ -12,6 +12,7 @@ globalThis.window = {
 const {
     createAcceptedRefreshHandler,
     createSingleFlight,
+    measurementStatusText,
     normalizeHistory,
     normalizeStatsResponse
 } = await import('../src/js/modules/visitor-dashboard.js');
@@ -39,6 +40,30 @@ test('una respuesta vacía confirmada produce diez ceros', () => {
     assert.equal(result.state, 'empty');
     assert.equal(result.recording, false);
     assert.deepEqual(Object.values(result.stats), Array(10).fill(0));
+});
+
+test('el panel separa contadores públicos y permiso local', () => {
+    assert.equal(
+        measurementStatusText(
+            { reason: 'dnt-pending' },
+            true
+        ),
+        'Contadores públicos · autorización pendiente'
+    );
+    assert.equal(
+        measurementStatusText(
+            { reason: 'dnt-granted' },
+            true
+        ),
+        'Medición autorizada en esta pestaña'
+    );
+    assert.equal(
+        measurementStatusText(
+            { reason: 'gpc' },
+            true
+        ),
+        'Contadores públicos · medición local bloqueada por GPC'
+    );
 });
 
 test('las estadísticas reales se conservan sin alteraciones', () => {
