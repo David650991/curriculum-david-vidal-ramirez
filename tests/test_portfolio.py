@@ -179,6 +179,8 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
     assert "data-consent-allow" in html
     assert "data-consent-deny" in html
     assert "data-consent-revoke" in html
+    assert "data-consent-close" in html
+    assert "Cerrar preferencias y volver al currículum" in html
     assert "15 de junio de 1991" not in html
     for sensitive_label in ("NSS:", "CURP:", "Registro Patronal", "Salario Base"):
         assert sensitive_label not in html

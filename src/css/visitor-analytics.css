@@ -172,7 +172,8 @@
 }
 
 .privacy-gate__continue,
-.privacy-gate__revoke {
+.privacy-gate__revoke,
+.privacy-gate__close {
     background: rgba(15, 35, 58, 0.88);
 }
 
@@ -187,7 +188,8 @@
     opacity: 0.52;
 }
 
-.privacy-gate__revoke {
+.privacy-gate__revoke,
+.privacy-gate__close {
     width: 100%;
     margin-top: 12px;
 }

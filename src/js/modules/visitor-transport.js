@@ -346,6 +346,9 @@ function setupPrivacyControls({
     const revokeButton = container.querySelector(
         '[data-consent-revoke]'
     );
+    const closeButton = container.querySelector(
+        '[data-consent-close]'
+    );
     const preferencesButton = documentObject.querySelector(
         '[data-analytics-preferences]'
     );
@@ -357,6 +360,7 @@ function setupPrivacyControls({
     );
     const originalBodyOverflow = documentObject.body?.style?.overflow ?? '';
     let storageUnavailable = false;
+    let openedFromPreferences = false;
 
     windowObject.__privacyGateReady = true;
     windowObject.clearTimeout?.(
@@ -383,6 +387,8 @@ function setupPrivacyControls({
         const storageError = options.storageError === true;
         const requiresChoice = state.consent === null;
         const open = forceOpen || requiresChoice;
+
+        openedFromPreferences = forceOpen && !requiresChoice;
 
         setGateOpen(open);
         container.dataset.consentState = state.reason;
@@ -428,6 +434,10 @@ function setupPrivacyControls({
         if (revokeButton) {
             revokeButton.hidden =
                 state.reason !== 'consent-granted';
+        }
+
+        if (closeButton) {
+            closeButton.hidden = !openedFromPreferences;
         }
     }
 
@@ -482,6 +492,16 @@ function setupPrivacyControls({
         }
     }
 
+    function closePreferences() {
+        if (!openedFromPreferences) return;
+
+        openedFromPreferences = false;
+        setGateOpen(false);
+        if (closeButton) closeButton.hidden = true;
+        if (preferencesButton) preferencesButton.hidden = false;
+        preferencesButton?.focus();
+    }
+
     allowButton?.addEventListener('click', () => {
         applyChoice('granted');
     });
@@ -492,6 +512,51 @@ function setupPrivacyControls({
 
     revokeButton?.addEventListener('click', () => {
         applyChoice('denied');
+    });
+
+    closeButton?.addEventListener('click', closePreferences);
+
+    container.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            if (!openedFromPreferences) return;
+            event.preventDefault();
+            closePreferences();
+            return;
+        }
+
+        if (event.key !== 'Tab') return;
+
+        const focusable = [
+            allowButton,
+            denyButton,
+            revokeButton,
+            closeButton
+        ].filter((element) => (
+            element &&
+            !element.hidden &&
+            !element.disabled &&
+            (
+                (element !== allowButton && element !== denyButton) ||
+                !choices?.hidden
+            )
+        ));
+
+        if (focusable.length === 0) return;
+
+        const first = focusable[0];
+        const last = focusable.at(-1);
+        const activeElement = documentObject.activeElement;
+
+        if (
+            event.shiftKey &&
+            (activeElement === first || activeElement === consentTitle)
+        ) {
+            event.preventDefault();
+            last.focus();
+        } else if (!event.shiftKey && activeElement === last) {
+            event.preventDefault();
+            first.focus();
+        }
     });
 
     preferencesButton?.addEventListener('click', () => {

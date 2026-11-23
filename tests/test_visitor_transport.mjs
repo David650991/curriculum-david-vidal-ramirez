@@ -17,6 +17,7 @@ class FakeTarget {
         this.location = location;
         this.listeners = new Map();
         this.doNotTrack = null;
+        this.focusCount = 0;
     }
 
     addEventListener(type, listener) {
@@ -26,11 +27,23 @@ class FakeTarget {
     }
 
     dispatch(type, detail = {}) {
-        const event = { detail };
+        const event = Object.hasOwn(detail, 'key')
+            ? {
+                ...detail,
+                defaultPrevented: false,
+                preventDefault() {
+                    this.defaultPrevented = true;
+                }
+            }
+            : { detail };
         for (const listener of this.listeners.get(type) ?? []) {
             listener(event);
         }
         return event;
+    }
+
+    focus() {
+        this.focusCount += 1;
     }
 
     dispatchEvent(event) {
@@ -84,6 +97,8 @@ function createRuntime({
         }
     });
     const documentObject = new FakeTarget();
+    documentObject.body = { style: { overflow: '' } };
+    documentObject.activeElement = null;
     const requests = [];
     let uuidCount = 0;
 
@@ -143,6 +158,8 @@ function createConsentPanel() {
     const deny = new FakeTarget();
     const revoke = new FakeTarget();
     revoke.hidden = true;
+    const close = new FakeTarget();
+    close.hidden = true;
     const preferences = new FakeTarget();
     preferences.hidden = true;
     const portfolioContent = { inert: false };
@@ -159,6 +176,7 @@ function createConsentPanel() {
         ['[data-consent-allow]', allow],
         ['[data-consent-deny]', deny],
         ['[data-consent-revoke]', revoke],
+        ['[data-consent-close]', close],
         ['#privacy-gate-title', title]
     ]);
     container.querySelector = (selector) =>
@@ -185,6 +203,7 @@ function createConsentPanel() {
         allow,
         deny,
         revoke,
+        close,
         preferences,
         portfolioContent,
         title,
@@ -408,6 +427,106 @@ test('el acceso visible reabre y enfoca las preferencias', async () => {
     assert.equal(controls.container.hidden, false);
     assert.equal(controls.portfolioContent.inert, true);
     assert.equal(runtime.requests.length, 1);
+});
+
+test('cerrar preferencias conserva autorización, sesión y visita', async () => {
+    const controls = createConsentPanel();
+    const storage = createGrantedStorage();
+    const runtime = createRuntime({
+        sessionStorageObject: storage,
+        panel: controls.panel
+    });
+
+    initVisitorTransport(runtime);
+    await flushPromises();
+    const storedSession = storage.getItem(TAB_SESSION_KEY);
+
+    controls.preferences.dispatch('click');
+    assert.equal(controls.close.hidden, false);
+    assert.equal(controls.portfolioContent.inert, true);
+    assert.equal(runtime.documentObject.body.style.overflow, 'hidden');
+
+    controls.close.dispatch('click');
+
+    assert.equal(storage.getItem(SITE_CONSENT_KEY), 'granted');
+    assert.equal(storage.getItem(TAB_SESSION_KEY), storedSession);
+    assert.equal(runtime.requests.length, 1);
+    assert.equal(runtime.reloadCount(), 0);
+    assert.equal(controls.container.hidden, true);
+    assert.equal(controls.portfolioContent.inert, false);
+    assert.equal(runtime.documentObject.body.style.overflow, '');
+    assert.equal(controls.preferences.focusCount, 1);
+});
+
+test('Escape cierra solo preferencias reabiertas y devuelve el foco', async () => {
+    const controls = createConsentPanel();
+    const storage = createGrantedStorage();
+    const runtime = createRuntime({
+        sessionStorageObject: storage,
+        panel: controls.panel
+    });
+
+    initVisitorTransport(runtime);
+    await flushPromises();
+    controls.preferences.dispatch('click');
+
+    const escape = controls.container.dispatch('keydown', {
+        key: 'Escape'
+    });
+
+    assert.equal(escape.defaultPrevented, true);
+    assert.equal(controls.container.hidden, true);
+    assert.equal(controls.portfolioContent.inert, false);
+    assert.equal(controls.preferences.focusCount, 1);
+    assert.equal(storage.getItem(SITE_CONSENT_KEY), 'granted');
+    assert.equal(runtime.requests.length, 1);
+});
+
+test('Escape no omite la decisión inicial', async () => {
+    const controls = createConsentPanel();
+    const storage = new FakeStorage();
+    const runtime = createRuntime({
+        sessionStorageObject: storage,
+        panel: controls.panel
+    });
+
+    initVisitorTransport(runtime);
+    const escape = controls.container.dispatch('keydown', {
+        key: 'Escape'
+    });
+    await flushPromises();
+
+    assert.equal(escape.defaultPrevented, false);
+    assert.equal(controls.container.hidden, false);
+    assert.equal(controls.close.hidden, true);
+    assert.equal(controls.portfolioContent.inert, true);
+    assert.equal(storage.getItem(SITE_CONSENT_KEY), null);
+    assert.deepEqual(runtime.requests, []);
+});
+
+test('el foco queda confinado en las preferencias abiertas', async () => {
+    const controls = createConsentPanel();
+    const runtime = createRuntime({ panel: controls.panel });
+
+    initVisitorTransport(runtime);
+    await flushPromises();
+    controls.preferences.dispatch('click');
+
+    runtime.documentObject.activeElement = controls.close;
+    const forward = controls.container.dispatch('keydown', {
+        key: 'Tab',
+        shiftKey: false
+    });
+    assert.equal(forward.defaultPrevented, true);
+    assert.equal(controls.revoke.focusCount, 1);
+
+    runtime.documentObject.activeElement = controls.revoke;
+    const backward = controls.container.dispatch('keydown', {
+        key: 'Tab',
+        shiftKey: true
+    });
+    assert.equal(backward.defaultPrevented, true);
+    assert.equal(controls.close.focusCount, 1);
 });
 
 test('rechazar desde el panel no recarga ni genera una visita', async () => {
