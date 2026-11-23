@@ -44,6 +44,33 @@
     font-size: 0.72rem;
 }
 
+.visitor-analytics__preferences-shortcut {
+    position: fixed;
+    right: max(14px, env(safe-area-inset-right));
+    bottom: max(14px, env(safe-area-inset-bottom));
+    z-index: 40;
+    min-height: 44px;
+    max-width: min(240px, calc(100vw - 28px));
+    padding: 9px 13px;
+    border: 1px solid var(--border-active);
+    border-radius: 999px;
+    background: rgba(11, 18, 32, 0.96);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    color: var(--text);
+    font: 700 0.74rem var(--font-main);
+    cursor: pointer;
+}
+
+.visitor-analytics__preferences-shortcut:hover,
+.visitor-analytics__preferences-shortcut:focus-visible {
+    border-color: var(--cyan);
+    color: var(--cyan);
+}
+
+.visitor-analytics__preferences-shortcut[hidden] {
+    display: none;
+}
+
 .visitor-analytics__consent {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;

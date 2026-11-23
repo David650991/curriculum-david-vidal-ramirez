@@ -365,10 +365,20 @@ function setupPrivacyControls({
     const revokeButton = container.querySelector(
         '[data-consent-revoke]'
     );
+    const preferencesButton = panel.querySelector(
+        '[data-analytics-preferences]'
+    );
+    const consentTitle = container.querySelector(
+        '#analytics-consent-title'
+    );
 
     function render(state, storageError = false) {
         container.hidden = state.reason === 'default';
         container.dataset.consentState = state.reason;
+
+        if (preferencesButton) {
+            preferencesButton.hidden = state.reason === 'default';
+        }
 
         if (storageError) {
             message.textContent =
@@ -455,6 +465,14 @@ function setupPrivacyControls({
         applyChoice('denied');
     });
 
+    preferencesButton?.addEventListener('click', () => {
+        container.scrollIntoView?.({
+            behavior: 'smooth',
+            block: 'center'
+        });
+        consentTitle?.focus({ preventScroll: true });
+    });
+
     const state = currentState();
     render(state);
     return state;
@@ -533,6 +551,8 @@ export function initVisitorTransport(options = {}) {
         previousPendingActiveMs === null;
 
     function persistActivityState() {
+        if (!measurementAllowed()) return false;
+
         const reconciled = writeTabSession(storageObject, {
             sessionId,
             confirmedActiveMs,
@@ -544,9 +564,12 @@ export function initVisitorTransport(options = {}) {
             reconciled.confirmedActiveMs
         );
         pendingActiveMs = reconciled.pendingActiveMs;
+        return true;
     }
 
     function queueBeacon(payloadText) {
+        if (!measurementAllowed()) return false;
+
         if (typeof navigatorObject.sendBeacon !== 'function') {
             return false;
         }
@@ -654,7 +677,7 @@ export function initVisitorTransport(options = {}) {
         if (!sessionStartPromise) {
             sessionStartPromise = sendEvent('session_start')
                 .then((accepted) => {
-                    if (accepted) {
+                    if (accepted && measurementAllowed()) {
                         sessionStarted = true;
                         persistActivityState();
                     }
@@ -684,7 +707,7 @@ export function initVisitorTransport(options = {}) {
                     });
                 })
                 .then((accepted) => {
-                    if (!accepted) return false;
+                    if (!accepted || !measurementAllowed()) return false;
 
                     confirmedActiveMs = Math.max(
                         confirmedActiveMs,
@@ -712,6 +735,8 @@ export function initVisitorTransport(options = {}) {
     }
 
     function handleClick(event) {
+        if (!measurementAllowed()) return;
+
         if (handledEvents.has(event)) {
             return;
         }
@@ -728,7 +753,7 @@ export function initVisitorTransport(options = {}) {
         if (!eventId) return;
 
         void ensureSessionStarted().then((ready) => {
-            if (!ready) {
+            if (!ready || !measurementAllowed()) {
                 return;
             }
 
@@ -744,6 +769,8 @@ export function initVisitorTransport(options = {}) {
     }
 
     function handleActivity(event) {
+        if (!measurementAllowed()) return;
+
         if (handledEvents.has(event)) {
             return;
         }
@@ -764,7 +791,7 @@ export function initVisitorTransport(options = {}) {
 
         void reconcilePreviousActivity()
             .then((reconciled) => {
-                if (!reconciled) return false;
+                if (!reconciled || !measurementAllowed()) return false;
 
                 const activeMs = Math.min(
                     pageBaseActiveMs + pageActiveMs,
@@ -786,7 +813,7 @@ export function initVisitorTransport(options = {}) {
                 persistActivityState();
 
                 return ensureSessionStarted().then((ready) => {
-                    if (!ready) {
+                    if (!ready || !measurementAllowed()) {
                         return { accepted: false, activeMs };
                     }
 
@@ -799,7 +826,11 @@ export function initVisitorTransport(options = {}) {
                 });
             })
             .then((result) => {
-                if (!result || !result.accepted) return;
+                if (
+                    !result ||
+                    !result.accepted ||
+                    !measurementAllowed()
+                ) return;
 
                 confirmedActiveMs = Math.max(
                     confirmedActiveMs,

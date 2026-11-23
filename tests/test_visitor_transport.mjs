@@ -123,6 +123,10 @@ function createConsentPanel() {
     const container = new FakeTarget();
     container.hidden = true;
     container.dataset = {};
+    let scrollCount = 0;
+    container.scrollIntoView = () => {
+        scrollCount += 1;
+    };
 
     const message = { textContent: '' };
     const choices = { hidden: false };
@@ -130,13 +134,22 @@ function createConsentPanel() {
     const deny = new FakeTarget();
     const revoke = new FakeTarget();
     revoke.hidden = true;
+    const preferences = new FakeTarget();
+    preferences.hidden = true;
+    const title = {
+        focusCount: 0,
+        focus() {
+            this.focusCount += 1;
+        }
+    };
 
     const elements = new Map([
         ['[data-consent-message]', message],
         ['[data-consent-choices]', choices],
         ['[data-consent-allow]', allow],
         ['[data-consent-deny]', deny],
-        ['[data-consent-revoke]', revoke]
+        ['[data-consent-revoke]', revoke],
+        ['#analytics-consent-title', title]
     ]);
     container.querySelector = (selector) =>
         elements.get(selector) ?? null;
@@ -144,9 +157,13 @@ function createConsentPanel() {
     return {
         panel: {
             querySelector(selector) {
-                return selector === '[data-analytics-consent]'
-                    ? container
-                    : null;
+                if (selector === '[data-analytics-consent]') {
+                    return container;
+                }
+                if (selector === '[data-analytics-preferences]') {
+                    return preferences;
+                }
+                return null;
             }
         },
         container,
@@ -154,7 +171,10 @@ function createConsentPanel() {
         choices,
         allow,
         deny,
-        revoke
+        revoke,
+        preferences,
+        title,
+        scrollCount: () => scrollCount
     };
 }
 
@@ -340,6 +360,24 @@ test('la autorización voluntaria se guarda antes de iniciar medición', async (
     assert.equal(second.requests[0].payload.type, 'session_start');
 });
 
+test('el acceso visible lleva por teclado a las preferencias DNT', async () => {
+    const controls = createConsentPanel();
+    const runtime = createRuntime({
+        navigatorObject: { doNotTrack: '1' },
+        panel: controls.panel
+    });
+
+    initVisitorTransport(runtime);
+    await flushPromises();
+
+    assert.equal(controls.preferences.hidden, false);
+    assert.equal(controls.preferences.listeners.has('click'), true);
+    controls.preferences.dispatch('click');
+    assert.equal(controls.scrollCount(), 1);
+    assert.equal(controls.title.focusCount, 1);
+    assert.deepEqual(runtime.requests, []);
+});
+
 test('rechazar desde el panel no recarga ni genera una visita', async () => {
     const controls = createConsentPanel();
     const storage = new FakeStorage();
@@ -397,6 +435,13 @@ test('revocar detiene eventos nuevos y limpia la sesión local', async () => {
     await flushPromises();
     assert.equal(runtime.requests.length, 1);
 
+    // Reproduce el reporte final que visitor-session emite desde pagehide.
+    runtime.windowObject.addEventListener('pagehide', () => {
+        runtime.windowObject.dispatch('portfolio:session-activity', {
+            activeMs: 5000
+        });
+    });
+
     controls.revoke.dispatch('click');
     assert.equal(storage.getItem(SITE_CONSENT_KEY), 'denied');
     assert.equal(storage.getItem(TAB_SESSION_KEY), null);
@@ -405,12 +450,11 @@ test('revocar detiene eventos nuevos y limpia la sesión local', async () => {
     runtime.windowObject.dispatch('portfolio:analytics', {
         action: 'cv_download_click'
     });
-    runtime.windowObject.dispatch('portfolio:session-activity', {
-        activeMs: 5000
-    });
+    runtime.windowObject.dispatch('pagehide');
     await flushPromises();
 
     assert.equal(runtime.requests.length, 1);
+    assert.equal(storage.getItem(TAB_SESSION_KEY), null);
 });
 
 test('revocar durante una solicitud pendiente impide un Beacon posterior', async () => {
@@ -451,6 +495,41 @@ test('revocar durante una solicitud pendiente impide un Beacon posterior', async
 
     assert.equal(storage.getItem(SITE_CONSENT_KEY), 'denied');
     assert.equal(beacons.length, 0);
+});
+
+test('una respuesta tardía de actividad no repone la sesión revocada', async () => {
+    let confirmActivity;
+    const pendingActivity = new Promise((resolve) => {
+        confirmActivity = resolve;
+    });
+    const controls = createConsentPanel();
+    const storage = new FakeStorage();
+    storage.setItem(SITE_CONSENT_KEY, 'granted');
+    const runtime = createRuntime({
+        navigatorObject: { doNotTrack: '1' },
+        sessionStorageObject: storage,
+        panel: controls.panel,
+        fetchImplementation: async (_url, _options, index) =>
+            index === 2
+                ? pendingActivity
+                : { ok: true, status: 200 }
+    });
+
+    initVisitorTransport(runtime);
+    await flushPromises();
+    runtime.windowObject.dispatch('portfolio:session-activity', {
+        activeMs: 5000
+    });
+    await flushPromises();
+    assert.notEqual(storage.getItem(TAB_SESSION_KEY), null);
+
+    controls.revoke.dispatch('click');
+    assert.equal(storage.getItem(TAB_SESSION_KEY), null);
+    confirmActivity({ ok: true, status: 200 });
+    await flushPromises();
+
+    assert.equal(storage.getItem(TAB_SESSION_KEY), null);
+    assert.equal(runtime.requests.length, 2);
 });
 
 test('GPC bloquea incluso una autorización DNT previamente guardada', async () => {

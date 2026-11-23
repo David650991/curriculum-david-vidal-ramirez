@@ -166,6 +166,9 @@ def test_build_creates_a_clean_publication(project_root: Path, tmp_path: Path) -
     assert "La medición está activa" in html
     assert "respeta GPC y permite una decisión explícita cuando DNT está" in html
     assert "data-analytics-consent" in html
+    assert "data-analytics-preferences" in html
+    assert 'aria-controls="analytics-consent"' in html
+    assert 'id="analytics-consent"' in html
     assert "data-consent-allow" in html
     assert "data-consent-deny" in html
     assert "data-consent-revoke" in html
